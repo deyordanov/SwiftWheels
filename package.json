@@ -12,6 +12,8 @@
     "swiper": "^11.0.3"
   },
   "devDependencies": {
-    "@types/react-scroll": "^1.8.9"
+    "@types/react-scroll": "^1.8.9",
+    "eslint-import-resolver-alias": "^1.1.2",
+    "eslint-import-resolver-typescript": "^3.6.1"
   }
 }

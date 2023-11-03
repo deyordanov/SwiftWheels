@@ -8,5 +8,15 @@
     "plugin:jsx-a11y/recommended",
     "plugin:react-hooks/recommended",
     "next/core-web-vitals"
-  ]
+  ],
+  "settings": {
+    "import/resolver": {
+      "alias": {
+        "map": [
+          ["@", "C:/Users/deyor/Documents/GitHub/SwiftWheels/swift-wheels/src"]
+        ],
+        "extensions": [".ts", ".js", ".jsx", ".tsx", ".json"]
+      }
+    }
+  }
 }
