@@ -9,7 +9,7 @@ const config: Config = {
   theme: {
     container: {
       padding: {
-        default: "15px",
+        DEFAULT: "15px",
       },
     },
     screens: {

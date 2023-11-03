@@ -18,5 +18,18 @@ import TestimonialSlider from "./Components/TestimonialSlider/TestimonialSlider"
 import Why from "./Components/Why/Why";
 
 export default function Home() {
-  return <main className="">main</main>;
+  return (
+    <main className="max-w-[1920px] bg-white mx-auto relative overflow-hidden">
+      <Header />
+      <Hero />
+      <Cars />
+      <About />
+      <Why />
+      <Testimonial />
+      <Cta />
+      <Footer />
+      <BackToTopBtn />
+      <div className="h-[4000px]"></div>
+    </main>
+  );
 }
