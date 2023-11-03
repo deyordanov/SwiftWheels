@@ -18,7 +18,11 @@ import { BiX, BiMenuAltRight } from "react-icons/bi";
 //Components
 import SearchMobile from "../Search/SearchMobile/SearchMobile";
 
+//Contexts
+import { useSearchContext } from "../../Contexts/searchContext";
+
 export default function Header() {
+  const { searchActive, setSearchActive } = useSearchContext();
   const [header, setHeader] = useState(false);
   const [navigation, setNavigation] = useState(false);
 
@@ -30,6 +34,7 @@ export default function Header() {
     //There is not other way to add a scroll event on the window except for addEventListener() :(
     const handleScroll = () => {
       setHeader(window.scrollY > 40);
+      setSearchActive(window.scrollY > 800);
     };
 
     //Adding an event listener to the window when the component mounts
@@ -83,7 +88,9 @@ export default function Header() {
             navigation
               ? "max-h-max py-8 px-4 xl:py-0 xl:px-0"
               : "max-h-0 xl:max-h-max"
-          } flex flex-col w-full bg-white gap-y-6 overflow-hidden`}
+          } flex flex-col w-full bg-white gap-y-6 overflow-hidden font-bold xl:font-medium 
+          xl:flex-row xl:w-max xl:gap-x-8 xl:h-max xl:bg-transparent xl:pb-0 transition-all duration-150
+           text-center xl:text-left uppercase text-sm xl:text-[15px] xl:normal-case`}
         >
           <Link
             to="home"
