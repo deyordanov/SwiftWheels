@@ -2,34 +2,35 @@
 
 ##Technologies Used:
 1. **Swift-Wheels**
-   - ![Swift](https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/swift.svg)
+   <img src="./icons/swift.svg" alt="Swift" width="14" height="14">
 
 2. **React**
-   - ![React](https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/react.svg)
+   <img src="./icons/react.svg" alt="React" width="14" height="14">
 
 3. **React-DOM**
-   - ![React-DOM](https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/react.svg)
+   <img src="./icons/react.svg" alt="React-DOM" width="14" height="14">
 
 4. **Next.js**
-   - ![Next.js](https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/next-dot-js.svg)
+   <img src="./icons/next-dot-js.svg" alt="Next.js" width="14" height="14">
 
 5. **TypeScript**
-   - ![TypeScript](https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/typescript.svg)
+   <img src="./icons/typescript.svg" alt="TypeScript" width="14" height="14">
 
 6. **Node.js**
-   - ![Node.js](https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/node-dot-js.svg)
+   <img src="./icons/node-dot-js.svg" alt="Node.js" width="14" height="14">
 
 7. **Autoprefixer**
-   - ![Autoprefixer](https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/postcss.svg)
+   <img src="./icons/postcss.svg" alt="Autoprefixer" width="14" height="14">
 
 8. **PostCSS**
-   - ![PostCSS](https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/postcss.svg)
+   <img src="./icons/postcss.svg" alt="PostCSS" width="14" height="14">
 
 9. **Tailwind CSS**
-   - ![Tailwind CSS](https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/tailwindcss.svg)
+   <img src="./icons/tailwindcss.svg" alt="Tailwind CSS" width="14" height="14">
 
 10. **ESLint**
-    - ![ESLint](https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/eslint.svg)
+    <img src="./icons/eslint.svg" alt="ESLint" width="14" height="14">
 
 11. **ESLint Config for Next.js**
-    - ![Next.js](https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/next-dot-js.svg)
+    <img src="./icons/next-dot-js.svg" alt="Next.js" width="14" height="14">
+
