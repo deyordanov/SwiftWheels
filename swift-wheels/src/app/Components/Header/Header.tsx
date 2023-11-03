@@ -62,8 +62,8 @@ export default function Header() {
           >
             <Image
               src={"/icons/logo2.png"}
-              width={80}
-              height={80}
+              width={120}
+              height={120}
               alt="logo"
               priority
             />
@@ -77,6 +77,79 @@ export default function Header() {
             {navigation ? <BiX /> : <BiMenuAltRight />}
           </div>
         </div>
+        {/* navigation */}
+        <nav
+          className={`${
+            navigation
+              ? "max-h-max py-8 px-4 xl:py-0 xl:px-0"
+              : "max-h-0 xl:max-h-max"
+          } flex flex-col w-full bg-white gap-y-6 overflow-hidden`}
+        >
+          <Link
+            to="home"
+            activeClass="active"
+            smooth={desktopMode}
+            spy={true}
+            className="cursor-pointer"
+          >
+            Home
+          </Link>
+          <Link
+            to="cars"
+            activeClass="active"
+            smooth={desktopMode}
+            spy={true}
+            className="cursor-pointer"
+          >
+            Cars
+          </Link>
+          <Link
+            to="about"
+            activeClass="active"
+            smooth={desktopMode}
+            spy={true}
+            className="cursor-pointer"
+          >
+            About
+          </Link>
+          <Link
+            to="why"
+            activeClass="active"
+            smooth={desktopMode}
+            spy={true}
+            className="cursor-pointer"
+          >
+            Why Us
+          </Link>
+          <Link
+            to="testimonials"
+            activeClass="active"
+            smooth={desktopMode}
+            spy={true}
+            className="cursor-pointer"
+          >
+            Testimonials
+          </Link>
+          <Link
+            to="contact"
+            activeClass="active"
+            smooth={desktopMode}
+            spy={true}
+            className="cursor-pointer"
+          >
+            Contact
+          </Link>
+          <Link
+            to="/"
+            activeClass="active"
+            smooth={desktopMode}
+            spy={true}
+            className="xl:hidden btn btn-primary btn-sm max-w-[164px] mx-auto"
+          >
+            See All Cars
+          </Link>
+          <SearchMobile />
+        </nav>
       </div>
     </header>
   );
