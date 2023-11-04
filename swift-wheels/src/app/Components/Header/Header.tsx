@@ -67,9 +67,9 @@ export default function Header() {
             className="cursor-pointer"
           >
             <Image
-              src={"/icons/logo3.png"}
-              width={100}
-              height={100}
+              src={"/icons/logo4.png"}
+              width={150}
+              height={150}
               alt="logo"
               priority
             />
