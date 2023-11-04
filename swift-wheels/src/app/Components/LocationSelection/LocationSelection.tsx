@@ -9,14 +9,8 @@ import { Menu } from "@headlessui/react";
 //react-icons
 import { FaMapMarkerAlt } from "react-icons/fa";
 
-//locations
-const locations = [
-  "1000 Kingsway, Canada",
-  "2200 Autobahn Ave, Germany",
-  "58 Rue de l'Automobile, France",
-  "15 Car Dealership Road, Australia",
-  "88 Vehicular Street, Japan",
-];
+//constants
+import { locations } from "@/app/utilities/constants/constans";
 
 export default function LocationSelection() {
   const [location, setLocation] = useState("Select Location");
@@ -43,12 +37,12 @@ export default function LocationSelection() {
             </div>
           </div>
         </Menu.Button>
-        <Menu.Items className=" dropdown-menu shadow-lg absolute -top-80 xl:top-[90px] left-1/2 xl:left-0 z-10 transform -translate-x-1/2 xl:-translate-x-0 text-sm text-center xl:text-left w-full bg-white max-w-[332px] py-6 rounded-[10px]">
+        <Menu.Items className="dropdown-menu shadow-lg absolute -top-80 xl:top-[90px] left-1/2 xl:left-0 z-10 transform -translate-x-1/2 xl:-translate-x-0 text-sm text-center xl:text-left w-full bg-white max-w-[332px] py-6 rounded-[10px]">
           {locations.map((location, index) => (
             <li
               onClick={() => handleLocation(location)}
               key={index}
-              className="list-none cursor-pointer py-4 xl:pl-10 hover:bg-gray-50 text-[13px] uppercase"
+              className="list-none cursor-pointer py-4 hover:bg-gray-50 uppercase text-center"
               aria-hidden
             >
               {location}
