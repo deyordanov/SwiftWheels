@@ -34,7 +34,8 @@ export default function Header() {
     //There is not other way to add a scroll event on the window except for addEventListener() :(
     const handleScroll = () => {
       setHeader(window.scrollY > 40);
-      setSearchActive(window.scrollY > 800);
+      //Might need to change the value later on (for UX)
+      setSearchActive(window.scrollY > 1550);
     };
 
     //Adding an event listener to the window when the component mounts
