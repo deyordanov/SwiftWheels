@@ -17,6 +17,7 @@ import { BiX, BiMenuAltRight } from "react-icons/bi";
 
 //Components
 import SearchMobile from "../Search/SearchMobile/SearchMobile";
+import Login from "../Login/Login";
 
 //Contexts
 import { useSearchContext } from "../../Contexts/searchContext";
@@ -25,6 +26,7 @@ export default function Header() {
   const { searchActive, setSearchActive } = useSearchContext();
   const [header, setHeader] = useState(false);
   const [navigation, setNavigation] = useState(false);
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
 
   const desktopMode = useMediaQuery({
     query: "(min-width: 1300px)",
@@ -51,12 +53,18 @@ export default function Header() {
     setNavigation((state) => !state);
   };
 
+  const handleLogin = () => {
+    setIsLoginOpen((state) => !state);
+    setNavigation(false);
+  };
+
   return (
     <header
       className={`${
         header ? "bg-white shadow-md py-2" : "bg-transparent shadow-none py-4"
       } fixed w-full max-w-[1920px] mx-auto z-20 transition-all duration-300`}
     >
+      {isLoginOpen && <Login handleLogin={handleLogin} />}
       <div className="xl:container mx-auto flex flex-col xl:flex-row xl:items-center xl:justify-between">
         <div className="flex justify-between items-center px-4">
           {/* Logo */}
@@ -146,6 +154,16 @@ export default function Header() {
             className="cursor-pointer"
           >
             Contact
+          </Link>
+          <Link
+            to="login"
+            activeClass="login"
+            smooth={desktopMode}
+            spy={true}
+            className="cursor-pointer"
+            onClick={handleLogin}
+          >
+            Login
           </Link>
           <Link
             to="/"
