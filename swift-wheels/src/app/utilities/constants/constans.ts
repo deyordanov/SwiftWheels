@@ -33,3 +33,17 @@ export const hours = [
   "4:00 PM",
   "6:00 PM",
 ];
+
+//Login
+
+//-> Form Keys
+export const LoginFormKeys = {
+  EMAIL: "email",
+  PASSWORD: "password",
+};
+
+//-> Form Default Values
+export const LoginFormDefaultValues = {
+  [LoginFormKeys.EMAIL]: "",
+  [LoginFormKeys.PASSWORD]: "",
+};

@@ -1,6 +1,13 @@
-import { Dialog, Transition } from "@headlessui/react";
+//hooks
 import { Fragment, useState } from "react";
+
+//headless ui
+import { Dialog, Transition } from "@headlessui/react";
+
+//next-image
 import Image from "next/image";
+
+//components
 import Login from "../Login/Login";
 
 export default function Register() {
