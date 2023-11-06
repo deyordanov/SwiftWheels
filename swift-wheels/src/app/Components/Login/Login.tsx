@@ -9,12 +9,35 @@ import Link from "next/link";
 
 //next-image
 import Image from "next/image";
+
+//components
 import Register from "../Register/Register";
 
-export default function Login({ handleLogin }: { handleLogin: Function }) {
-  // State to manage dialog open/close
+//use form
+import { useForm } from "react-hook-form";
+
+//constants
+import {
+  LoginFormKeys,
+  LoginFormDefaultValues,
+} from "@/app/utilities/constants/constans";
+import FormErrorMessage from "../shared/FormErrorMessage";
+
+//types
+import * as LoginTypes from "../../utilities/types/login.types";
+
+export default function Login({ handleLogin }: LoginTypes.propTypes) {
   const [isOpen, setIsOpen] = useState(true);
-  const [register, setRegister] = useState(false);
+  const [singUp, setSignUp] = useState(false);
+
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm({
+    defaultValues: LoginFormDefaultValues,
+    mode: "onChange",
+  });
 
   const closeModal = () => {
     setIsOpen(false);
@@ -22,10 +45,14 @@ export default function Login({ handleLogin }: { handleLogin: Function }) {
   };
 
   const handleRegister = () => {
-    setRegister((state) => !state);
+    setSignUp((state) => !state);
   };
 
-  if (register) return <Register />;
+  const onSubmit = () => {
+    console.log("LOGGED IN");
+  };
+
+  if (singUp) return <Register />;
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
@@ -64,7 +91,10 @@ export default function Login({ handleLogin }: { handleLogin: Function }) {
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-95"
           >
-            <div className="inline-block w-full max-w-[500px] p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="inline-block w-full max-w-[500px] p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl"
+            >
               <section className="flex justify-center items-center">
                 <div className=" w-full p-4 flex flex-col gap-y-6 text-primary ext-xl">
                   <h1 className="text-center font-bold text-[36px]">
@@ -99,6 +129,7 @@ export default function Login({ handleLogin }: { handleLogin: Function }) {
                       Log in with Apple
                     </a>
                   </div>
+
                   <div className="flex items-center justify-center">
                     <div className="flex-grow border-t-2 border-slate-400"></div>
                     <span className="flex-shrink mx-4 text-secondary">or</span>
@@ -106,21 +137,48 @@ export default function Login({ handleLogin }: { handleLogin: Function }) {
                   </div>
 
                   <div className="flex flex-col gap-y-2">
-                    <label htmlFor="email">Email:</label>
+                    <label htmlFor={LoginFormKeys.EMAIL}>Email:</label>
                     <input
-                      type="text"
-                      name="email"
-                      id="email"
-                      className="text-md h-[40px] px-2 py-1 rounded-lg w-full border-slate-500 border-[1.4px]"
+                      {...register(LoginFormKeys.EMAIL, {
+                        required: "This field is required!",
+                        pattern: {
+                          value:
+                            /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                          message: "Invalid email!",
+                        },
+                      })}
+                      type={LoginFormKeys.EMAIL}
+                      name={LoginFormKeys.EMAIL}
+                      id={LoginFormKeys.EMAIL}
+                      className={`text-md h-[40px] px-2 py-1 rounded-lg w-full border-[1.4px] focus:outline-none ${
+                        errors[LoginFormKeys.EMAIL]
+                          ? "border-red-500"
+                          : "border-slate-500"
+                      }`}
+                    />
+                    <FormErrorMessage
+                      errors={errors}
+                      fieldKey={LoginFormKeys.EMAIL}
                     />
                   </div>
                   <div className="flex flex-col gap-y-2">
-                    <label htmlFor="password">Password:</label>
+                    <label htmlFor={LoginFormKeys.PASSWORD}>Password:</label>
                     <input
-                      type="password"
-                      name="password"
-                      id="password"
-                      className="text-md h-[40px] px-2 py-1 rounded-lg w-full border-slate-500 border-[1.4px]"
+                      {...register(LoginFormKeys.PASSWORD, {
+                        required: "This field is required!",
+                      })}
+                      type={LoginFormKeys.PASSWORD}
+                      name={LoginFormKeys.PASSWORD}
+                      id={LoginFormKeys.PASSWORD}
+                      className={`text-md h-[40px] px-2 py-1 rounded-lg w-full border-[1.4px] focus:outline-none ${
+                        errors[LoginFormKeys.PASSWORD]
+                          ? "border-red-500"
+                          : "border-slate-500"
+                      }`}
+                    />
+                    <FormErrorMessage
+                      errors={errors}
+                      fieldKey={LoginFormKeys.PASSWORD}
                     />
                   </div>
                   <div className="flex justify-between items-center text-[15px]">
@@ -150,7 +208,7 @@ export default function Login({ handleLogin }: { handleLogin: Function }) {
                   </div>
                 </div>
               </section>
-            </div>
+            </form>
           </Transition.Child>
         </div>
       </Dialog>
