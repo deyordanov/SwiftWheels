@@ -1,31 +1,22 @@
-//hooks
-import { Fragment, useState } from "react";
-
-//headless ui
 import { Dialog, Transition } from "@headlessui/react";
-
-//next-link
-import Link from "next/link";
-
-//next-image
+import { Fragment, useState } from "react";
 import Image from "next/image";
-import Register from "../Register/Register";
+import Login from "../Login/Login";
 
-export default function Login({ handleLogin }: { handleLogin: Function }) {
+export default function Register() {
   // State to manage dialog open/close
   const [isOpen, setIsOpen] = useState(true);
-  const [register, setRegister] = useState(false);
+  const [login, setLogin] = useState(false);
 
   const closeModal = () => {
     setIsOpen(false);
-    handleLogin();
   };
 
-  const handleRegister = () => {
-    setRegister((state) => !state);
+  const handleLogin = () => {
+    setLogin((state) => !state);
   };
 
-  if (register) return <Register />;
+  if (login) return <Login handleLogin={() => {}} />;
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
@@ -68,14 +59,14 @@ export default function Login({ handleLogin }: { handleLogin: Function }) {
               <section className="flex justify-center items-center">
                 <div className=" w-full p-4 flex flex-col gap-y-6 text-primary ext-xl">
                   <h1 className="text-center font-bold text-[36px]">
-                    <b>Welcome Back</b>
+                    <b>Welcome</b>
                   </h1>
                   <div className="flex justify-between">
                     {/* Not real links -> they will lead to the login pages of the corresponding websites */}
                     <a
                       href="https://myaccount.google.com/intro/signing-in-to-google"
                       target="_blank"
-                      className="flex items-center gap-x-1 xl:text-[16px] text-[11px]  border-slate-500 border-[1.4px] xl:px-4 px-1 py-1 rounded-md hover:bg-slate-50"
+                      className="flex items-center gap-x-1 xl:text-[16px] text-[11px]  border-slate-500 border-[1.4px] xl:px-3 px-1 py-1 rounded-md hover:bg-slate-50"
                     >
                       <Image
                         src="/icons/buttons/google.svg"
@@ -83,12 +74,12 @@ export default function Login({ handleLogin }: { handleLogin: Function }) {
                         width={25}
                         height={25}
                       />
-                      Log in with Google
+                      Sign up with Google
                     </a>
                     <a
                       href="https://appleid.apple.com/sign-in"
                       target="_blank"
-                      className="flex items-center gap-x-1 xl:text-[16px] text-[11px]  border-slate-500 border-[1.4px] xl:px-4 px-1 py-0.5 rounded-md hover:bg-slate-50"
+                      className="flex items-center gap-x-1 xl:text-[16px] text-[11px]  border-slate-500 border-[1.4px] xl:px-3 px-1 py-0.5 rounded-md hover:bg-slate-50"
                     >
                       <Image
                         src="/icons/buttons/apple-black.svg"
@@ -96,7 +87,7 @@ export default function Login({ handleLogin }: { handleLogin: Function }) {
                         width={25}
                         height={25}
                       />
-                      Log in with Apple
+                      Sign up with Apple
                     </a>
                   </div>
                   <div className="flex items-center justify-center">
@@ -123,29 +114,43 @@ export default function Login({ handleLogin }: { handleLogin: Function }) {
                       className="text-md h-[40px] px-2 py-1 rounded-lg w-full border-slate-500 border-[1.4px]"
                     />
                   </div>
+                  <div className="flex flex-col gap-y-2">
+                    <label htmlFor="confirm-password">Confirm password:</label>
+                    <input
+                      type="confirm-password"
+                      name="confirm-password"
+                      id="confirm-password"
+                      className="text-md h-[40px] px-2 py-1 rounded-lg w-full border-slate-500 border-[1.4px]"
+                    />
+                  </div>
                   <div className="flex justify-between items-center text-[15px]">
                     <label className="inline-flex items-center">
-                      <input type="checkbox" name="remember" id="remember" />
-                      <span className="ml-2">Remember me</span>
+                      <input
+                        type="checkbox"
+                        name="remember"
+                        id="remember"
+                        className="scale-125"
+                      />
+                      <span className="ml-2">
+                        {" "}
+                        I accept the{" "}
+                        <span className="text-accent-default">
+                          Terms And Conditions
+                        </span>
+                      </span>
                     </label>
-                    <Link
-                      href="/forgotpasswordpage"
-                      className="text-accent-default hover:underline"
-                    >
-                      Forgot password?
-                    </Link>
                   </div>
-                  <button className="w-full bg-accent-default hover:bg-accent-hover py-2 rounded-lg text-white">
-                    Sign in to your account
+                  <button className="w-full bg-accent-default hover:bg-accent-hover py-2 rounded-lg text-white z-1000">
+                    Create an account
                   </button>
                   <div className="flex text-[15px] gap-x-1">
-                    <p>Don`t have an account yet?</p>
+                    <p>Already have an account?</p>
                     <p
                       className="text-accent-default hover:underline cursor-pointer"
-                      onClick={handleRegister}
+                      onClick={handleLogin}
                       aria-hidden
                     >
-                      Sign up here!
+                      Login here!
                     </p>
                   </div>
                 </div>
