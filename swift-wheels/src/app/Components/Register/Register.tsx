@@ -9,11 +9,39 @@ import Image from "next/image";
 
 //components
 import Login from "../Login/Login";
+import FormErrorMessage from "../shared/FormErrorMessage";
+
+//use form
+import { useForm } from "react-hook-form";
+
+const RegisterFormKeys = {
+  EMAIL: "email",
+  PASSWORD: "password",
+  CONFIRM_PASSWORD: "confirm-password",
+  CONDITIONS: "conditions",
+};
+
+const RegisterFormDefaultValues = {
+  [RegisterFormKeys.EMAIL]: "",
+  [RegisterFormKeys.PASSWORD]: "",
+  [RegisterFormKeys.CONFIRM_PASSWORD]: "",
+  [RegisterFormKeys.CONDITIONS]: false,
+};
 
 export default function Register() {
   // State to manage dialog open/close
   const [isOpen, setIsOpen] = useState(true);
   const [login, setLogin] = useState(false);
+
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    watch,
+  } = useForm({
+    defaultValues: RegisterFormDefaultValues,
+    mode: "onChange",
+  });
 
   const closeModal = () => {
     setIsOpen(false);
@@ -23,7 +51,16 @@ export default function Register() {
     setLogin((state) => !state);
   };
 
+  const onSubmit = () => {
+    console.log("REGISTERED");
+  };
+
+  //Used for checking if password and confirm password are equal
+  const password = watch(RegisterFormKeys.PASSWORD);
+
   if (login) return <Login handleLogin={() => {}} />;
+
+  //TODO: Create a terms and conditions page
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
@@ -62,7 +99,10 @@ export default function Register() {
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-95"
           >
-            <div className="inline-block w-full max-w-[500px] p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="inline-block w-full max-w-[500px] p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl"
+            >
               <section className="flex justify-center items-center">
                 <div className=" w-full p-4 flex flex-col gap-y-6 text-primary ext-xl">
                   <h1 className="text-center font-bold text-[36px]">
@@ -104,49 +144,107 @@ export default function Register() {
                   </div>
 
                   <div className="flex flex-col gap-y-2">
-                    <label htmlFor="email">Email:</label>
+                    <label htmlFor={RegisterFormKeys.EMAIL}>Email:</label>
                     <input
+                      {...register(RegisterFormKeys.EMAIL, {
+                        required: "This field is required!",
+                        pattern: {
+                          value:
+                            /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                          message: "Invalid email!",
+                        },
+                      })}
                       type="text"
-                      name="email"
-                      id="email"
-                      className="text-md h-[40px] px-2 py-1 rounded-lg w-full border-slate-500 border-[1.4px]"
+                      name={RegisterFormKeys.EMAIL}
+                      id={RegisterFormKeys.EMAIL}
+                      className={`text-md h-[40px] px-2 py-1 rounded-lg w-full focus:outline-none ${
+                        errors[RegisterFormKeys.EMAIL]
+                          ? "border-red-500"
+                          : "border-slate-500"
+                      } border-[1.4px]`}
+                    />
+                    <FormErrorMessage
+                      errors={errors}
+                      fieldKey={RegisterFormKeys.EMAIL}
                     />
                   </div>
                   <div className="flex flex-col gap-y-2">
-                    <label htmlFor="password">Password:</label>
+                    <label htmlFor={RegisterFormKeys.PASSWORD}>Password:</label>
                     <input
-                      type="password"
-                      name="password"
-                      id="password"
-                      className="text-md h-[40px] px-2 py-1 rounded-lg w-full border-slate-500 border-[1.4px]"
+                      {...register(RegisterFormKeys.PASSWORD, {
+                        required: "This field is required!",
+                        pattern: {
+                          value:
+                            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#^+-])[A-Za-z\d@$!%*?&#^+-]{8,}$/,
+                          message:
+                            "Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and a special character (e.g., !@#$%^&*)",
+                        },
+                      })}
+                      type={RegisterFormKeys.PASSWORD}
+                      name={RegisterFormKeys.PASSWORD}
+                      id={RegisterFormKeys.PASSWORD}
+                      className={`text-md h-[40px] px-2 py-1 rounded-lg w-full focus:outline-none ${
+                        errors[RegisterFormKeys.EMAIL]
+                          ? "border-red-500"
+                          : "border-slate-500"
+                      } border-[1.4px]`}
+                    />
+                    <FormErrorMessage
+                      errors={errors}
+                      fieldKey={RegisterFormKeys.PASSWORD}
                     />
                   </div>
                   <div className="flex flex-col gap-y-2">
-                    <label htmlFor="confirm-password">Confirm password:</label>
+                    <label htmlFor={RegisterFormKeys.CONFIRM_PASSWORD}>
+                      Confirm password:
+                    </label>
                     <input
-                      type="confirm-password"
-                      name="confirm-password"
-                      id="confirm-password"
-                      className="text-md h-[40px] px-2 py-1 rounded-lg w-full border-slate-500 border-[1.4px]"
+                      {...register(RegisterFormKeys.CONFIRM_PASSWORD, {
+                        required: "This field is required!",
+                        validate: (value) =>
+                          value === password || "The passwords do not match!",
+                      })}
+                      type={RegisterFormKeys.PASSWORD}
+                      name={RegisterFormKeys.CONFIRM_PASSWORD}
+                      id={RegisterFormKeys.CONFIRM_PASSWORD}
+                      className={`text-md h-[40px] px-2 py-1 rounded-lg w-full focus:outline-none ${
+                        errors[RegisterFormKeys.CONFIRM_PASSWORD]
+                          ? "border-red-500"
+                          : "border-slate-500"
+                      } border-[1.4px]`}
+                    />
+                    <FormErrorMessage
+                      errors={errors}
+                      fieldKey={RegisterFormKeys.CONFIRM_PASSWORD}
                     />
                   </div>
                   <div className="flex justify-between items-center text-[15px]">
-                    <label className="inline-flex items-center">
+                    <label
+                      htmlFor={RegisterFormKeys.CONDITIONS}
+                      className="inline-flex items-center"
+                    >
                       <input
+                        {...register(RegisterFormKeys.CONDITIONS, {
+                          required: "You must accept the Terms and Conditions!",
+                        })}
                         type="checkbox"
-                        name="remember"
-                        id="remember"
+                        name={RegisterFormKeys.CONDITIONS}
+                        id={RegisterFormKeys.CONDITIONS}
                         className="scale-125"
                       />
                       <span className="ml-2">
                         {" "}
                         I accept the{" "}
                         <span className="text-accent-default">
-                          Terms And Conditions
+                          Terms and Conditions
                         </span>
                       </span>
                     </label>
                   </div>
+                  <FormErrorMessage
+                    errors={errors}
+                    fieldKey={RegisterFormKeys.CONDITIONS}
+                  />
                   <button className="w-full bg-accent-default hover:bg-accent-hover py-2 rounded-lg text-white z-1000">
                     Create an account
                   </button>
@@ -162,7 +260,7 @@ export default function Register() {
                   </div>
                 </div>
               </section>
-            </div>
+            </form>
           </Transition.Child>
         </div>
       </Dialog>

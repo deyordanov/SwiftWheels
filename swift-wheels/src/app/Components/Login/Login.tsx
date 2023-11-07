@@ -12,6 +12,7 @@ import Image from "next/image";
 
 //components
 import Register from "../Register/Register";
+import FormErrorMessage from "../shared/FormErrorMessage";
 
 //use form
 import { useForm } from "react-hook-form";
@@ -21,7 +22,6 @@ import {
   LoginFormKeys,
   LoginFormDefaultValues,
 } from "@/app/utilities/constants/constans";
-import FormErrorMessage from "../shared/FormErrorMessage";
 
 //types
 import * as LoginTypes from "../../utilities/types/login.types";
@@ -105,7 +105,7 @@ export default function Login({ handleLogin }: LoginTypes.propTypes) {
                     <a
                       href="https://myaccount.google.com/intro/signing-in-to-google"
                       target="_blank"
-                      className="flex items-center gap-x-1 xl:text-[16px] text-[11px]  border-slate-500 border-[1.4px] xl:px-4 px-1 py-1 rounded-md hover:bg-slate-50"
+                      className="focus:outline-none flex items-center gap-x-1 xl:text-[16px] text-[11px]  border-slate-500 border-[1.4px] xl:px-4 px-1 py-1 rounded-md hover:bg-slate-50"
                     >
                       <Image
                         src="/icons/buttons/google.svg"
@@ -118,7 +118,7 @@ export default function Login({ handleLogin }: LoginTypes.propTypes) {
                     <a
                       href="https://appleid.apple.com/sign-in"
                       target="_blank"
-                      className="flex items-center gap-x-1 xl:text-[16px] text-[11px]  border-slate-500 border-[1.4px] xl:px-4 px-1 py-0.5 rounded-md hover:bg-slate-50"
+                      className="focus:outline-none flex items-center gap-x-1 xl:text-[16px] text-[11px]  border-slate-500 border-[1.4px] xl:px-4 px-1 py-0.5 rounded-md hover:bg-slate-50"
                     >
                       <Image
                         src="/icons/buttons/apple-black.svg"
@@ -147,7 +147,7 @@ export default function Login({ handleLogin }: LoginTypes.propTypes) {
                           message: "Invalid email!",
                         },
                       })}
-                      type={LoginFormKeys.EMAIL}
+                      type="text"
                       name={LoginFormKeys.EMAIL}
                       id={LoginFormKeys.EMAIL}
                       className={`text-md h-[40px] px-2 py-1 rounded-lg w-full border-[1.4px] focus:outline-none ${
@@ -182,7 +182,10 @@ export default function Login({ handleLogin }: LoginTypes.propTypes) {
                     />
                   </div>
                   <div className="flex justify-between items-center text-[15px]">
-                    <label className="inline-flex items-center">
+                    <label
+                      htmlFor="remember"
+                      className="inline-flex items-center"
+                    >
                       <input type="checkbox" name="remember" id="remember" />
                       <span className="ml-2">Remember me</span>
                     </label>
