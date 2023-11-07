@@ -82,16 +82,16 @@ const cars = [
   },
   {
     type: "SUV",
-    name: "Toyota RAV4",
-    price: 63,
-    stars: 4.7,
-    image: "/images/carSlider/Rav4-GR.png",
+    name: "Land Cruiser 200",
+    price: 148,
+    stars: 5,
+    image: "/images/carSlider/LC200.png",
     info: [
       { icon: "icons/carSlider/automatic.svg", text: "Automatic" },
       { icon: "icons/carSlider/seat.svg", text: "5 Seats" },
       { icon: "icons/carSlider/gas.svg", text: "Petrol" },
-      { icon: "icons/carSlider/engine.svg", text: "403 HP" },
-      { icon: "icons/carSlider/wheel.svg", text: "Front Wheel" },
+      { icon: "icons/carSlider/engine.svg", text: "654 HP" },
+      { icon: "icons/carSlider/wheel.svg", text: "All Wheel" },
     ],
   },
 ];
@@ -131,10 +131,10 @@ export default function CarSlider() {
 
     const stars = [];
     for (let i = 0; i < fullStars; i++) {
-      stars.push(<FaStar key={`full-${i}`} className="text-yellow-500" />);
+      stars.push(<FaStar key={`full-${i}`} />);
     }
     for (let i = 0; i < emptyStars; i++) {
-      stars.push(<FaRegStar key={`empty-${i}`} className="text-yellow-500" />);
+      stars.push(<FaRegStar key={`empty-${i}`} />);
     }
 
     return stars;
@@ -153,7 +153,12 @@ export default function CarSlider() {
           <swiper-slide key={index}>
             <div className="max-w-[385px] mx-auto sm:mx-0 h-[500px]  flex flex-col justify-evenly">
               <span className="h-[200px]">
-                <Image src={car.image} height={380} width={340} alt="image" />
+                <Image
+                  src={car.image}
+                  height={380}
+                  width={car.name === "Toyota RAV4" ? 1000 : 340}
+                  alt="image"
+                />
               </span>
               <div className="flex justify-between">
                 <div>
@@ -165,7 +170,7 @@ export default function CarSlider() {
                     {`${car.price}.000$`}
                   </h3>
                 </div>
-                <span>{generateStars(car.stars)}</span>
+                <span className="flex">{generateStars(car.stars)}</span>
               </div>
               <div className="flex gap-x-3 xl:gap-x-4 w-max mb-10">
                 {car.info.map((item, index) => (
