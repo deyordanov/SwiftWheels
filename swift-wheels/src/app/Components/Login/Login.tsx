@@ -1,5 +1,6 @@
 //hooks
 import { Fragment, useState } from "react";
+import { useAuthContext } from "@/app/Contexts/authContext";
 
 //headless ui
 import { Dialog, Transition } from "@headlessui/react";
@@ -27,6 +28,8 @@ import {
 import * as LoginTypes from "../../utilities/types/login.types";
 
 export default function Login({ handleLogin }: LoginTypes.propTypes) {
+  const { onLoginSubmit } = useAuthContext();
+
   const [isOpen, setIsOpen] = useState(true);
   const [singUp, setSignUp] = useState(false);
 
@@ -46,10 +49,6 @@ export default function Login({ handleLogin }: LoginTypes.propTypes) {
 
   const handleRegister = () => {
     setSignUp((state) => !state);
-  };
-
-  const onSubmit = () => {
-    console.log("LOGGED IN");
   };
 
   if (singUp) return <Register />;
@@ -92,7 +91,7 @@ export default function Login({ handleLogin }: LoginTypes.propTypes) {
             leaveTo="opacity-0 scale-95"
           >
             <form
-              onSubmit={handleSubmit(onSubmit)}
+              onSubmit={handleSubmit(onLoginSubmit)}
               className="inline-block w-full max-w-[500px] p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl"
             >
               <section className="flex justify-center items-center">
