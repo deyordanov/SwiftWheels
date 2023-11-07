@@ -29,7 +29,11 @@ export default function About() {
     threshold: 0.5,
   });
   return (
-    <section className="section flex items-center" id="about" ref={ref}>
+    <section
+      className="section flex items-center h-screen mb-48"
+      id="about"
+      ref={ref}
+    >
       <div className="container mx-auto">
         <header className="flex flex-col xl:flex-row xl:justify-between gap-x-14 items-center">
           <motion.figure
