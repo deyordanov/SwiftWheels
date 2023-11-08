@@ -3,7 +3,11 @@ import React from "react";
 export interface AuthContextProps {
   onLoginSubmit: (
     data: any,
-    handleLoginDialogExitOpen: Function
+    handleLoginDialogExitOpen: () => void
+  ) => Promise<void>;
+  onRegisterSubmit: (
+    data: any,
+    handleRegisterDialogExitOpen: () => void
   ) => Promise<void>;
   onLogout: () => Promise<void>;
   userId: string;

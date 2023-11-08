@@ -19,7 +19,8 @@ export const request = async (
 
   const response = await fetch(url, options);
 
-  if (!response.ok) {
+  if (!response.ok || response.status === 204) {
+    console.log("Requester error handling:");
     throw response;
   }
 

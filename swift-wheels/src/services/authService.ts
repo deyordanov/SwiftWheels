@@ -21,11 +21,21 @@ const getAuthHeaders = () => {
   return headers;
 };
 
-export const login = (loginData: object) =>
-  requester.post(JSON.stringify(loginData), `${baseUrl}/login`);
+export const login = (loginData: object) => {
+  return requester.post(JSON.stringify(loginData), `${baseUrl}/login`);
+};
 
 export const logout = () => {
   const headers = getAuthHeaders();
-
   requester.authorizationGet(headers, {}, `${baseUrl}/logout`);
+};
+
+export const register = (registerData: { email: string; password: string }) => {
+  return requester.post(
+    JSON.stringify({
+      email: registerData.email,
+      password: registerData.password,
+    }),
+    `${baseUrl}/register`
+  );
 };

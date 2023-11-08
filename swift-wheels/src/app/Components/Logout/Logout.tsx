@@ -53,7 +53,7 @@ export default function Logout({
                 </Dialog.Title>
                 <div className="mt-2">
                   <p className="text-sm text-secondary">
-                    Are you sure you want to logout of your account?
+                    Are you sure you want to log out of your account?
                   </p>
                 </div>
 

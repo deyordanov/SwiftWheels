@@ -23,25 +23,36 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [auth, setAuth] = useLocalStorage("auth", {});
   const [invalidLoginData, setInvalidLoginData] = useState(false);
 
-  //mutation
+  //mutations
   const loginMutation = useMutation({
     mutationFn: (loginData: any) => authService.login(loginData),
     onError: () => {
-      //TODO: PASS ON OVER TO THE LOGIN COMPONENT AND DISPLAY THE ERROR THERE SOMEHOW?
       setInvalidLoginData(true);
-      console.log("Invalid email or password!");
     },
+  });
+
+  const registerMutation = useMutation({
+    mutationFn: (registerData: any) => authService.register(registerData),
   });
 
   const onLoginSubmit = async (
     data: any,
-    handleLoginDialogExitOpen: Function
+    handleLoginDialogExitOpen: () => void
   ) => {
     loginMutation.mutate(data, {
       onSuccess: (response) => {
         setAuth(response);
         setInvalidLoginData(false);
         handleLoginDialogExitOpen();
+      },
+    });
+  };
+
+  const onRegisterSubmit = async (data: any, handleLogin: () => void) => {
+    registerMutation.mutate(data, {
+      onSuccess: (response) => {
+        setAuth(response);
+        handleLogin();
       },
     });
   };
@@ -55,6 +66,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const authContextData = {
     onLoginSubmit,
+    onRegisterSubmit,
     onLogout,
     userId: auth._id,
     userEmail: auth.email,

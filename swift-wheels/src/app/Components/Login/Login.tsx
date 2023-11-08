@@ -62,7 +62,8 @@ export default function Login({
     },
   };
 
-  if (singUp) return <Register />;
+  if (singUp)
+    return <Register handleLoginDialogExitOpen={handleLoginDialogExitOpen} />;
 
   return (
     <Transition appear show={isOpen} as={Fragment}>

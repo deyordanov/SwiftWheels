@@ -1,5 +1,6 @@
 //hooks
 import { Fragment, useState } from "react";
+import { useAuthContext } from "@/app/Contexts/authContext";
 
 //headless ui
 import { Dialog, Transition } from "@headlessui/react";
@@ -20,10 +21,15 @@ import {
   RegisterFormDefaultValues,
 } from "@/app/utilities/constants/constans";
 
-export default function Register() {
+export default function Register({
+  handleLoginDialogExitOpen,
+}: {
+  handleLoginDialogExitOpen: () => void;
+}) {
   // State to manage dialog open/close
   const [isOpen, setIsOpen] = useState(true);
   const [login, setLogin] = useState(false);
+  const { onRegisterSubmit } = useAuthContext();
 
   const {
     register,
@@ -43,14 +49,11 @@ export default function Register() {
     setLogin((state) => !state);
   };
 
-  const onSubmit = () => {
-    console.log("REGISTERED");
-  };
-
   //Used for checking if password and confirm password are equal
   const password = watch(RegisterFormKeys.PASSWORD);
 
-  if (login) return <Login handleLogin={() => {}} />;
+  if (login)
+    return <Login handleLoginDialogExitOpen={handleLoginDialogExitOpen} />;
 
   //TODO: Create a terms and conditions page
 
@@ -92,7 +95,9 @@ export default function Register() {
             leaveTo="opacity-0 scale-95"
           >
             <form
-              onSubmit={handleSubmit(onSubmit)}
+              onSubmit={handleSubmit((data) =>
+                onRegisterSubmit(data, handleLogin)
+              )}
               className="inline-block w-full max-w-[500px] p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl"
             >
               <section className="flex justify-center items-center">
