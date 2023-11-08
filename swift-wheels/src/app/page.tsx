@@ -2,6 +2,7 @@
 import About from "./Components/About/About";
 import BackToTopBtn from "./Components/BackToTopBtn/BackToTopBtn";
 import Brands from "./Components/Brands/Brands";
+import CarDetails from "./Components/CarDetails/CarDetails";
 import Cars from "./Components/Cars/Cars";
 import CarSlider from "./Components/CarSlider/CarSlider";
 import Copyright from "./Components/Copyright/Copyright";
@@ -20,7 +21,8 @@ import Why from "./Components/Why/Why";
 export default function Home() {
   return (
     <main className="max-w-[1920px] bg-white mx-auto relative overflow-hidden text-black">
-      <Header />
+      <CarDetails />
+      {/* <Header />
       <Hero />
       <Cars />
       <About />
@@ -28,7 +30,7 @@ export default function Home() {
       <Testimonial />
       <Cta />
       <Footer />
-      <BackToTopBtn />
+      <BackToTopBtn /> */}
     </main>
   );
 }
