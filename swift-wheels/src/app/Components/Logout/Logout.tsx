@@ -4,13 +4,18 @@ import { Fragment, useState } from "react";
 
 //types
 import * as LogoutTypes from "@/app/utilities/types/logout.types";
+import { useAuthContext } from "@/app/Contexts/authContext";
 
-export default function Logout({ handleLogout }: LogoutTypes.propTypes) {
+export default function Logout({
+  handleLogoutDialogExitOpen,
+}: LogoutTypes.propTypes) {
   let [isOpen, setIsOpen] = useState(true);
+  const { onLogout } = useAuthContext();
 
   function closeModal() {
     setIsOpen(false);
-    handleLogout();
+    handleLogoutDialogExitOpen();
+    onLogout();
   }
 
   return (

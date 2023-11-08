@@ -1,3 +1,3 @@
 export type propTypes = {
-  handleLogin: Function;
+  handleLoginDialogExitOpen: Function;
 };

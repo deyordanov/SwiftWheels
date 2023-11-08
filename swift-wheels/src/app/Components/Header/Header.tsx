@@ -57,12 +57,12 @@ export default function Header() {
     setNavigation((state) => !state);
   };
 
-  const handleLogin = () => {
+  const handleLoginDialogExitOpen = () => {
     setIsLoginOpen((state) => !state);
     setNavigation(false);
   };
 
-  const handleLogout = () => {
+  const handleLogoutDialogExitOpen = () => {
     setIsLogoutOpen((state) => !state);
     setNavigation(false);
   };
@@ -73,8 +73,12 @@ export default function Header() {
         header ? "bg-white shadow-md py-2" : "bg-transparent shadow-none py-4"
       } fixed w-full max-w-[1920px] mx-auto z-20 transition-all duration-300`}
     >
-      {isLoginOpen && <Login handleLogin={handleLogin} />}
-      {isLogutOpen && <Logout handleLogout={handleLogout} />}
+      {isLoginOpen && (
+        <Login handleLoginDialogExitOpen={handleLoginDialogExitOpen} />
+      )}
+      {isLogutOpen && (
+        <Logout handleLogoutDialogExitOpen={handleLogoutDialogExitOpen} />
+      )}
       <div className="xl:container mx-auto flex flex-col xl:flex-row xl:items-center xl:justify-between">
         <div className="flex justify-between items-center px-4">
           <Link
@@ -169,7 +173,7 @@ export default function Header() {
               smooth={desktopMode}
               spy={true}
               className="cursor-pointer"
-              onClick={handleLogin}
+              onClick={handleLoginDialogExitOpen}
             >
               Login
             </Link>
@@ -181,7 +185,7 @@ export default function Header() {
               smooth={desktopMode}
               spy={true}
               className="cursor-pointer"
-              onClick={handleLogout}
+              onClick={handleLogoutDialogExitOpen}
             >
               Logout
             </Link>

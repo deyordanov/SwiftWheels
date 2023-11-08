@@ -26,9 +26,12 @@ import {
 
 //types
 import * as LoginTypes from "../../utilities/types/login.types";
+import { FieldErrors } from "react-hook-form";
 
-export default function Login({ handleLogin }: LoginTypes.propTypes) {
-  const { onLoginSubmit } = useAuthContext();
+export default function Login({
+  handleLoginDialogExitOpen,
+}: LoginTypes.propTypes) {
+  const { onLoginSubmit, invalidLoginData } = useAuthContext();
 
   const [isOpen, setIsOpen] = useState(true);
   const [singUp, setSignUp] = useState(false);
@@ -44,11 +47,19 @@ export default function Login({ handleLogin }: LoginTypes.propTypes) {
 
   const closeModal = () => {
     setIsOpen(false);
-    handleLogin();
+    handleLoginDialogExitOpen();
   };
 
   const handleRegister = () => {
     setSignUp((state) => !state);
+  };
+
+  //Custom error that will be displayed when the users enters an incorrect email / password -> cannot use register() here
+  const invalidLoginDataError: FieldErrors<{ [x: string]: string }> = {
+    invalidLoginData: {
+      type: "string",
+      message: "Invalid email or password!",
+    },
   };
 
   if (singUp) return <Register />;
@@ -91,7 +102,9 @@ export default function Login({ handleLogin }: LoginTypes.propTypes) {
             leaveTo="opacity-0 scale-95"
           >
             <form
-              onSubmit={handleSubmit(onLoginSubmit)}
+              onSubmit={handleSubmit((data) =>
+                onLoginSubmit(data, handleLoginDialogExitOpen)
+              )}
               className="inline-block w-full max-w-[500px] p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl"
             >
               <section className="flex justify-center items-center">
@@ -198,6 +211,15 @@ export default function Login({ handleLogin }: LoginTypes.propTypes) {
                   <button className="w-full bg-accent-default hover:bg-accent-hover py-2 rounded-lg text-white">
                     Sign in to your account
                   </button>
+                  {/* Custom error that will be displayed when the users enters an incorrect email / password -> cannot use register() here */}
+                  {invalidLoginData && (
+                    <div className="text-center">
+                      <FormErrorMessage
+                        errors={invalidLoginDataError}
+                        fieldKey="invalidLoginData"
+                      />
+                    </div>
+                  )}
                   <div className="flex text-[15px] gap-x-1">
                     <p>Don`t have an account yet?</p>
                     <p

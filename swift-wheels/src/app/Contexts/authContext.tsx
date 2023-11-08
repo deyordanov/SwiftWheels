@@ -1,7 +1,7 @@
 "use client";
 
 //hooks
-import React, { ReactNode, useContext } from "react";
+import React, { ReactNode, useContext, useState } from "react";
 import useLocalStorage from "@/hooks/useLocalStorage";
 
 //services
@@ -21,30 +21,46 @@ const AuthContext = React.createContext<AuthContextProps | undefined>(
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [auth, setAuth] = useLocalStorage("auth", {});
+  const [invalidLoginData, setInvalidLoginData] = useState(false);
 
   //mutation
-  const loginData = useMutation({
+  const loginMutation = useMutation({
     mutationFn: (loginData: any) => authService.login(loginData),
-    onSuccess: (response) => {
-      setAuth(response);
-      console.log(response);
-    },
     onError: () => {
       //TODO: PASS ON OVER TO THE LOGIN COMPONENT AND DISPLAY THE ERROR THERE SOMEHOW?
+      setInvalidLoginData(true);
       console.log("Invalid email or password!");
     },
   });
 
-  const onLoginSubmit = async (data: any) => {
-    loginData.mutate(data);
+  const onLoginSubmit = async (
+    data: any,
+    handleLoginDialogExitOpen: Function
+  ) => {
+    loginMutation.mutate(data, {
+      onSuccess: (response) => {
+        setAuth(response);
+        setInvalidLoginData(false);
+        handleLoginDialogExitOpen();
+      },
+    });
+  };
+
+  const onLogout = async () => {
+    //Cant use a mutation -> the logout func does not return a promise
+    authService.logout();
+
+    setAuth({});
   };
 
   const authContextData = {
     onLoginSubmit,
+    onLogout,
     userId: auth._id,
     userEmail: auth.email,
     token: auth.accessToken,
     isAuthenticated: !!auth.accessToken,
+    invalidLoginData,
   };
 
   return (
