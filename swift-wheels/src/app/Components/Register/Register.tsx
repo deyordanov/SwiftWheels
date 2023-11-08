@@ -26,7 +26,6 @@ export default function Register({
 }: {
   handleLoginDialogExitOpen: () => void;
 }) {
-  // State to manage dialog open/close
   const [isOpen, setIsOpen] = useState(true);
   const [login, setLogin] = useState(false);
   const { onRegisterSubmit } = useAuthContext();
@@ -110,7 +109,7 @@ export default function Register({
                     <a
                       href="https://myaccount.google.com/intro/signing-in-to-google"
                       target="_blank"
-                      className="flex items-center gap-x-1 xl:text-[16px] text-[11px]  border-slate-500 border-[1.4px] xl:px-3 px-1 py-1 rounded-md hover:bg-slate-50"
+                      className="flex items-center gap-x-1 xl:text-[16px] text-[11px] focus:outline-none border-slate-500 border-[1.4px] xl:px-3 px-1 py-1 rounded-md hover:bg-slate-50"
                     >
                       <Image
                         src="/icons/buttons/google.svg"
@@ -123,7 +122,7 @@ export default function Register({
                     <a
                       href="https://appleid.apple.com/sign-in"
                       target="_blank"
-                      className="flex items-center gap-x-1 xl:text-[16px] text-[11px]  border-slate-500 border-[1.4px] xl:px-3 px-1 py-0.5 rounded-md hover:bg-slate-50"
+                      className="flex items-center gap-x-1 xl:text-[16px] text-[11px] focus:outline-none border-slate-500 border-[1.4px] xl:px-3 px-1 py-0.5 rounded-md hover:bg-slate-50"
                     >
                       <Image
                         src="/icons/buttons/apple-black.svg"

@@ -23,6 +23,7 @@ import Logout from "../Logout/Logout";
 
 //Contexts
 import { useSearchContext } from "../../Contexts/searchContext";
+import UserProfile from "../UserProfile/UserProfile";
 
 export default function Header() {
   const { searchActive, setSearchActive } = useSearchContext();
@@ -110,7 +111,7 @@ export default function Header() {
               : "max-h-0 xl:max-h-max"
           } flex flex-col w-full bg-white gap-y-6 overflow-hidden font-bold xl:font-medium 
           xl:flex-row xl:w-max xl:gap-x-8 xl:h-max xl:bg-transparent xl:pb-0 transition-all duration-150
-           text-center xl:text-left uppercase text-sm xl:text-[15px] xl:normal-case text-black`}
+           text-center xl:text-left uppercase text-sm xl:text-[15px] xl:normal-case text-black items-center`}
         >
           <Link
             to="home"
@@ -178,7 +179,8 @@ export default function Header() {
               Login
             </Link>
           )}
-          {isAuthenticated && (
+
+          {/* {isAuthenticated && (
             <Link
               to="logout"
               activeClass="logout"
@@ -189,6 +191,11 @@ export default function Header() {
             >
               Logout
             </Link>
+          )} */}
+          {isAuthenticated && (
+            <UserProfile
+              handleLogoutDialogExitOpen={handleLogoutDialogExitOpen}
+            />
           )}
           <Link
             to="/"
