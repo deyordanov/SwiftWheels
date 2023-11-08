@@ -4,11 +4,7 @@
 import Image from "next/image";
 
 //icons
-import {
-  MdOutlineHomeWork,
-  MdOutlineBuildCircle,
-  MdOutlineMapsHomeWork,
-} from "react-icons/md";
+import { MdOutlineBuildCircle, MdOutlineMapsHomeWork } from "react-icons/md";
 
 import { BsFillPersonFill } from "react-icons/bs";
 
@@ -18,6 +14,10 @@ import CountUp from "react-countup";
 //react intersection observer
 import { useInView } from "react-intersection-observer"; //tells us when an element enters/leaves viewport
 
+//contexts
+import { useAuthContext } from "@/app/Contexts/authContext";
+import { usePageContext } from "@/app/Contexts/pageContext";
+
 //motion
 import { motion } from "framer-motion";
 
@@ -25,6 +25,9 @@ import { motion } from "framer-motion";
 import { fadeIn } from "../../../../variants";
 
 export default function About() {
+  const { isAuthenticated } = useAuthContext();
+  const { handleLoginDialogExitOpen } = usePageContext();
+
   const [ref, inView] = useInView({
     threshold: 0.5,
   });
@@ -118,15 +121,28 @@ export default function About() {
                   </div>
                 </div>
               </motion.div>
-              <motion.button
-                variants={fadeIn("up", 1)}
-                initial="hidden"
-                whileInView={"show"}
-                viewport={{ once: false, amount: 0.6 }}
-                className="hidden xl:block bg-accent-default hover:bg-accent-hover rounded-[10px] w-full h-16 uppercase font-medium text-white tracking-[2px] text-[13px] max-w-[184px]"
-              >
-                See All Cars
-              </motion.button>
+              {isAuthenticated ? (
+                <motion.button
+                  variants={fadeIn("up", 1)}
+                  initial="hidden"
+                  whileInView={"show"}
+                  viewport={{ once: false, amount: 0.6 }}
+                  className="hidden xl:block bg-accent-default hover:bg-accent-hover rounded-[10px] w-full h-16 uppercase font-medium text-white tracking-[2px] text-[13px] max-w-[184px]"
+                >
+                  See All Cars
+                </motion.button>
+              ) : (
+                <motion.button
+                  onClick={handleLoginDialogExitOpen}
+                  variants={fadeIn("up", 1)}
+                  initial="hidden"
+                  whileInView={"show"}
+                  viewport={{ once: false, amount: 0.6 }}
+                  className="hidden xl:block bg-accent-default hover:bg-accent-hover rounded-[10px] w-full h-16 uppercase font-medium text-white tracking-[2px] text-[13px] max-w-[184px]"
+                >
+                  See All Cars
+                </motion.button>
+              )}
             </div>
           </div>
         </header>

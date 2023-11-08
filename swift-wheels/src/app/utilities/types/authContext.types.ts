@@ -1,6 +1,4 @@
-import React from "react";
-
-export interface AuthContextProps {
+export interface AuthContextDataTypes {
   onLoginSubmit: (
     data: any,
     handleLoginDialogExitOpen: () => void

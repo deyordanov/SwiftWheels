@@ -29,7 +29,6 @@ export default function Home() {
       <Cta />
       <Footer />
       <BackToTopBtn />
-      <div className="h-[4000px]"></div>
     </main>
   );
 }

@@ -7,6 +7,10 @@ import { useEffect, useRef } from "react";
 import { register } from "swiper/element/bundle";
 register();
 
+//contexts
+import { usePageContext } from "@/app/Contexts/pageContext";
+import { useAuthContext } from "@/app/Contexts/authContext";
+
 //swiper styles
 import "swiper/css";
 
@@ -97,6 +101,8 @@ const cars = [
 ];
 
 export default function CarSlider() {
+  const { isAuthenticated } = useAuthContext();
+  const { handleLoginDialogExitOpen } = usePageContext();
   const swiperRef = useRef(null);
 
   useEffect(() => {
@@ -182,7 +188,17 @@ export default function CarSlider() {
                   </div>
                 ))}
               </div>
-              <button className="btn btn-accent btn-lg">See Details</button>
+              {/* If the user has logged in - display the details, oterwise direct them to the login dialog */}
+              {isAuthenticated ? (
+                <button className="btn btn-accent btn-lg">See Details</button>
+              ) : (
+                <button
+                  className="btn btn-accent btn-lg"
+                  onClick={handleLoginDialogExitOpen}
+                >
+                  See Details
+                </button>
+              )}
             </div>
           </swiper-slide>
         ))}

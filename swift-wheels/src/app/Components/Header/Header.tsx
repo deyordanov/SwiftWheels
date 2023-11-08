@@ -1,7 +1,7 @@
 "use client";
 
 //hooks
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useAuthContext } from "@/app/Contexts/authContext";
 
 //next-image
@@ -20,17 +20,24 @@ import { BiX, BiMenuAltRight } from "react-icons/bi";
 import SearchMobile from "../Search/SearchMobile/SearchMobile";
 import Login from "../Login/Login";
 import Logout from "../Logout/Logout";
+import UserProfile from "../UserProfile/UserProfile";
 
 //Contexts
 import { useSearchContext } from "../../Contexts/searchContext";
-import UserProfile from "../UserProfile/UserProfile";
+import { usePageContext } from "@/app/Contexts/pageContext";
 
 export default function Header() {
+  const {
+    header,
+    setHeader,
+    navigation,
+    isLoginOpen,
+    isLogoutOpen,
+    handleNavigation,
+    handleLoginDialogExitOpen,
+    handleLogoutDialogExitOpen,
+  } = usePageContext();
   const { searchActive, setSearchActive } = useSearchContext();
-  const [header, setHeader] = useState(false);
-  const [navigation, setNavigation] = useState(false);
-  const [isLoginOpen, setIsLoginOpen] = useState(false);
-  const [isLogutOpen, setIsLogoutOpen] = useState(false);
   const { isAuthenticated } = useAuthContext();
 
   const desktopMode = useMediaQuery({
@@ -54,20 +61,6 @@ export default function Header() {
     };
   });
 
-  const handleNavigation = () => {
-    setNavigation((state) => !state);
-  };
-
-  const handleLoginDialogExitOpen = () => {
-    setIsLoginOpen((state) => !state);
-    setNavigation(false);
-  };
-
-  const handleLogoutDialogExitOpen = () => {
-    setIsLogoutOpen((state) => !state);
-    setNavigation(false);
-  };
-
   return (
     <header
       className={`${
@@ -77,7 +70,7 @@ export default function Header() {
       {isLoginOpen && (
         <Login handleLoginDialogExitOpen={handleLoginDialogExitOpen} />
       )}
-      {isLogutOpen && (
+      {isLogoutOpen && (
         <Logout handleLogoutDialogExitOpen={handleLogoutDialogExitOpen} />
       )}
       <div className="xl:container mx-auto flex flex-col xl:flex-row xl:items-center xl:justify-between">

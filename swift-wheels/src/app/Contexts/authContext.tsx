@@ -11,9 +11,9 @@ import * as authService from "../../services/authService";
 import { useMutation } from "@tanstack/react-query";
 
 //types
-import { AuthContextProps } from "../utilities/types/authContext.types";
+import { AuthContextDataTypes } from "../utilities/types/authContext.types";
 
-const AuthContext = React.createContext<AuthContextProps | undefined>(
+const AuthContext = React.createContext<AuthContextDataTypes | undefined>(
   undefined
 );
 
