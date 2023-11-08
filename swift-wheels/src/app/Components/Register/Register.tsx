@@ -14,19 +14,11 @@ import FormErrorMessage from "../shared/FormErrorMessage";
 //use form
 import { useForm } from "react-hook-form";
 
-const RegisterFormKeys = {
-  EMAIL: "email",
-  PASSWORD: "password",
-  CONFIRM_PASSWORD: "confirm-password",
-  CONDITIONS: "conditions",
-};
-
-const RegisterFormDefaultValues = {
-  [RegisterFormKeys.EMAIL]: "",
-  [RegisterFormKeys.PASSWORD]: "",
-  [RegisterFormKeys.CONFIRM_PASSWORD]: "",
-  [RegisterFormKeys.CONDITIONS]: false,
-};
+//constants
+import {
+  RegisterFormKeys,
+  RegisterFormDefaultValues,
+} from "@/app/utilities/constants/constans";
 
 export default function Register() {
   // State to manage dialog open/close

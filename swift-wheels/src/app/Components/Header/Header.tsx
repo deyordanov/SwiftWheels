@@ -2,6 +2,7 @@
 
 //hooks
 import { useEffect, useState } from "react";
+import { useAuthContext } from "@/app/Contexts/authContext";
 
 //next-image
 import Image from "next/image";
@@ -18,6 +19,7 @@ import { BiX, BiMenuAltRight } from "react-icons/bi";
 //Components
 import SearchMobile from "../Search/SearchMobile/SearchMobile";
 import Login from "../Login/Login";
+import Logout from "../Logout/Logout";
 
 //Contexts
 import { useSearchContext } from "../../Contexts/searchContext";
@@ -27,6 +29,8 @@ export default function Header() {
   const [header, setHeader] = useState(false);
   const [navigation, setNavigation] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isLogutOpen, setIsLogoutOpen] = useState(false);
+  const { isAuthenticated } = useAuthContext();
 
   const desktopMode = useMediaQuery({
     query: "(min-width: 1300px)",
@@ -58,6 +62,11 @@ export default function Header() {
     setNavigation(false);
   };
 
+  const handleLogout = () => {
+    setIsLogoutOpen((state) => !state);
+    setNavigation(false);
+  };
+
   return (
     <header
       className={`${
@@ -65,9 +74,9 @@ export default function Header() {
       } fixed w-full max-w-[1920px] mx-auto z-20 transition-all duration-300`}
     >
       {isLoginOpen && <Login handleLogin={handleLogin} />}
+      {isLogutOpen && <Logout handleLogout={handleLogout} />}
       <div className="xl:container mx-auto flex flex-col xl:flex-row xl:items-center xl:justify-between">
         <div className="flex justify-between items-center px-4">
-          {/* Logo */}
           <Link
             to="home"
             smooth={desktopMode}
@@ -82,7 +91,6 @@ export default function Header() {
               priority
             />
           </Link>
-          {/* navigation open / close menu */}
           <div
             onClick={handleNavigation}
             className="cursor-pointer xl:hidden text-4xl"
@@ -91,7 +99,6 @@ export default function Header() {
             {navigation ? <BiX /> : <BiMenuAltRight />}
           </div>
         </div>
-        {/* navigation */}
         <nav
           className={`${
             navigation
@@ -155,16 +162,30 @@ export default function Header() {
           >
             Contact
           </Link>
-          <Link
-            to="login"
-            activeClass="login"
-            smooth={desktopMode}
-            spy={true}
-            className="cursor-pointer"
-            onClick={handleLogin}
-          >
-            Login
-          </Link>
+          {!isAuthenticated && (
+            <Link
+              to="login"
+              activeClass="login"
+              smooth={desktopMode}
+              spy={true}
+              className="cursor-pointer"
+              onClick={handleLogin}
+            >
+              Login
+            </Link>
+          )}
+          {isAuthenticated && (
+            <Link
+              to="logout"
+              activeClass="logout"
+              smooth={desktopMode}
+              spy={true}
+              className="cursor-pointer"
+              onClick={handleLogout}
+            >
+              Logout
+            </Link>
+          )}
           <Link
             to="/"
             activeClass="active"

@@ -47,3 +47,21 @@ export const LoginFormDefaultValues = {
   [LoginFormKeys.EMAIL]: "",
   [LoginFormKeys.PASSWORD]: "",
 };
+
+//Register
+
+//->Form Keys
+export const RegisterFormKeys = {
+  EMAIL: "email",
+  PASSWORD: "password",
+  CONFIRM_PASSWORD: "confirm-password",
+  CONDITIONS: "conditions",
+};
+
+//->Form Default Values
+export const RegisterFormDefaultValues = {
+  [RegisterFormKeys.EMAIL]: "",
+  [RegisterFormKeys.PASSWORD]: "",
+  [RegisterFormKeys.CONFIRM_PASSWORD]: "",
+  [RegisterFormKeys.CONDITIONS]: false,
+};
