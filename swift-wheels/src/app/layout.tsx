@@ -6,6 +6,7 @@ import "./globals.css";
 import { SearchProvider } from "./Contexts/searchContext";
 import { AuthProvider } from "./Contexts/authContext";
 import { ReactQueryProvider } from "./Contexts/reactQueryContext";
+import { PageProvider } from "./Contexts/pageContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,11 +23,13 @@ export default function RootLayout({
   return (
     <ReactQueryProvider>
       <AuthProvider>
-        <SearchProvider>
-          <html lang="en">
-            <body className={inter.className}>{children}</body>
-          </html>
-        </SearchProvider>
+        <PageProvider>
+          <SearchProvider>
+            <html lang="en">
+              <body className={inter.className}>{children}</body>
+            </html>
+          </SearchProvider>
+        </PageProvider>
       </AuthProvider>
     </ReactQueryProvider>
   );
