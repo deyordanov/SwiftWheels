@@ -14,8 +14,11 @@
     "@react-google-maps/api": "^2.19.2",
     "@tanstack/react-query": "^5.7.2",
     "@types/googlemaps": "^3.43.3",
+    "chartjs-plugin-zoom": "^2.0.1",
+    "hammerjs": "^2.0.8",
     "next": "14.0.1",
     "react": "^18",
+    "react-chartjs-2": "^5.2.0",
     "react-confetti-explosion": "^2.1.2",
     "react-date-range": "^1.4.0",
     "react-dom": "^18",
@@ -24,6 +27,7 @@
     "swiper": "^11.0.3"
   },
   "devDependencies": {
+    "@types/google.maps": "^3.54.7",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-date-range": "^1.4.7",
