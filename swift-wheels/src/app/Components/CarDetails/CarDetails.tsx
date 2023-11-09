@@ -12,6 +12,8 @@ import CarLocationGoogleMap from "./GoogleMap/CarLocationGoogleMap";
 //constants
 import { carDetailsGeocodingApi } from "@/app/utilities/constants/constans";
 import PriceChart from "./Chart/Chart";
+import PriceBar from "./PriceBar/PriceBar";
+import Offer from "./Offer/Offer";
 
 //This object would be injected from the outside
 const car = {
@@ -37,6 +39,9 @@ const car = {
 
 export default function CarDetails() {
     const [center, setCenter] = useState({ lat: 0, lng: 0 });
+    const [barPrice, setBarPrice] = useState(0);
+    const [chartPrice, setChartPrice] = useState(0);
+
     //This address will be injected from the outside
     const address = "Heidestraße 62 10557 Berlin Germany";
     useEffect(() => {
@@ -88,38 +93,58 @@ export default function CarDetails() {
             <div className="max-w-4xl mx-auto mb-14">
                 <Gallery />
             </div>
-            <div className="bg-gray-100 p-6 rounded-lg shadow-lg w-[80%]">
-                <ul className="divide-y divide-gray-200 text-2xl">
-                    {Object.entries(car)
-                        .filter(
-                            ([key]) =>
-                                ![
-                                    "image",
-                                    "info",
-                                    "name",
-                                    "price",
-                                    "stars",
-                                ].includes(key) //Filter out the keys we need
-                        )
-                        .map(([key, value]) => (
-                            <li
-                                key={key}
-                                className="py-4 flex justify-between items-center"
-                            >
-                                {/* Replce _ with ' ' */}
-                                <span className="font-semibold capitalize">
-                                    {key.replace(/_/g, " ")}:
-                                </span>
-                                <span className="font-normal text-gray-700">
-                                    {value}
-                                </span>
-                            </li>
-                        ))}
-                </ul>
-            </div>
-            <div className="h-[800px] w-[90%] my-8 flex justify-center">
-                {/* Take the current car price and add 10000 to it, as this will be the initial price the year it was created */}
-                <PriceChart initialPrice={148000 + 10000} year="2020" />
+            <div className="flex flex-1 w-full">
+                <div className="bg-gray-100 px-6 rounded-lg shadow-lg w-[80%]">
+                    <ul className=" divide-y divide-gray-200 text-xl">
+                        {Object.entries(car)
+                            .filter(
+                                ([key]) =>
+                                    ![
+                                        "image",
+                                        "info",
+                                        "name",
+                                        "price",
+                                        "stars",
+                                    ].includes(key) //Filter out the keys we need
+                            )
+                            .map(([key, value]) => (
+                                <li
+                                    key={key}
+                                    className="py-4 flex justify-between items-center"
+                                >
+                                    {/* Replce _ with ' ' */}
+                                    <span className="font-semibold capitalize">
+                                        {key.replace(/_/g, " ")}:
+                                    </span>
+                                    <span className="font-normal text-gray-700">
+                                        {value}
+                                    </span>
+                                </li>
+                            ))}
+                    </ul>
+                </div>
+                <div className="flex flex-col w-full h-full justify-between">
+                    <div className="flex mb-8">
+                        <PriceBar
+                            initialPrice={car.price}
+                            setBarPrice={setBarPrice}
+                        />
+                    </div>
+                    <div className="flex mb-8">
+                        {/* Take the current car price and add 10000 to it, as this will be the initial price the year it was created */}
+                        <PriceChart
+                            initialPrice={148000 + 10000}
+                            year="2020"
+                            setChartPrice={setChartPrice}
+                        />
+                    </div>
+                    <div className="flex-grow">
+                        {/* TODO: Display a contact form / offer form when the offer button is clicked? */}
+                        {barPrice !== 0 && chartPrice !== 0 && (
+                            <Offer priceIndicator={barPrice + chartPrice} />
+                        )}
+                    </div>
+                </div>
             </div>
             <div className="w-[80%] my-8 flex justify-center">
                 <CarLocationGoogleMap center={center} />

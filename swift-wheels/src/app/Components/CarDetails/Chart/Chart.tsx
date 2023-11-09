@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { Dispatch, SetStateAction, useEffect } from "react";
 import { Line } from "react-chartjs-2";
 import {
     Chart as ChartJS,
@@ -28,9 +29,19 @@ ChartJS.register(
 interface PriceChartProps {
     initialPrice: number;
     year: string;
+    setChartPrice: Dispatch<SetStateAction<number>>;
 }
 
-export default function PriceChart({ initialPrice, year }: PriceChartProps) {
+export default function PriceChart({
+    initialPrice,
+    year,
+    setChartPrice,
+}: PriceChartProps) {
+    //Tried to think of a formula, but couldn`t get satisfactory results, so for now I will generate a random number between 0.01 and 0.5
+    useEffect(() => {
+        setChartPrice(Math.random() * (0.5 - 0.01) + 0.01);
+    }, [setChartPrice]);
+
     //Generating the years array based on what year the vehicle was created
     function generateYearRange(startYear: number, endYear: number) {
         const years = [];
@@ -98,7 +109,7 @@ export default function PriceChart({ initialPrice, year }: PriceChartProps) {
                 },
                 //Ticks for years
                 ticks: {
-                    color: "#555", // Color of the axis labels
+                    color: "black", // Color of the axis labels
                     font: {
                         size: 16, // Font size of labels
                     },
@@ -112,7 +123,7 @@ export default function PriceChart({ initialPrice, year }: PriceChartProps) {
                 },
                 // Ticks for prices
                 ticks: {
-                    color: "#555",
+                    color: "black",
                     font: {
                         size: 16,
                     },
@@ -166,7 +177,7 @@ export default function PriceChart({ initialPrice, year }: PriceChartProps) {
                     pinch: {
                         enabled: true,
                     },
-                    mode: "xy",
+                    mode: "y", //Zoom in only on the 'y' axis
                 },
                 pan: {
                     enabled: true,
@@ -187,21 +198,9 @@ export default function PriceChart({ initialPrice, year }: PriceChartProps) {
     };
 
     return (
-        <div className="flex flex-col w-full">
-            <div className="w-full h-[600px] mb-8">
+        <div className="flex flex-col w-full shadow-2xl ml-4 rounded-xl border-2 border-gray-100 p-4">
+            <div className="h-[280px]">
                 <Line data={data} options={options} />
-            </div>
-            {/* TODO: Display a contact form / offer form when the offer button is clicked? */}
-            <div className="flex flex-col justify-center items-center">
-                <h1 className="text-4xl font-extrabold mb-2">
-                    Based on our calculations:
-                </h1>
-                <h2 className="mb-8 text-xl">
-                    The current price of the vehicle is:
-                </h2>
-                <button className="w-[80%] h-full rounded-md bg-gradient-to-r from-green-400 to-blue-500 flex justify-center items-center p-8 shadow-2xl text-5xl text-white animate-bounce">
-                    An amazing offer for you!
-                </button>
             </div>
         </div>
     );
