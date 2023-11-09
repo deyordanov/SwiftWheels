@@ -11,11 +11,11 @@ import * as authService from "../../services/authService";
 import { useMutation } from "@tanstack/react-query";
 
 //types
-import { AuthContextDataTypes } from "../utilities/types/authContext.types";
+import * as authContextTypes from "../utilities/types/authContext.types";
 
-const AuthContext = React.createContext<AuthContextDataTypes | undefined>(
-  undefined
-);
+const AuthContext = React.createContext<
+  authContextTypes.AuthContextDataTypes | undefined
+>(undefined);
 
 //TODO: Refactor, Put the Mutations / Queries in a serpeate file
 

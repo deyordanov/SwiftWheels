@@ -65,3 +65,22 @@ export const RegisterFormDefaultValues = {
   [RegisterFormKeys.CONFIRM_PASSWORD]: "",
   [RegisterFormKeys.CONDITIONS]: false,
 };
+
+//GoogleMap
+export const googleMapContainerStyle = {
+  width: "100%",
+  height: "500px",
+};
+
+export const googleMapDefaultOptions = {
+  strokeOpacity: 0.5,
+  strokeWeight: 2,
+  clickable: false,
+  draggable: false,
+  editable: false,
+  visible: true,
+};
+
+//Car Details
+
+export const carDetailsGeocodingApi = `https://maps.googleapis.com/maps/api/geocode/json`;

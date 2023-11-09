@@ -1,11 +1,18 @@
 "use client";
-
-// CarDetails.js
+//hooks
 import React, { useState, useEffect } from "react";
-import { AiOutlineStar } from "react-icons/ai";
-import Gallery from "./Gallery/Gallery"; // Adjust the import path as necessary
-import { MyGoogleMap } from "./GoogleMap/GoogleMap"; // Adjust the import path as necessary
 
+//react-icons
+import { AiOutlineStar } from "react-icons/ai";
+
+//components
+import Gallery from "./Gallery/Gallery";
+import CarLocationGoogleMap from "./GoogleMap/CarLocationGoogleMap";
+
+//constants
+import { carDetailsGeocodingApi } from "@/app/utilities/constants/constans";
+
+//This object would be injected from the outside
 const car = {
   type: "SUV",
   make: "Toyota",
@@ -27,18 +34,20 @@ const car = {
   "drive type": "4x4",
 };
 
-const CarDetails = () => {
+export default function CarDetails() {
   const [center, setCenter] = useState({ lat: 0, lng: 0 });
+  //This address will be injected from the outside
   const address = "Heidestraße 62 10557 Berlin Germany";
   useEffect(() => {
-    const geocodeAddress = async (addressToGeocode: any) => {
-      const apiKey = "AIzaSyCX4ooaADM6NMv45VpfWJm0UXC-F9p2Aew";
-      const url = new URL(`https://maps.googleapis.com/maps/api/geocode/json`);
+    const geocodeAddress = async (addressToGeocode: string) => {
+      const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? "";
+      const url = new URL(carDetailsGeocodingApi);
+      //Creating the query string
       const params = new URLSearchParams({
         address: addressToGeocode,
         key: apiKey,
       });
-      url.search = params.toString();
+      url.search = params.toString(); // -> URL encoded query string
 
       try {
         const response = await fetch(url);
@@ -48,10 +57,10 @@ const CarDetails = () => {
           const { lat, lng } = data.results[0].geometry.location;
           setCenter({ lat, lng });
         } else {
-          console.error("No results for the address:", addressToGeocode);
+          console.error("No results for the address: ", addressToGeocode);
         }
       } catch (error) {
-        console.error("Geocoding error:", error);
+        console.error("Geocoding error: ", error);
       }
     };
 
@@ -80,10 +89,11 @@ const CarDetails = () => {
           {Object.entries(car)
             .filter(
               ([key]) =>
-                !["image", "info", "name", "price", "stars"].includes(key)
+                !["image", "info", "name", "price", "stars"].includes(key) //Filter out the keys we need
             )
             .map(([key, value]) => (
               <li key={key} className="py-4 flex justify-between items-center">
+                {/* Replce _ with ' ' */}
                 <span className="font-semibold capitalize">
                   {key.replace(/_/g, " ")}:
                 </span>
@@ -92,11 +102,9 @@ const CarDetails = () => {
             ))}
         </ul>
       </div>
-      <div className="w-full h-[500px] my-8 flex justify-center">
-        <MyGoogleMap center={center} />
+      <div className="w-[80%] my-8 flex justify-center">
+        <CarLocationGoogleMap center={center} />
       </div>
     </div>
   );
-};
-
-export default CarDetails;
+}
