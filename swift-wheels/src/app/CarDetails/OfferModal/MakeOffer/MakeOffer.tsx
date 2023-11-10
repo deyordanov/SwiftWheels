@@ -25,7 +25,7 @@ export default function MakeOffer({ carPrice }: { carPrice: number }) {
 
     const [offer, setOffer] = useState("");
 
-    const onSubmit = (data) => {
+    const onSubmit = (data: any) => {
         console.log(data);
     };
 
