@@ -40,7 +40,7 @@ export default function ContactForm() {
             onSubmit={handleSubmit(onSubmit)}
             className="flex justify-center items-center w-[70%] text-left"
         >
-            <div className=" w-full p-4 flex flex-col gap-y-6 text-primary ext-xl items-center">
+            <div className=" w-full p-4 flex flex-col gap-y-2 text-primary text-md items-center">
                 <div className="flex flex-col gap-y-2 w-full">
                     <label htmlFor={ContactFormKeys.NAME}>Full Name:</label>
                     <input
@@ -121,7 +121,7 @@ export default function ContactForm() {
                     />
                 </div>
 
-                <button className="w-[60%] bg-accent-default hover:bg-accent-hover py-2 rounded-lg text-white">
+                <button className="w-[60%] bg-green-500 hover:bg-green-700 py-2 rounded-lg text-white">
                     Send
                 </button>
             </div>

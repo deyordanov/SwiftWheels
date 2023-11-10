@@ -2,20 +2,20 @@
 import * as searchContextTypes from "../types/searchContext.types";
 import { Range } from "react-date-range";
 
-//Search Context
+//      Search Context
 export const searchContextDefaultValues: searchContextTypes.defaultTypes = {
     searchActive: false,
     setSearchActive: () => {}, //empty func
 };
 
-//Date Selection
+//      Date Selection
 export const setDateDefaultValues: Range = {
     startDate: new Date(),
     endDate: undefined,
     key: "selection",
 };
 
-//Location Selection
+//      Location Selection
 export const locations = [
     "1000 Kingsway, Canada",
     "2200 Autobahn Ave, Germany",
@@ -24,7 +24,7 @@ export const locations = [
     "88 Vehicular Street, Japan",
 ];
 
-//Hours Selection
+//      Hours Selection
 export const hours = [
     "8:00 AM",
     "10:00 AM",
@@ -34,7 +34,7 @@ export const hours = [
     "6:00 PM",
 ];
 
-//Login
+//      Login
 
 //-> Form Keys
 export const LoginFormKeys = {
@@ -48,7 +48,7 @@ export const LoginFormDefaultValues = {
     [LoginFormKeys.PASSWORD]: "",
 };
 
-//Register
+//      Register
 
 //->Form Keys
 export const RegisterFormKeys = {
@@ -66,7 +66,7 @@ export const RegisterFormDefaultValues = {
     [RegisterFormKeys.CONDITIONS]: false,
 };
 
-//Contact
+//      Contact
 
 //-> Form Keys
 export const ContactFormKeys = {
@@ -82,7 +82,19 @@ export const ContactFormDefaultValues = {
     [ContactFormKeys.MESSAGE]: "",
 };
 
-//GoogleMap
+//      MakeOffer
+
+//-> Form Keys
+export const MakeOfferFormKeys = {
+    OFFER: "offer",
+};
+
+//-> Form Default Values
+export const MakeOfferFormDefaultValues = {
+    [MakeOfferFormKeys.OFFER]: null,
+};
+
+//      GoogleMap
 export const googleMapContainerStyle = {
     width: "100%",
     height: "500px",
@@ -99,6 +111,6 @@ export const googleMapDefaultOptions = {
     streetViewControl: false,
 };
 
-//Car Details
+//      Car Details
 
 export const carDetailsGeocodingApi = `https://maps.googleapis.com/maps/api/geocode/json`;

@@ -142,7 +142,6 @@ export default function OfferModal({ car, isOpen, onClose }) {
                                             {activeTab === "offer" && (
                                                 <MakeOffer
                                                     carPrice={carPrice}
-                                                    onOfferSubmit={() => {}}
                                                 />
                                             )}
                                             {activeTab === "finance" && (
