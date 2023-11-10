@@ -66,6 +66,22 @@ export const RegisterFormDefaultValues = {
     [RegisterFormKeys.CONDITIONS]: false,
 };
 
+//Contact
+
+//-> Form Keys
+export const ContactFormKeys = {
+    NAME: "name",
+    EMAIL: "email",
+    MESSAGE: "message",
+};
+
+//-> Form Default Values
+export const ContactFormDefaultValues = {
+    [ContactFormKeys.NAME]: "",
+    [ContactFormKeys.EMAIL]: "",
+    [ContactFormKeys.MESSAGE]: "",
+};
+
 //GoogleMap
 export const googleMapContainerStyle = {
     width: "100%",
