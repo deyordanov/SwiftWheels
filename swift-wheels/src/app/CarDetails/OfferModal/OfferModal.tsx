@@ -1,21 +1,25 @@
 "use client";
-import { Dialog, Transition } from "@headlessui/react";
+
+//hooks
 import React, { Fragment, useState } from "react";
+
+//components
+import { Dialog, Transition } from "@headlessui/react";
 import ContactForm from "./ContactForm/ContactForm";
 import MakeOffer from "./MakeOffer/MakeOffer";
 import FinanceCalculator from "./FinanceCalculator/FinanceCalculator";
 import PriceBreakdown from "./PriceBreakdown/PriceBreakdown";
 
 export default function OfferModal({ car, isOpen, onClose }) {
-    const [activeTab, setActiveTab] = useState("contact");
+    const [tabs, setTabs] = useState(["offer"]);
+    const [isOpenDialog, setIsOpen] = useState(true);
+    const [offer, setOffer] = useState(0);
 
     const carPrice = Number(car.price.replace("$", "").replace(".", ""));
 
     if (!isOpen) {
         return null;
     }
-
-    let [isOpenDialog, setIsOpen] = useState(true);
 
     function closeModal() {
         setIsOpen(false);
@@ -65,107 +69,83 @@ export default function OfferModal({ car, isOpen, onClose }) {
                                 <Dialog.Panel className="transform overflow-hidden rounded-lg bg-white shadow-xl transition-all text-black">
                                     <div className="bg-white rounded shadow-lg">
                                         <div className="border-b px-4 py-2 flex justify-between items-center">
-                                            <ul className="flex cursor-pointer">
+                                            <ul className="flex gap-x-2">
                                                 <li
-                                                    className={`px-4 py-2 ${
-                                                        activeTab === "contact"
-                                                            ? "text-blue-500 border-b-2 font-medium"
-                                                            : ""
+                                                    className={`px-4 py-2  rounded-lg ${
+                                                        tabs[
+                                                            tabs.length - 1
+                                                        ] === "offer"
+                                                            ? "text-white bg-green-500"
+                                                            : "bg-gray-300"
                                                     }`}
-                                                    onClick={() =>
-                                                        setActiveTab("contact")
-                                                    }
-                                                    aria-hidden
-                                                >
-                                                    Contact Seller
-                                                </li>
-                                                <li
-                                                    className={`px-4 py-2 ${
-                                                        activeTab === "offer"
-                                                            ? "text-blue-500 border-b-2 font-medium"
-                                                            : ""
-                                                    }`}
-                                                    onClick={() =>
-                                                        setActiveTab("offer")
-                                                    }
                                                     aria-hidden
                                                 >
                                                     Make an Offer
                                                 </li>
                                                 <li
-                                                    className={`px-4 py-2 ${
-                                                        activeTab === "finance"
-                                                            ? "text-blue-500 border-b-2 font-medium"
-                                                            : ""
+                                                    className={`px-4 py-2  rounded-lg ${
+                                                        tabs[
+                                                            tabs.length - 1
+                                                        ] === "finance"
+                                                            ? "text-white bg-green-500"
+                                                            : "bg-gray-300"
                                                     }`}
-                                                    onClick={() =>
-                                                        setActiveTab("finance")
-                                                    }
                                                     aria-hidden
                                                 >
                                                     Finance Options
                                                 </li>
                                                 <li
-                                                    className={`px-4 py-2 ${
-                                                        activeTab === "price"
-                                                            ? "text-blue-500 border-b-2 font-medium"
-                                                            : ""
+                                                    className={`px-4 py-2  rounded-lg ${
+                                                        tabs[
+                                                            tabs.length - 1
+                                                        ] === "price"
+                                                            ? "text-white bg-green-500"
+                                                            : "bg-gray-300"
                                                     }`}
-                                                    onClick={() =>
-                                                        setActiveTab("price")
-                                                    }
                                                     aria-hidden
                                                 >
                                                     Price Breakdown
                                                 </li>
-                                            </ul>
-                                            <div
-                                                className="cursor-pointer"
-                                                onClick={onClose}
-                                                aria-hidden
-                                            >
-                                                <svg
-                                                    className="fill-current text-black"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="18"
-                                                    height="18"
-                                                    viewBox="0 0 18 18"
+                                                <li
+                                                    className={`px-4 py-2  rounded-lg ${
+                                                        tabs[
+                                                            tabs.length - 1
+                                                        ] === "contact"
+                                                            ? "text-white bg-green-500"
+                                                            : "bg-gray-300"
+                                                    }`}
+                                                    aria-hidden
                                                 >
-                                                    <path d="M12.45 11.29L11.29 12.45 9 10.16 6.71 12.45 5.55 11.29 7.84 9 5.55 6.71 6.71 5.55 9 7.84 11.29 5.55 12.45 6.71 10.16 9z" />
-                                                </svg>
-                                            </div>
+                                                    Contact Seller
+                                                </li>
+                                            </ul>
                                         </div>
                                         <div className="p-4 flex justify-center">
-                                            {activeTab === "contact" && (
-                                                <ContactForm />
-                                            )}
-                                            {activeTab === "offer" && (
+                                            {/* PriceBreakdown before finance options -> take the total price and calculate the leasing with it? Makes more sense */}
+                                            {tabs[tabs.length - 1] ===
+                                                "offer" && (
                                                 <MakeOffer
                                                     carPrice={carPrice}
+                                                    setOffer={setOffer}
+                                                    setTabs={setTabs}
                                                 />
                                             )}
-                                            {activeTab === "finance" && (
-                                                <FinanceCalculator />
+                                            {tabs[tabs.length - 1] ===
+                                                "finance" && (
+                                                <FinanceCalculator
+                                                    carPrice={offer}
+                                                    setTabs={setTabs}
+                                                    offer={offer}
+                                                />
                                             )}
-                                            {activeTab === "price" && (
+                                            {tabs[tabs.length - 1] ===
+                                                "price" && (
                                                 <PriceBreakdown
-                                                    basePrice={148000}
-                                                    additionalCosts={[
-                                                        {
-                                                            label: "Tax",
-                                                            amount: 5000,
-                                                        },
-                                                        {
-                                                            label: "Registration",
-                                                            amount: 200,
-                                                        },
-                                                        {
-                                                            label: "Dealer Fees",
-                                                            amount: 350,
-                                                        },
-                                                    ]}
+                                                    basePrice={offer}
                                                 />
                                             )}
+                                            {tabs[tabs.length - 1] ===
+                                                "contact" && <ContactForm />}
                                         </div>
                                     </div>
                                 </Dialog.Panel>
