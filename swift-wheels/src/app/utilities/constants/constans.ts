@@ -94,6 +94,22 @@ export const MakeOfferFormDefaultValues = {
     [MakeOfferFormKeys.OFFER]: null,
 };
 
+//  FinanceCalculator
+
+//-> Form Keys
+export const FinanceCalculatorKeys = {
+    "DOWN-PAYMENT": "down-payment",
+    "LOAN-TERM": "loan-term",
+    OFFER: "offer",
+    "INTEREST-RATE": "interest-rate",
+};
+
+//->Form Default Values
+export const FinanceCalculatorDefaultValues = {
+    [FinanceCalculatorKeys["DOWN-PAYMENT"]]: "",
+    [FinanceCalculatorKeys["LOAN-TERM"]]: "",
+};
+
 //      GoogleMap
 export const googleMapContainerStyle = {
     width: "100%",

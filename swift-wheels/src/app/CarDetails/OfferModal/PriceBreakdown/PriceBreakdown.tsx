@@ -1,8 +1,14 @@
 "use client";
 
+//hooks
 import React from "react";
 
-export default function PriceBreakdown({ basePrice }: { basePrice: number }) {
+//types
+import * as priceBreakdownTypes from "../../../utilities/types/priceBreakdown.types";
+
+export default function PriceBreakdown({
+    basePrice,
+}: priceBreakdownTypes.propTypes) {
     const additionalCosts = [
         {
             label: "Sales Tax",
@@ -47,7 +53,7 @@ export default function PriceBreakdown({ basePrice }: { basePrice: number }) {
     };
 
     function formatPrice(price: number): string {
-        // Create our number formatter with 'en-US' locale.
+        // Create the number formatter with 'en-US' locale
         const formatter = new Intl.NumberFormat("en-US", {
             minimumFractionDigits: 2, // Ensure minimum two digits after the decimal
             maximumFractionDigits: 2, // Ensure maximum two digits after the decimal

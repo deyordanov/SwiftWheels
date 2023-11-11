@@ -1,6 +1,4 @@
 export default function Offer({ priceIndicator }: { priceIndicator: number }) {
-    console.log(priceIndicator);
-
     function getOffer() {
         if (priceIndicator <= 0.2) {
             return { text: "Excellent Offer", color: "bg-green-500" };
