@@ -1,30 +1,52 @@
 "use client";
 
-import React, { useState } from "react";
+//hooks
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 
-export default function FinanceCalculator() {
-    const [financeData, setFinanceData] = useState({
-        carPrice: "",
-        downPayment: "",
-        interestRate: "",
-        loanTerm: "",
+//components
+import FormErrorMessage from "@/app/Components/shared/FormErrorMessage";
+
+//react-icons
+import {
+    BsFillArrowLeftCircleFill,
+    BsFillArrowRightCircleFill,
+} from "react-icons/bs";
+
+//constants
+import {
+    FinanceCalculatorKeys,
+    FinanceCalculatorDefaultValues,
+} from "@/app/utilities/constants/constans";
+
+//types
+import * as financeCalculatorTypes from "../../../utilities/types/financeCalculator.types";
+
+export default function FinanceCalculator({
+    carPrice,
+    setTabs,
+    offer,
+}: financeCalculatorTypes.propTypes) {
+    const {
+        register,
+        formState: { errors },
+        handleSubmit,
+    } = useForm({
+        defaultValues: FinanceCalculatorDefaultValues,
+        mode: "onSubmit",
     });
-
     const [monthlyPayment, setMonthlyPayment] = useState("");
+    const [annualInterestRate, setAnnualInterestRate] = useState(0);
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFinanceData((prevState) => ({
-            ...prevState,
-            [name]: parseFloat(value),
-        }));
-    };
+    useEffect(() => {
+        //Based on research it averages around 2.4%-9.6%
+        setAnnualInterestRate(Math.random() * (9.6 - 2.4) + 2.4);
+    }, []);
 
-    const calculateMonthlyPayment = () => {
-        const { carPrice, downPayment, interestRate, loanTerm } = financeData;
-        const principal = carPrice - downPayment;
-        const monthlyInterestRate = interestRate / 100 / 12;
-        const numberOfPayments = loanTerm * 12;
+    const calculateMonthlyPayment = (data: any) => {
+        const principal = offer - Number(data["down-payment"]);
+        const monthlyInterestRate = annualInterestRate / 100 / 12;
+        const numberOfPayments = Number(data["loan-term"]) * 12;
 
         // Monthly payment calculation using the formula for an amortized loan
         const monthlyPayment =
@@ -36,100 +58,135 @@ export default function FinanceCalculator() {
         return monthlyPayment.toFixed(2);
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const calculatedPayment = calculateMonthlyPayment();
+    const handleReturn = () => {
+        setTabs((state) => state.slice(0, -1));
+    };
+
+    const handleNext = () => {
+        setTabs((state) => [...state, "price"]);
+    };
+
+    const onSubmit = (data: any) => {
+        const calculatedPayment = calculateMonthlyPayment(data);
         setMonthlyPayment(calculatedPayment);
     };
 
     return (
-        <div className="p-4 max-w-md mx-auto">
-            <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
-                <div>
-                    <label
-                        htmlFor="carPrice"
-                        className="block text-sm font-semibold"
-                    >
-                        Car Price ($):
+        <div className="relative p-4 w-full mx-auto flex justify-center ">
+            <form
+                onSubmit={handleSubmit(onSubmit)}
+                className="flex flex-col space-y-4 max-w-[60%] text-primary"
+            >
+                <div className="flex flex-col gap-y-2 w-full">
+                    <label htmlFor={FinanceCalculatorKeys.OFFER}>
+                        Your Offer ($):
                     </label>
                     <input
+                        defaultValue={carPrice}
                         type="number"
-                        name="carPrice"
-                        value={financeData.carPrice}
-                        onChange={handleChange}
-                        required
-                        className="p-2 border rounded w-full"
+                        name={FinanceCalculatorKeys.OFFER}
+                        disabled
+                        className={`text-md h-[40px] px-2 py-1 rounded-lg w-full border-[1.4px] focus:outline-none`}
                     />
                 </div>
 
                 <div>
-                    <label
-                        htmlFor="downPayment"
-                        className="block text-sm font-semibold"
-                    >
-                        Down Payment ($):
-                    </label>
+                    <label htmlFor="downPayment">Down Payment ($):</label>
                     <input
+                        {...register(FinanceCalculatorKeys["DOWN-PAYMENT"], {
+                            required: "This field is required!",
+                            validate: (value) =>
+                                Number(value) >= 0 ||
+                                "The down payment cannot be a negative number!",
+                            max: {
+                                message:
+                                    "The down payment cannot be larger than the offer!",
+                                value: offer,
+                            },
+                        })}
                         type="number"
-                        name="downPayment"
-                        value={financeData.downPayment}
-                        onChange={handleChange}
-                        required
-                        className="p-2 border rounded w-full"
+                        name={FinanceCalculatorKeys["DOWN-PAYMENT"]}
+                        id={FinanceCalculatorKeys["DOWN-PAYMENT"]}
+                        className={`text-md h-[40px] px-2 py-1 rounded-lg w-full border-[1.4px] focus:outline-none ${
+                            errors[FinanceCalculatorKeys["DOWN-PAYMENT"]]
+                                ? "border-red-500"
+                                : "border-slate-500"
+                        }`}
+                    />
+                    <FormErrorMessage
+                        errors={errors}
+                        fieldKey={FinanceCalculatorKeys["DOWN-PAYMENT"]}
                     />
                 </div>
 
                 <div>
-                    <label
-                        htmlFor="interestRate"
-                        className="block text-sm font-semibold"
-                    >
+                    <label htmlFor={FinanceCalculatorKeys["INTEREST-RATE"]}>
                         Annual Interest Rate (%):
                     </label>
                     <input
                         type="number"
-                        name="interestRate"
-                        step="0.1"
-                        value={financeData.interestRate}
-                        onChange={handleChange}
-                        required
-                        className="p-2 border rounded w-full"
+                        name={FinanceCalculatorKeys["INTEREST-RATE"]}
+                        disabled
+                        value={annualInterestRate.toFixed(2)}
+                        className={`text-md h-[40px] px-2 py-1 rounded-lg w-full border-[1.4px] focus:outline-none`}
                     />
                 </div>
 
                 <div>
-                    <label
-                        htmlFor="loanTerm"
-                        className="block text-sm font-semibold"
-                    >
+                    <label htmlFor={FinanceCalculatorKeys["LOAN-TERM"]}>
                         Loan Term (years):
                     </label>
                     <input
+                        {...register(FinanceCalculatorKeys["LOAN-TERM"], {
+                            required: "This field is required!",
+                            validate: (value) =>
+                                Number(value) >= 0 ||
+                                "The loan term cannot be a negative number!",
+                            max: {
+                                message: "The maximum loan term is 5 years!",
+                                value: 5,
+                            },
+                        })}
                         type="number"
-                        name="loanTerm"
-                        value={financeData.loanTerm}
-                        onChange={handleChange}
-                        required
-                        className="p-2 border rounded w-full"
+                        name={FinanceCalculatorKeys["LOAN-TERM"]}
+                        className={`text-md h-[40px] px-2 py-1 rounded-lg w-full border-[1.4px] focus:outline-none ${
+                            errors[FinanceCalculatorKeys["LOAN-TERM"]]
+                                ? "border-red-500"
+                                : "border-slate-500"
+                        }`}
+                    />
+                    <FormErrorMessage
+                        errors={errors}
+                        fieldKey={FinanceCalculatorKeys["LOAN-TERM"]}
                     />
                 </div>
 
                 <button
                     type="submit"
-                    className="bg-blue-500 text-white p-2 rounded hover:bg-blue-700 transition-colors duration-300"
+                    className="bg-green-500 text-white p-2 rounded hover:bg-green-700 transition-colors duration-300"
                 >
                     Calculate
                 </button>
 
                 {monthlyPayment && (
-                    <div className="mt-4 p-4 bg-gray-100 rounded">
-                        <p className="text-lg">
-                            Estimated Monthly Payment:{" "}
-                            <strong>${monthlyPayment}</strong>
-                        </p>
+                    <div className="flex justify-between py-2 font-semibold text-lg pt-4">
+                        <span>Estimated Monthly Payment</span>
+                        <span>${monthlyPayment}</span>
                     </div>
                 )}
             </form>
+            <button
+                onClick={handleReturn}
+                className="absolute -bottom-2 -left-2 text-4xl px-4 py-2"
+            >
+                <BsFillArrowLeftCircleFill className="text-gray-300 hover:text-gray-500" />
+            </button>
+            <button
+                onClick={handleNext}
+                className="absolute -bottom-2 -right-2 text-4xl px-4 py-2"
+            >
+                <BsFillArrowRightCircleFill className="text-gray-300 hover:text-gray-500" />
+            </button>
         </div>
     );
 }
