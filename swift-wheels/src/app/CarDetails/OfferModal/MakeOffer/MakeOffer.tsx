@@ -1,7 +1,7 @@
 "use client";
 
 //hooks
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 
 //components
@@ -13,7 +13,14 @@ import {
     MakeOfferFormDefaultValues,
 } from "@/app/utilities/constants/constans";
 
-export default function MakeOffer({ carPrice }: { carPrice: number }) {
+//types
+import * as makeOfferTypes from "../../../utilities/types/makeOffer.types";
+
+export default function MakeOffer({
+    carPrice,
+    setOffer,
+    setTabs,
+}: makeOfferTypes.propTypes) {
     const {
         register,
         formState: { errors },
@@ -23,10 +30,9 @@ export default function MakeOffer({ carPrice }: { carPrice: number }) {
         mode: "onSubmit",
     });
 
-    const [offer, setOffer] = useState("");
-
     const onSubmit = (data: any) => {
-        console.log(data);
+        setOffer(Number(data.offer));
+        setTabs((state) => [...state, "finance"]);
     };
 
     function formatPrice(price: number) {
@@ -49,18 +55,23 @@ export default function MakeOffer({ carPrice }: { carPrice: number }) {
                         </label>
                         <input
                             {...register(MakeOfferFormKeys.OFFER, {
+                                //There cannot be offers that go below 80% of the car's price
                                 min: {
                                     message: `The offer should be greater than or equal to ${formatPrice(
-                                        carPrice * 0.2
+                                        carPrice * 0.8
                                     )}`,
-                                    value: carPrice * 0.2,
+                                    value: carPrice * 0.8,
+                                },
+                                //There cannot be offers which are more than 10% above the car's price
+                                max: {
+                                    message: `The offer should be lower or equal to ${formatPrice(
+                                        carPrice * 1.1
+                                    )}`,
+                                    value: carPrice * 1.1,
                                 },
                             })}
                             type="number"
                             name={MakeOfferFormKeys.OFFER}
-                            value={offer}
-                            onChange={(e) => setOffer(e.target.value)}
-                            required
                             className="p-2 border rounded-lg outline-none"
                             placeholder="Enter your offer"
                         />
@@ -71,10 +82,7 @@ export default function MakeOffer({ carPrice }: { carPrice: number }) {
                     />
                 </div>
 
-                <button
-                    type="submit"
-                    className="bg-green-500 text-white p-2 rounded hover:bg-green-700 transition-colors duration-300"
-                >
+                <button className="bg-green-500 text-white p-2 rounded hover:bg-green-700 transition-colors duration-300">
                     Submit Offer
                 </button>
             </form>
