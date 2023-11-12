@@ -1,4 +1,10 @@
-export default function Offer({ priceIndicator }: { priceIndicator: number }) {
+//types
+import * as offerTypes from "../../utilities/types/offer.types";
+
+export default function Offer({
+    priceIndicator,
+    setIsOfferModalOpen,
+}: offerTypes.propTypes) {
     function getOffer() {
         if (priceIndicator <= 0.2) {
             return { text: "Excellent Offer", color: "bg-green-500" };
@@ -13,6 +19,10 @@ export default function Offer({ priceIndicator }: { priceIndicator: number }) {
         }
     }
 
+    const handleOfferModal = () => {
+        setIsOfferModalOpen((state) => !state);
+    };
+
     const offer = getOffer();
 
     return (
@@ -24,7 +34,8 @@ export default function Offer({ priceIndicator }: { priceIndicator: number }) {
                 The current price of the vehicle is a:
             </p>
             <button
-                className={`rounded-lg ${offer?.color} w-[60%] p-4 shadow-md text-2xl text-white font-semibold transition-transform duration-500 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-opacity-50`}
+                onClick={handleOfferModal}
+                className={`rounded-lg ${offer?.color} w-[60%] p-4 shadow-md text-2xl text-white font-semibold transition-transform duration-500 ease-in-out transform hover:scale-105`}
             >
                 {offer?.text}
             </button>
