@@ -1,8 +1,12 @@
 "use client";
 
+//hooks
 import React, { useState } from "react";
 
-const Description = ({ text }: { text: string }) => {
+//types
+import * as descriptionPropTypes from "../../utilities/types/description.types";
+
+const Description = ({ text }: descriptionPropTypes.propTypes) => {
     const [isReadMore, setIsReadMore] = useState(true);
 
     //This function will take 25% of the text and hide it for there on out

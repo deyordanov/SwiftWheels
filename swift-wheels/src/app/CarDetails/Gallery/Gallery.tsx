@@ -1,18 +1,18 @@
 "use client";
 
-import { Carousel, IconButton } from "@material-tailwind/react";
+//next-image
 import Image from "next/image";
+
+//components
+import { Carousel, IconButton } from "@material-tailwind/react";
+
+//react-icons
 import { AiOutlineStar } from "react-icons/ai";
 
-const imageUrls = [
-    "/images/carSlider/download.jpg",
-    "/images/carSlider/lc1.jpg",
-    "/images/carSlider/lc2.jpg",
-    "/images/carSlider/lc3.jpg",
-    "/images/carSlider/lc4.webp",
-];
+//types
+import * as galleryTypes from "../../utilities/types/gallery.types";
 
-export default function Gallery() {
+export default function Gallery({ images }: galleryTypes.propTypes) {
     return (
         <Carousel
             className="rounded-xl h-[550px] relative"
@@ -65,7 +65,7 @@ export default function Gallery() {
                 </IconButton>
             )}
         >
-            {imageUrls.map((image) => (
+            {images.map((image) => (
                 <div key={image} className="relative h-full w-full">
                     <Image
                         src={image}
