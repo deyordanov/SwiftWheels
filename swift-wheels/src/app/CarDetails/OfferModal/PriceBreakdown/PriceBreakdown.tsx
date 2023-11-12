@@ -3,11 +3,18 @@
 //hooks
 import React from "react";
 
+//react-icons
+import {
+    BsFillArrowLeftCircleFill,
+    BsFillArrowRightCircleFill,
+} from "react-icons/bs";
+
 //types
 import * as priceBreakdownTypes from "../../../utilities/types/priceBreakdown.types";
 
 export default function PriceBreakdown({
     basePrice,
+    setTabs,
 }: priceBreakdownTypes.propTypes) {
     const additionalCosts = [
         {
@@ -52,6 +59,14 @@ export default function PriceBreakdown({
         return basePrice + additionalCostsTotal;
     };
 
+    const handleReturn = () => {
+        setTabs((state) => state.slice(0, -1));
+    };
+
+    const handleNext = () => {
+        setTabs((state) => [...state, "contact"]);
+    };
+
     function formatPrice(price: number): string {
         // Create the number formatter with 'en-US' locale
         const formatter = new Intl.NumberFormat("en-US", {
@@ -64,29 +79,43 @@ export default function PriceBreakdown({
     }
 
     return (
-        <div className="p-4 max-w-md flex flex-col">
-            <h3 className="text-lg font-semibold border-b pb-2">
-                Price Breakdown
-            </h3>
-            <div className="flex flex-col">
-                <div className="flex justify-between py-2 ">
-                    <span>Base Price:</span>
-                    <span>${formatPrice(basePrice)}</span>
-                </div>
-                {additionalCosts.map((cost, index) => (
-                    <div
-                        className="flex justify-between py-2 border-t gap-x-4"
-                        key={index}
-                    >
-                        <span>{cost.label}:</span>
-                        <span>${formatPrice(cost.amount * basePrice)}</span>
+        <div className="w-full relative flex justify-center">
+            <div className="p-4 max-w-md flex flex-col w-[70%]">
+                <h3 className="text-lg font-semibold border-b pb-2">
+                    Price Breakdown
+                </h3>
+                <div className="flex flex-col">
+                    <div className="flex justify-between py-2 ">
+                        <span>Base Price:</span>
+                        <span>${formatPrice(basePrice)}</span>
                     </div>
-                ))}
-                <div className="flex justify-between py-2 border-t font-semibold text-xl pt-4">
-                    <span>Total Price:</span>
-                    <span>${formatPrice(calculateTotal())}</span>
+                    {additionalCosts.map((cost, index) => (
+                        <div
+                            className="flex justify-between py-2 border-t gap-x-4"
+                            key={index}
+                        >
+                            <span>{cost.label}:</span>
+                            <span>${formatPrice(cost.amount * basePrice)}</span>
+                        </div>
+                    ))}
+                    <div className="flex justify-between py-2 border-t font-semibold text-xl pt-4">
+                        <span>Total Price:</span>
+                        <span>${formatPrice(calculateTotal())}</span>
+                    </div>
                 </div>
             </div>
+            <button
+                onClick={handleReturn}
+                className="absolute -bottom-2 -left-2 text-4xl px-4 py-2"
+            >
+                <BsFillArrowLeftCircleFill className="text-gray-300 hover:text-gray-500" />
+            </button>
+            <button
+                onClick={handleNext}
+                className="absolute -bottom-2 -right-2 text-4xl px-4 py-2"
+            >
+                <BsFillArrowRightCircleFill className="text-gray-300 hover:text-gray-500" />
+            </button>
         </div>
     );
 }
