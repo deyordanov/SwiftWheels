@@ -10,38 +10,30 @@ import MakeOffer from "./MakeOffer/MakeOffer";
 import FinanceCalculator from "./FinanceCalculator/FinanceCalculator";
 import PriceBreakdown from "./PriceBreakdown/PriceBreakdown";
 
-export default function OfferModal({ car, isOpen, onClose }) {
+//types
+import * as offerModalTypes from "../../utilities/types/offerModal.types";
+
+export default function OfferModal({
+    car,
+    isOfferModalOpen,
+    setIsOfferModalOpen,
+}: offerModalTypes.propTypes) {
     const [tabs, setTabs] = useState(["offer"]);
-    const [isOpenDialog, setIsOpen] = useState(true);
     const [offer, setOffer] = useState(0);
 
     const carPrice = Number(car.price.replace("$", "").replace(".", ""));
 
-    if (!isOpen) {
+    if (!isOfferModalOpen) {
         return null;
     }
 
     function closeModal() {
-        setIsOpen(false);
-    }
-
-    function openModal() {
-        setIsOpen(true);
+        setIsOfferModalOpen(false);
     }
 
     return (
         <>
-            <div className="fixed inset-0 flex items-center justify-center">
-                <button
-                    type="button"
-                    onClick={openModal}
-                    className="rounded-md bg-black/20 px-4 py-2 text-sm font-medium text-white hover:bg-black/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
-                >
-                    Open dialog
-                </button>
-            </div>
-
-            <Transition appear show={isOpenDialog} as={Fragment}>
+            <Transition appear show={isOfferModalOpen} as={Fragment}>
                 <Dialog as="div" className="relative z-10" onClose={closeModal}>
                     <Transition.Child
                         as={Fragment}
@@ -142,10 +134,16 @@ export default function OfferModal({ car, isOpen, onClose }) {
                                                 "price" && (
                                                 <PriceBreakdown
                                                     basePrice={offer}
+                                                    setTabs={setTabs}
                                                 />
                                             )}
                                             {tabs[tabs.length - 1] ===
-                                                "contact" && <ContactForm />}
+                                                "contact" && (
+                                                <ContactForm
+                                                    closeModal={closeModal}
+                                                    setTabs={setTabs}
+                                                />
+                                            )}
                                         </div>
                                     </div>
                                 </Dialog.Panel>
@@ -157,12 +155,3 @@ export default function OfferModal({ car, isOpen, onClose }) {
         </>
     );
 }
-// Example of using PriceBreakdown component
-// <PriceBreakdown
-//   basePrice={148000}
-//   additionalCosts={[
-//     { label: 'Tax', amount: 5000 },
-//     { label: 'Registration', amount: 200 },
-//     { label: 'Dealer Fees', amount: 350 }
-//   ]}
-// />
