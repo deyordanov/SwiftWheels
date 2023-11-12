@@ -8,8 +8,8 @@ import CarLocationGoogleMap from "./GoogleMap/CarLocationGoogleMap";
 
 //constants
 import { carDetailsGeocodingApi } from "@/app/utilities/constants/constans";
-import PriceChart from "./Chart/Chart";
-import PriceBar from "./PriceBar/PriceBar";
+import { PriceChart } from "./Chart/Chart";
+import { PriceBar } from "./PriceBar/PriceBar";
 import Offer from "./Offer/Offer";
 import Description from "./Description/Description";
 import OfferModal from "./OfferModal/OfferModal";
@@ -51,12 +51,22 @@ const car = {
         "LED Headlights with Automatic High Beams",
         "Head-Up Display",
     ],
+    techincalDescription:
+        'The Toyota Land Cruiser 200 series is an iconic and robust SUV known for its ability to balance luxury with rugged off-road capabilities. It debuted in 2008, and even by the 2021 model year, it remained part of the 200 Series. Despite some criticisms regarding its dated features and styling, the Land Cruiser 200 series has maintained its reputation for being a highly capable vehicle, often referred to as a "backcountry beast" that doesn`t shy away from luxury​​. In terms of specifications, the Land Cruiser 200 series is available with either a 4.6-liter gasoline engine (1UR-FE) or a 4.5-liter diesel engine (1VD-FTV). The overall dimensions are 4950 mm in length (which can increase with a winch, spare tire, or bumper protector), 1970 mm in width, and 1890 mm in height (or 1905 mm with roof rails). It has a wheelbase of 2850 mm, a ground clearance of 225 mm, and various tire options including 285/65R17 and 285/60R18. The front suspension is a double wishbone type, while the rear features a 4 link coil rigid suspension with a lateral rod. The vehicle is equipped with ventilated disc brakes on both front and rear and has a 6-speed automatic transmission. Engine output varies with the gasoline version delivering 304 HP at 5500 rpm and the diesel 232 HP at 3200 rpm (when paired with a 6-speed automatic transmission)​​.',
+    images: [
+        "/images/carSlider/download.jpg",
+        "/images/carSlider/lc1.jpg",
+        "/images/carSlider/lc2.jpg",
+        "/images/carSlider/lc3.jpg",
+        "/images/carSlider/lc4.webp",
+    ],
 };
 
 export default function Page() {
     const [center, setCenter] = useState({ lat: 0, lng: 0 });
     const [barPrice, setBarPrice] = useState(0);
     const [chartPrice, setChartPrice] = useState(0);
+    const [isOfferModalOpen, setIsOfferModalOpen] = useState(false);
 
     //This address will be injected from the outside
     const address = "Heidestraße 62 10557 Berlin Germany";
@@ -112,7 +122,7 @@ export default function Page() {
                 ))}
             </div>
             <div className="w-full mx-auto mb-14">
-                <Gallery />
+                <Gallery images={car.images} />
             </div>
             <div className="flex flex-1 w-full mb-4">
                 <div className="bg-gray-100 px-6 rounded-lg shadow-lg w-[80%]">
@@ -127,6 +137,8 @@ export default function Page() {
                                         "price",
                                         "stars",
                                         "extras",
+                                        "techincalDescription",
+                                        "images",
                                     ].includes(key) //Filter out the keys we need
                             )
                             .map(([key, value]) => (
@@ -163,24 +175,27 @@ export default function Page() {
                     <div className="flex-grow">
                         {/* TODO: Display a contact form / offer form when the offer button is clicked? */}
                         {barPrice !== 0 && chartPrice !== 0 && (
-                            <Offer priceIndicator={barPrice + chartPrice} />
+                            <Offer
+                                priceIndicator={barPrice + chartPrice}
+                                setIsOfferModalOpen={setIsOfferModalOpen}
+                            />
                         )}
                     </div>
                 </div>
             </div>
             <div>
-                <Description
-                    text={
-                        'The Toyota Land Cruiser 200 series is an iconic and robust SUV known for its ability to balance luxury with rugged off-road capabilities. It debuted in 2008, and even by the 2021 model year, it remained part of the 200 Series. Despite some criticisms regarding its dated features and styling, the Land Cruiser 200 series has maintained its reputation for being a highly capable vehicle, often referred to as a "backcountry beast" that doesn`t shy away from luxury​​. In terms of specifications, the Land Cruiser 200 series is available with either a 4.6-liter gasoline engine (1UR-FE) or a 4.5-liter diesel engine (1VD-FTV). The overall dimensions are 4950 mm in length (which can increase with a winch, spare tire, or bumper protector), 1970 mm in width, and 1890 mm in height (or 1905 mm with roof rails). It has a wheelbase of 2850 mm, a ground clearance of 225 mm, and various tire options including 285/65R17 and 285/60R18. The front suspension is a double wishbone type, while the rear features a 4 link coil rigid suspension with a lateral rod. The vehicle is equipped with ventilated disc brakes on both front and rear and has a 6-speed automatic transmission. Engine output varies with the gasoline version delivering 304 HP at 5500 rpm and the diesel 232 HP at 3200 rpm (when paired with a 6-speed automatic transmission)​​.'
-                    }
-                />
+                <Description text={car.techincalDescription} />
             </div>
             <div className="w-[80%] my-8 flex justify-center">
                 <CarLocationGoogleMap center={center} />
             </div>
 
             <div className="relative flex justify-center items-center content-center h-screen">
-                <OfferModal car={car} isOpen={true} onClose={() => {}} />
+                <OfferModal
+                    car={car}
+                    isOfferModalOpen={isOfferModalOpen}
+                    setIsOfferModalOpen={setIsOfferModalOpen}
+                />
             </div>
         </div>
     );
