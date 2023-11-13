@@ -6,6 +6,12 @@ import React, { useState, useEffect } from "react";
 import Gallery from "./Gallery/Gallery";
 import CarLocationGoogleMap from "./GoogleMap/CarLocationGoogleMap";
 
+//next-link
+import Link from "next/link";
+
+//next-image
+import Image from "next/image";
+
 //constants
 import { carDetailsGeocodingApi } from "@/app/utilities/constants/constans";
 import { PriceChart } from "./Chart/Chart";
@@ -105,98 +111,113 @@ export default function Page() {
     }, [address]);
 
     return (
-        <div className="container flex flex-col items-center mx-auto p-8 bg-white rounded-lg shadow-lg max-w-screen-lg text-black">
-            <div className="text-center p-5">
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-black uppercase tracking-tight leading-none">
-                    {car.name}
-                </h1>
-            </div>
-            <div className="w-full flex flex-wrap gap-1 mb-4 justify-center">
-                {car.extras.map((extra) => (
-                    <span
-                        key={extra}
-                        className="bg-green-100 text-green-800 cursor-pointer text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300"
-                    >
-                        {extra}
-                    </span>
-                ))}
-            </div>
-            <div className="w-full mx-auto mb-14">
-                <Gallery images={car.images} />
-            </div>
-            <div className="flex flex-1 w-full mb-4">
-                <div className="bg-gray-100 px-6 rounded-lg shadow-lg w-[80%]">
-                    <ul className=" divide-y divide-gray-200 text-xl">
-                        {Object.entries(car)
-                            .filter(
-                                ([key]) =>
-                                    ![
-                                        "image",
-                                        "info",
-                                        "name",
-                                        "price",
-                                        "stars",
-                                        "extras",
-                                        "techincalDescription",
-                                        "images",
-                                    ].includes(key) //Filter out the keys we need
-                            )
-                            .map(([key, value]) => (
-                                <li
-                                    key={key}
-                                    className="py-4 flex justify-between items-center"
-                                >
-                                    {/* Replce _ with ' ' */}
-                                    <span className="font-semibold capitalize">
-                                        {key.replace(/_/g, " ")}:
-                                    </span>
-                                    <span className="font-normal text-gray-700">
-                                        {value}
-                                    </span>
-                                </li>
-                            ))}
-                    </ul>
+        <>
+            <div className="relative container flex flex-col items-center mx-auto p-8 bg-white rounded-lg shadow-lg max-w-screen-lg text-black">
+                <Link
+                    href={"/"}
+                    className="absolute cursor-pointer left-16 top-7"
+                >
+                    <Image
+                        src={"/icons/logo4.png"}
+                        width={200}
+                        height={200}
+                        alt="logo"
+                        className=""
+                        priority
+                    />
+                </Link>
+                <div className="text-center p-5">
+                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-black uppercase tracking-tight leading-none">
+                        {car.name}
+                    </h1>
                 </div>
-                <div className="flex flex-col w-full h-full justify-between">
-                    <div className="flex mb-8">
-                        <PriceBar
-                            initialPrice={car.price}
-                            setBarPrice={setBarPrice}
-                        />
+                <div className="w-full flex flex-wrap gap-1 mb-4 justify-center">
+                    {car.extras.map((extra) => (
+                        <span
+                            key={extra}
+                            className="bg-green-100 text-green-800 cursor-pointer text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300"
+                        >
+                            {extra}
+                        </span>
+                    ))}
+                </div>
+                <div className="w-full mx-auto mb-14">
+                    <Gallery images={car.images} />
+                </div>
+                <div className="flex flex-1 w-full mb-4">
+                    <div className="bg-gray-100 px-6 rounded-lg shadow-lg w-[80%]">
+                        <ul className=" divide-y divide-gray-200 text-xl">
+                            {Object.entries(car)
+                                .filter(
+                                    ([key]) =>
+                                        ![
+                                            "image",
+                                            "info",
+                                            "name",
+                                            "price",
+                                            "stars",
+                                            "extras",
+                                            "techincalDescription",
+                                            "images",
+                                        ].includes(key) //Filter out the keys we need
+                                )
+                                .map(([key, value]) => (
+                                    <li
+                                        key={key}
+                                        className="py-4 flex justify-between items-center"
+                                    >
+                                        {/* Replce _ with ' ' */}
+                                        <span className="font-semibold capitalize">
+                                            {key.replace(/_/g, " ")}:
+                                        </span>
+                                        <span className="font-normal text-gray-700">
+                                            {value}
+                                        </span>
+                                    </li>
+                                ))}
+                        </ul>
                     </div>
-                    <div className="flex mb-8">
-                        {/* Take the current car price and add 10000 to it, as this will be the initial price the year it was created */}
-                        <PriceChart
-                            initialPrice={148000 + 10000}
-                            year="2020"
-                            setChartPrice={setChartPrice}
-                        />
-                    </div>
-                    <div className="flex-grow">
-                        {/* TODO: Display a contact form / offer form when the offer button is clicked? */}
-                        {barPrice !== 0 && chartPrice !== 0 && (
-                            <Offer
-                                priceIndicator={barPrice + chartPrice}
-                                setIsOfferModalOpen={setIsOfferModalOpen}
+                    <div className="flex flex-col w-full h-full justify-between">
+                        <div className="flex mb-8">
+                            <PriceBar
+                                initialPrice={car.price}
+                                setBarPrice={setBarPrice}
                             />
-                        )}
+                        </div>
+                        <div className="flex mb-8">
+                            {/* Take the current car price and add 10000 to it, as this will be the initial price the year it was created */}
+                            <PriceChart
+                                initialPrice={148000 + 10000}
+                                year="2020"
+                                setChartPrice={setChartPrice}
+                            />
+                        </div>
+                        <div className="flex-grow">
+                            {/* TODO: Display a contact form / offer form when the offer button is clicked? */}
+                            {barPrice !== 0 && chartPrice !== 0 && (
+                                <Offer
+                                    priceIndicator={barPrice + chartPrice}
+                                    setIsOfferModalOpen={setIsOfferModalOpen}
+                                />
+                            )}
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div>
-                <Description text={car.techincalDescription} />
-            </div>
-            <div className="w-[80%] my-8 flex justify-center">
-                <CarLocationGoogleMap center={center} />
-            </div>
+                <div>
+                    <Description text={car.techincalDescription} />
+                </div>
+                <div className="w-[80%] my-8 flex justify-center">
+                    <CarLocationGoogleMap center={center} />
+                </div>
 
-            <div className="relative flex justify-center items-center content-center h-screen">
-                <OfferModal
-                    car={car}
-                    isOfferModalOpen={isOfferModalOpen}
-                    setIsOfferModalOpen={setIsOfferModalOpen}
-                />
+                <div className="relative flex justify-center items-center content-center h-screen">
+                    <OfferModal
+                        car={car}
+                        isOfferModalOpen={isOfferModalOpen}
+                        setIsOfferModalOpen={setIsOfferModalOpen}
+                    />
+                </div>
             </div>
-        </div>
+        </>
     );
 }

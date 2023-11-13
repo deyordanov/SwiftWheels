@@ -23,9 +23,11 @@ import { FaStar, FaRegStar } from "react-icons/fa";
 //motion
 import { motion } from "framer-motion";
 
+//next-link
+import Link from "next/link";
+
 //variants
 import { fadeIn } from "../../../../variants";
-import Link from "next/link";
 
 //cars data
 const cars = [
