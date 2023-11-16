@@ -14,7 +14,6 @@ export const PriceBar = memo(
         }
 
         function formatPrice(price: number) {
-            console.log(price);
             return `${price.toLocaleString("en-US")}$`;
         }
 

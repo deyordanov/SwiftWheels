@@ -35,9 +35,12 @@ import { fadeIn } from "../../../../variants";
 export default function CarSlider() {
     const { isAuthenticated } = useAuthContext();
     const { handleLoginDialogExitOpen } = usePageContext();
-    const [showDetials, setShowDetails] = useState(false);
     const [cars, setCars] = useState<Array<unknown>>([]);
     const swiperRef = useRef(null);
+
+    function formatPrice(price: number) {
+        return `${price.toLocaleString("en-US")}$`;
+    }
 
     useEffect(() => {
         getAllCars();
@@ -79,18 +82,14 @@ export default function CarSlider() {
 
         const stars = [];
         for (let i = 0; i < fullStars; i++) {
-            stars.push(<FaStar key={`full-${i}`} />);
+            stars.push(<FaStar className="text-xl" key={`full-${i}`} />);
         }
         for (let i = 0; i < emptyStars; i++) {
-            stars.push(<FaRegStar key={`empty-${i}`} />);
+            stars.push(<FaRegStar className="text-xl" key={`empty-${i}`} />);
         }
 
         return stars;
     }
-
-    const handleDetails = () => {
-        setShowDetails((state) => !state);
-    };
 
     return (
         <motion.section
@@ -110,20 +109,20 @@ export default function CarSlider() {
                                     height={380}
                                     width={340}
                                     alt="Car Image"
-                                    className="object-cover rounded-lg w-full"
+                                    className="object-cover rounded-lg w-full max-h-[200px]"
                                 />
                             </span>
 
                             <div className="flex justify-between px-4 py-2">
-                                <div>
-                                    <span className="text-[13px] text-secondary uppercase">
+                                <div className="text-xl">
+                                    <span className=" text-secondary uppercase">
                                         {car["car-type"].value}
                                     </span>
                                     <h3 className="uppercase font-bold">
                                         {car["car-model"]}
                                     </h3>
                                     <h3 className="mb-10 text-accent-default font-semibold uppercase">
-                                        {`${car["car-price"]}$`}
+                                        {formatPrice(car["car-price"])}
                                     </h3>
                                 </div>
                                 <span className="flex">
@@ -142,7 +141,7 @@ export default function CarSlider() {
                                             alt=""
                                         />
                                     </span>
-                                    <span className="text-[12px] text-xs text-center">
+                                    <span className="text-[18px]  text-center">
                                         {car["car-transmission"].value}
                                     </span>
                                 </div>
@@ -156,7 +155,7 @@ export default function CarSlider() {
                                             alt=""
                                         />
                                     </span>
-                                    <span className="text-[12px] text-xs text-center">
+                                    <span className="text-[18px]  text-center">
                                         {car["car-fuel-type"].value}
                                     </span>
                                 </div>
@@ -169,7 +168,7 @@ export default function CarSlider() {
                                             alt=""
                                         />
                                     </span>
-                                    <span className="text-[12px] text-xs text-center">
+                                    <span className="text-[18px]  text-center">
                                         {`${car["car-horsepower"]} HP`}
                                     </span>
                                 </div>
@@ -182,7 +181,7 @@ export default function CarSlider() {
                                             alt=""
                                         />
                                     </span>
-                                    <span className="text-[12px] text-xs text-center">
+                                    <span className="text-[18px]  text-center">
                                         {car["car-drive-type"].value}
                                     </span>
                                 </div>

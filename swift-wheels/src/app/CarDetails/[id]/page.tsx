@@ -25,7 +25,6 @@ import OfferModal from "../OfferModal/OfferModal";
 import * as carService from "../../../services/carService";
 
 export default function Page({ params }: { params: { id: string } }) {
-    console.log(params.id);
     const [car, setCar] = useState<any>({});
     const [center, setCenter] = useState({ lat: 0, lng: 0 });
     const [barPrice, setBarPrice] = useState(0);

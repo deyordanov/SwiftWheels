@@ -23,7 +23,6 @@ const getAuthHeaders = () => {
 
 export const getOne = async (carId: string) => {
     const response = await requester.get(`${baseUrl}/${carId}`);
-    console.log(response);
     return response;
 };
 

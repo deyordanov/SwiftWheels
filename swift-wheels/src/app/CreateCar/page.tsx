@@ -384,13 +384,11 @@ export default function Page() {
 
     const onClientUploadComplete = (res: any) => {
         setValue(createCarFormKeys.CAR_IMAGES, res);
-        console.log(JSON.stringify(res));
         alert("Upload Completed");
     };
 
     const onSubmit = async (data: object) => {
         await carService.create({ ...data, userId, userEmail });
-        console.log("done");
     };
 
     function getSelectControlStype(
