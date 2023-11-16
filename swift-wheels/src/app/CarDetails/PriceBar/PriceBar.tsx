@@ -7,11 +7,15 @@ import { memo } from "react";
 import * as priceBarTypes from "../../utilities/types/priceBar.types";
 
 export const PriceBar = memo(
-    ({ initialPrice, setBarPrice }: priceBarTypes.propTypes) => {
-        const carPrice = Number(initialPrice.replace("$", "").replace(".", ""));
+    ({ carPrice, setBarPrice }: priceBarTypes.propTypes) => {
         // Function to generate a random number within a range
         function getRandomNumber(min: number, max: number) {
             return Math.random() * (max - min) + min;
+        }
+
+        function formatPrice(price: number) {
+            console.log(price);
+            return `${price.toLocaleString("en-US")}$`;
         }
 
         const priceRanges = {
@@ -62,7 +66,7 @@ export const PriceBar = memo(
                 <div className="bg-green-500 text-white text-center py-2 rounded-t-lg shadow">
                     <span className="text-lg font-medium">CAR`S PRICE:</span>
                     <div className="text-3xl font-bold mt-1">
-                        {initialPrice}
+                        {formatPrice(carPrice)}
                     </div>
                 </div>
 

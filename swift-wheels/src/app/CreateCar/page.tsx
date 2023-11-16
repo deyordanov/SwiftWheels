@@ -2,10 +2,13 @@
 
 //hooks
 import React, { useState } from "react";
+import { useAuthContext } from "../Contexts/authContext";
+
+//services
+import * as carService from "../../services/carService";
 
 //uploadthing
 import { UploadDropzone } from "../utilities/uploadthing";
-import { UploadFileResponse } from "uploadthing/client";
 
 //react-select
 import makeAnimated from "react-select/animated";
@@ -16,9 +19,6 @@ import { Star } from "./Star/Star";
 
 //react-slider
 import ReactSlider from "react-slider";
-
-//types
-import { MultiValue, SingleValue } from "react-select";
 
 //react-hook-form
 import { Controller, useForm } from "react-hook-form";
@@ -201,12 +201,12 @@ const transmissionTypes: IOption[] = [
     "Automatic",
     "Manual",
     "Semi-Automatic",
-    "Dual-Clutch Transmission (DCT)",
+    "DCT",
     "Tiptronic",
-    "Direct Shift Gearbox (DSG)",
-    "Automated Manual Transmission (AMT)",
-    "Sequential Manual Gearbox (SMG)",
-    "Torque Converter Automatic",
+    "DSG",
+    "AMT",
+    "SMG",
+    "TCA",
 ].map((transmission) => ({ value: transmission, label: transmission }));
 
 const carConditions: IOption[] = [
@@ -221,15 +221,14 @@ const carFuelTypes: IOption[] = [
     "Diesel",
     "Electric",
     "Hybrid",
-    "Plug-in Hybrid",
+    "Hybrid",
     "Flex-Fuel",
-    "Hydrogen Fuel Cell",
-    "Compressed Natural Gas (CNG)",
-    "Liquefied Petroleum Gas (LPG)",
+    "Hydrogen",
+    "CNG",
+    "LPG",
     "Ethanol",
     "Biodiesel",
     "Methanol",
-    "P-Series Fuels",
 ].map((fuelType) => ({ value: fuelType, label: fuelType }));
 
 const carEngineTypes: IOption[] = [
@@ -258,16 +257,13 @@ const carEngineTypes: IOption[] = [
 ].map((engineType) => ({ value: engineType, label: engineType }));
 
 const carDriveTypes: IOption[] = [
-    "All Wheel Drive (AWD)",
-    "Four Wheel Drive (4WD)",
-    "Front Wheel Drive (FWD)",
-    "Rear Wheel Drive (RWD)",
-    "Four Wheel Drive (4x4)",
-    "Two Wheel Drive (2WD)",
-    "Part-Time Four Wheel Drive",
-    "Full-Time Four Wheel Drive",
-    "Six Wheel Drive (6WD)",
-    "Eight Wheel Drive (8WD)",
+    "AWD",
+    "4WD",
+    "FWD",
+    "RWD",
+    "4x4",
+    "6WD",
+    "8WD",
 ].map((driveType) => ({ value: driveType, label: driveType }));
 
 const customStyles = {
@@ -376,6 +372,8 @@ export default function Page() {
         mode: "onSubmit",
     });
 
+    const { userId, userEmail } = useAuthContext();
+
     const onMouseEnter = (index: number) => {
         setHoverRating(index);
     };
@@ -384,14 +382,15 @@ export default function Page() {
         setHoverRating(0);
     };
 
-    const onClientUploadComplete = (res) => {
+    const onClientUploadComplete = (res: any) => {
         setValue(createCarFormKeys.CAR_IMAGES, res);
         console.log(JSON.stringify(res));
         alert("Upload Completed");
     };
 
-    const onSubmit = (data: object) => {
-        console.log(data);
+    const onSubmit = async (data: object) => {
+        await carService.create({ ...data, userId, userEmail });
+        console.log("done");
     };
 
     function getSelectControlStype(
@@ -415,7 +414,7 @@ export default function Page() {
     return (
         <form
             onSubmit={handleSubmit(onSubmit)}
-            className="container text-black p-20 flex flex-col gap-y-2 overflow-auto"
+            className="max-w-[1000px] container text-black p-20 flex flex-col gap-y-2 overflow-auto mx-auto"
         >
             <div className="w-full flex gap-x-4">
                 <Controller
@@ -846,7 +845,7 @@ export default function Page() {
                             },
                         }}
                         appearance={{
-                            label: "w-full",
+                            label: "w-full text-blue-400 hover:text-blue-500",
                             allowedContent: "text-sm",
                         }}
                         className={

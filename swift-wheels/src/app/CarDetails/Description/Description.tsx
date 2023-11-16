@@ -19,10 +19,9 @@ const Description = ({ text }: descriptionPropTypes.propTypes) => {
     };
 
     return (
-        <div className="container mx-auto p-4">
-            <p className="text-gray-700 text-base">
+        <div className="container mx-auto w-full p-4">
+            <p className="text-gray-700 text-base break-words">
                 {displayText}
-                {/* This will show '...' only when the text is clamped */}
                 {isReadMore && text.length > displayText.length && "..."}
             </p>
             <button

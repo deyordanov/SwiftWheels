@@ -65,10 +65,10 @@ export default function Gallery({ images }: galleryTypes.propTypes) {
                 </IconButton>
             )}
         >
-            {images.map((image) => (
-                <div key={image} className="relative h-full w-full">
+            {images?.map((image: any) => (
+                <div key={image.fileUrl} className="relative h-full w-full">
                     <Image
-                        src={image}
+                        src={image.fileUrl}
                         alt=""
                         fill
                         objectFit="cover"

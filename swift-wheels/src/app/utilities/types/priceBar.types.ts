@@ -2,6 +2,6 @@
 import { Dispatch, SetStateAction } from "react";
 
 export type propTypes = {
-    initialPrice: string;
+    carPrice: number;
     setBarPrice: Dispatch<SetStateAction<number>>;
 };

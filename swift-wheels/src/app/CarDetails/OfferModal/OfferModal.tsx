@@ -14,14 +14,12 @@ import PriceBreakdown from "./PriceBreakdown/PriceBreakdown";
 import * as offerModalTypes from "../../utilities/types/offerModal.types";
 
 export default function OfferModal({
-    car,
+    carPrice,
     isOfferModalOpen,
     setIsOfferModalOpen,
 }: offerModalTypes.propTypes) {
     const [tabs, setTabs] = useState(["offer"]);
     const [offer, setOffer] = useState(0);
-
-    const carPrice = Number(car.price.replace("$", "").replace(".", ""));
 
     if (!isOfferModalOpen) {
         return null;

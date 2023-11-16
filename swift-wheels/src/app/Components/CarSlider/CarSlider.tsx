@@ -3,6 +3,9 @@
 //hooks
 import { useEffect, useRef, useState } from "react";
 
+//services
+import * as carService from "../../../services/carService";
+
 //swiper
 import { register } from "swiper/element/bundle";
 register();
@@ -29,85 +32,20 @@ import Link from "next/link";
 //variants
 import { fadeIn } from "../../../../variants";
 
-//cars data
-const cars = [
-    {
-        type: "SUV",
-        name: "BMW X5",
-        price: 60,
-        stars: 4,
-        image: "/images/carSlider/BMW-X5.png",
-        info: [
-            { icon: "icons/carSlider/automatic.svg", text: "Automatic" },
-            { icon: "icons/carSlider/seat.svg", text: "5 Seats" },
-            { icon: "icons/carSlider/gas.svg", text: "Petrol" },
-            { icon: "icons/carSlider/engine.svg", text: "335 HP" },
-            { icon: "icons/carSlider/wheel.svg", text: "All Wheel" },
-        ],
-    },
-    {
-        type: "Sedan",
-        name: "Mercedes-Benz S-Class",
-        price: 110,
-        stars: 4.2,
-        image: "/images/carSlider/Sclass.png",
-        info: [
-            { icon: "icons/carSlider/automatic.svg", text: "Automatic" },
-            { icon: "icons/carSlider/seat.svg", text: "5 Seats" },
-            { icon: "icons/carSlider/gas.svg", text: "Petrol" },
-            { icon: "icons/carSlider/engine.svg", text: "429 HP" },
-            { icon: "icons/carSlider/wheel.svg", text: "Rear Wheel" },
-        ],
-    },
-    {
-        type: "Sports Car",
-        name: "Porsche 911",
-        price: 100,
-        stars: 3.9,
-        image: "/images/carSlider/911.png",
-        info: [
-            { icon: "icons/carSlider/gearshift.svg", text: "Manual" },
-            { icon: "icons/carSlider/seat.svg", text: "4 Seats" },
-            { icon: "icons/carSlider/gas.svg", text: "Petrol" },
-            { icon: "icons/carSlider/engine.svg", text: "379 HP" },
-            { icon: "icons/carSlider/wheel.svg", text: "Rear Wheel" },
-        ],
-    },
-    {
-        type: "Sports Car",
-        name: "Lamborghini Huracan",
-        price: 261,
-        stars: 4.4,
-        image: "/images/carSlider/Huracan.png",
-        info: [
-            { icon: "icons/carSlider/automatic.svg", text: "Automatic" },
-            { icon: "icons/carSlider/seat.svg", text: "2 Seats" },
-            { icon: "icons/carSlider/gas.svg", text: "Petrol" },
-            { icon: "icons/carSlider/engine.svg", text: "602 HP" },
-            { icon: "icons/carSlider/wheel.svg", text: "All Wheel" },
-        ],
-    },
-    {
-        type: "SUV",
-        name: "Land Cruiser 200",
-        price: 148,
-        stars: 5,
-        image: "/images/carSlider/LC200.png",
-        info: [
-            { icon: "icons/carSlider/automatic.svg", text: "Automatic" },
-            { icon: "icons/carSlider/seat.svg", text: "5 Seats" },
-            { icon: "icons/carSlider/gas.svg", text: "Petrol" },
-            { icon: "icons/carSlider/engine.svg", text: "654 HP" },
-            { icon: "icons/carSlider/wheel.svg", text: "All Wheel" },
-        ],
-    },
-];
-
 export default function CarSlider() {
     const { isAuthenticated } = useAuthContext();
     const { handleLoginDialogExitOpen } = usePageContext();
     const [showDetials, setShowDetails] = useState(false);
+    const [cars, setCars] = useState<Array<unknown>>([]);
     const swiperRef = useRef(null);
+
+    useEffect(() => {
+        getAllCars();
+    }, []);
+
+    const getAllCars = async () => {
+        setCars(await carService.getAll());
+    };
 
     useEffect(() => {
         // Register Swiper web component
@@ -163,60 +101,97 @@ export default function CarSlider() {
             className="container mx-auto"
         >
             <swiper-container init="false" ref={swiperRef}>
-                {cars.map((car, index) => (
+                {cars.map((car: any, index) => (
                     <swiper-slide key={index}>
-                        <div className="max-w-[385px] mx-auto sm:mx-0 h-[500px]  flex flex-col justify-evenly">
-                            <span className="h-[200px]">
+                        <div className="max-w-[380px] mx-auto sm:mx-0 h-[500px] flex flex-col justify-evenly shadow-xl">
+                            <span className="w-full overflow-hidden">
                                 <Image
-                                    src={car.image}
+                                    src={car["car-images"][0].fileUrl}
                                     height={380}
-                                    width={
-                                        car.name === "Toyota RAV4" ? 1000 : 340
-                                    }
-                                    alt="image"
+                                    width={340}
+                                    alt="Car Image"
+                                    className="object-cover rounded-lg w-full"
                                 />
                             </span>
-                            <div className="flex justify-between">
+
+                            <div className="flex justify-between px-4 py-2">
                                 <div>
                                     <span className="text-[13px] text-secondary uppercase">
-                                        {car.type}
+                                        {car["car-type"].value}
                                     </span>
-                                    <h3 className="text-lg uppercase font-bold">
-                                        {car.name}
+                                    <h3 className="uppercase font-bold">
+                                        {car["car-model"]}
                                     </h3>
                                     <h3 className="mb-10 text-accent-default font-semibold uppercase">
-                                        {`${car.price}.000$`}
+                                        {`${car["car-price"]}$`}
                                     </h3>
                                 </div>
                                 <span className="flex">
-                                    {generateStars(car.stars)}
+                                    {generateStars(car["car-rating"])}
                                 </span>
                             </div>
-                            <div className="flex gap-x-3 xl:gap-x-4 w-max mb-10">
-                                {car.info.map((item, index) => (
-                                    <div
-                                        key={index}
-                                        className="flex flex-col items-center"
-                                    >
-                                        <span className="bg-primary w-12 h-12 rounded-full flex justify-center items-center mb-2">
-                                            <Image
-                                                src={item.icon}
-                                                width={24}
-                                                height={24}
-                                                alt=""
-                                            />
-                                        </span>
-                                        <span className="text-[12px] uppercase">
-                                            {item.text}
-                                        </span>
-                                    </div>
-                                ))}
+                            <div className="flex gap-x-3 xl:gap-x-4 mb-10 items-center justify-between content-between w-full px-4">
+                                <div className="flex flex-col items-center">
+                                    <span className="bg-primary w-12 h-12 rounded-full flex justify-center items-center mb-2">
+                                        <Image
+                                            src={
+                                                "icons/carSlider/automatic.svg"
+                                            }
+                                            width={24}
+                                            height={24}
+                                            alt=""
+                                        />
+                                    </span>
+                                    <span className="text-[12px] text-xs text-center">
+                                        {car["car-transmission"].value}
+                                    </span>
+                                </div>
+
+                                <div className="flex flex-col items-center">
+                                    <span className="bg-primary w-12 h-12 rounded-full flex justify-center items-center mb-2">
+                                        <Image
+                                            src={"icons/carSlider/gas.svg"}
+                                            width={24}
+                                            height={24}
+                                            alt=""
+                                        />
+                                    </span>
+                                    <span className="text-[12px] text-xs text-center">
+                                        {car["car-fuel-type"].value}
+                                    </span>
+                                </div>
+                                <div className="flex flex-col items-center">
+                                    <span className="bg-primary w-12 h-12 rounded-full flex justify-center items-center mb-2">
+                                        <Image
+                                            src={"icons/carSlider/engine.svg"}
+                                            width={24}
+                                            height={24}
+                                            alt=""
+                                        />
+                                    </span>
+                                    <span className="text-[12px] text-xs text-center">
+                                        {`${car["car-horsepower"]} HP`}
+                                    </span>
+                                </div>
+                                <div className="flex flex-col items-center">
+                                    <span className="bg-primary w-12 h-12 rounded-full flex justify-center items-center mb-2">
+                                        <Image
+                                            src={"icons/carSlider/wheel.svg"}
+                                            width={24}
+                                            height={24}
+                                            alt=""
+                                        />
+                                    </span>
+                                    <span className="text-[12px] text-xs text-center">
+                                        {car["car-drive-type"].value}
+                                    </span>
+                                </div>
                             </div>
                             {/* If the user has logged in - display the details, oterwise direct them to the login dialog */}
                             {isAuthenticated ? (
                                 <Link
                                     className="btn btn-accent btn-lg"
-                                    href={"/CarDetails"}
+                                    href={`/CarDetails/${car._id}`}
                                 >
                                     See Details
                                 </Link>
