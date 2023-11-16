@@ -10,8 +10,16 @@ import { UploadDropzone } from "../utilities/uploadthing";
 import makeAnimated from "react-select/animated";
 import Select from "react-select";
 
+//components
+import { Star } from "./Star/Star";
+
+//react-slider
+import ReactSlider from "react-slider";
+
 //types
 import { MultiValue, SingleValue } from "react-select";
+import { button } from "@material-tailwind/react";
+import { UploadFileResponse } from "uploadthing/client";
 
 type IOption = {
     value: string;
@@ -187,6 +195,79 @@ const carMakes: IOption[] = [
     "Infiniti",
 ].map((brand) => ({ value: brand, label: brand }));
 
+const transmissionTypes: IOption[] = [
+    "Automatic",
+    "Manual",
+    "Semi-Automatic",
+    "Dual-Clutch Transmission (DCT)",
+    "Tiptronic",
+    "Direct Shift Gearbox (DSG)",
+    "Automated Manual Transmission (AMT)",
+    "Sequential Manual Gearbox (SMG)",
+    "Torque Converter Automatic",
+].map((transmission) => ({ value: transmission, label: transmission }));
+
+const carConditions: IOption[] = [
+    "New",
+    "Used",
+    "Crashed",
+    "In need of repair",
+].map((condition) => ({ value: condition, label: condition }));
+
+const carFuelTypes: IOption[] = [
+    "Gasoline",
+    "Diesel",
+    "Electric",
+    "Hybrid",
+    "Plug-in Hybrid",
+    "Flex-Fuel",
+    "Hydrogen Fuel Cell",
+    "Compressed Natural Gas (CNG)",
+    "Liquefied Petroleum Gas (LPG)",
+    "Ethanol",
+    "Biodiesel",
+    "Methanol",
+    "P-Series Fuels",
+].map((fuelType) => ({ value: fuelType, label: fuelType }));
+
+const carEngineTypes: IOption[] = [
+    "Inline",
+    "V-Type",
+    "Flat (Boxer)",
+    "W-Type",
+    "Rotary (Wankel)",
+    "Electric Motor",
+    "Hybrid",
+    "Hydrogen",
+    "Steam",
+    "Two-Stroke",
+    "Four-Stroke",
+    "Opposed Piston",
+    "Single Cylinder",
+    "Twin Cylinder",
+    "Triple Cylinder",
+    "Four Cylinder",
+    "Five Cylinder",
+    "Six Cylinder",
+    "Eight Cylinder",
+    "Ten Cylinder",
+    "Twelve Cylinder",
+    "Sixteen Cylinder",
+].map((engineType) => ({ value: engineType, label: engineType }));
+
+const carDriveTypes: IOption[] = [
+    "All Wheel Drive (AWD)",
+    "Four Wheel Drive (4WD)",
+    "Front Wheel Drive (FWD)",
+    "Rear Wheel Drive (RWD)",
+    "Four Wheel Drive (4x4)",
+    "Two Wheel Drive (2WD)",
+    "Part-Time Four Wheel Drive",
+    "Full-Time Four Wheel Drive",
+    "Six Wheel Drive (6WD)",
+    "Eight Wheel Drive (8WD)",
+].map((driveType) => ({ value: driveType, label: driveType }));
+
 const customStyles = {
     option: (
         styles: object,
@@ -227,17 +308,42 @@ const customStyles = {
     }),
     valueContainer: (provided: object) => ({
         ...provided,
-        maxHeight: "30px",
+        maxHeight: "40px",
         overflow: "auto",
     }),
 };
 
 export default function Page() {
+    const animatedComponents = makeAnimated();
     const [selectedExtras, setSelectedExtras] = useState<Array<string>>([]);
     const [selectedType, setSelectedType] = useState<SingleValue<IOption>>();
     const [selectedMake, setSelectedMake] = useState<SingleValue<IOption>>();
+    const [selectedTransmission, setSelectedTransmission] =
+        useState<SingleValue<IOption>>();
+    const [selectedCarCondition, setSelectedCarCondition] =
+        useState<SingleValue<IOption>>();
+    const [selectedFuelType, setSelectedFuelType] =
+        useState<SingleValue<IOption>>();
+    const [selectedEngineType, setSelectedEngineType] =
+        useState<SingleValue<IOption>>();
+    const [selectedDriveType, setSelectedDriveType] =
+        useState<SingleValue<IOption>>();
+    const [rating, setRating] = useState(0);
+    const [hoverRating, setHoverRating] = useState(0);
+    const [price, setPrice] = useState<number>(25000);
+    const [images, setImages] = useState<UploadFileResponse[] | undefined>([]);
 
-    const animatedComponents = makeAnimated();
+    const onMouseEnter = (index: number) => {
+        setHoverRating(index);
+    };
+
+    const onMouseLeave = () => {
+        setHoverRating(0);
+    };
+
+    const onSaveRating = (index: number) => {
+        setRating(index);
+    };
 
     const handleCarExtras = (selectedOptions: MultiValue<IOption>) => {
         setSelectedExtras(selectedOptions.map((option) => option.value));
@@ -251,8 +357,28 @@ export default function Page() {
         setSelectedMake(selectedOption);
     };
 
+    const handleTransmissionType = (selectedOption: SingleValue<IOption>) => {
+        setSelectedTransmission(selectedOption);
+    };
+
+    const handleCarCondition = (selectedOption: SingleValue<IOption>) => {
+        setSelectedCarCondition(selectedOption);
+    };
+
+    const handleFuelType = (selectedOption: SingleValue<IOption>) => {
+        setSelectedFuelType(selectedOption);
+    };
+
+    const handleEngineType = (selectedOption: SingleValue<IOption>) => {
+        setSelectedEngineType(selectedOption);
+    };
+
+    const handleDriveType = (selectedOption: SingleValue<IOption>) => {
+        setSelectedDriveType(selectedOption);
+    };
+
     return (
-        <section className="container text-black p-20 flex flex-col">
+        <section className="container text-black p-20 flex flex-col gap-y-2 overflow-auto">
             <div className="w-full flex gap-x-4">
                 <Select
                     components={animatedComponents}
@@ -276,7 +402,7 @@ export default function Page() {
                     components={animatedComponents}
                     name="carType"
                     options={carTypes}
-                    className="min-w-[20%]"
+                    className="w-full"
                     styles={customStyles}
                     value={selectedType}
                     onChange={(option) => handleCarType(option)}
@@ -284,32 +410,196 @@ export default function Page() {
                     placeholder="Car type....."
                 />
             </div>
-            <div className="w-full flex gap-x-4">
+            <div className="w-full flex gap-x-4 items-center">
                 <Select
                     isMulti={false}
                     components={animatedComponents}
                     name="carType"
                     options={carMakes}
-                    className="min-w-[20%]"
+                    className="w-[25%]"
                     styles={customStyles}
                     value={selectedMake}
                     onChange={(option) => handleCarMake(option)}
                     isOptionDisabled={(option) => option === selectedMake}
                     placeholder="Car make....."
                 />
-            </div>
-            <div className="flex h-screen flex-col items-center p-24">
-                <UploadDropzone
-                    endpoint="imageUploader"
-                    onClientUploadComplete={(res) => {
-                        console.log(JSON.stringify(res));
-                        alert("Upload Completed");
-                    }}
-                    onUploadError={(error: Error) => {
-                        alert(`ERROR! ${error.message}`);
-                    }}
+                <input
+                    type="text"
+                    name="model"
+                    id="model"
+                    placeholder="Model....."
+                    className="placeholder-gray-600 w-[20%] border border-gray-400 rounded-md text-black py-2 px-4 leading-tight focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                />
+                <input
+                    type="number"
+                    name="km"
+                    id="km"
+                    placeholder="Kilometers....."
+                    className="placeholder-gray-600 w-[20%] border border-gray-400 rounded-md text-black py-2 px-4 leading-tight focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                />
+                <Select
+                    isMulti={false}
+                    components={animatedComponents}
+                    name="carTransmission"
+                    options={transmissionTypes}
+                    className="grow"
+                    styles={customStyles}
+                    value={selectedTransmission}
+                    onChange={(option) => handleTransmissionType(option)}
+                    isOptionDisabled={(option) =>
+                        option === selectedTransmission
+                    }
+                    placeholder="Car transmission....."
                 />
             </div>
+            <div className="w-full flex gap-x-4 items-center">
+                <Select
+                    isMulti={false}
+                    components={animatedComponents}
+                    name="carCondition"
+                    options={carConditions}
+                    className="w-[25%]"
+                    styles={customStyles}
+                    value={selectedCarCondition}
+                    onChange={(option) => handleCarCondition(option)}
+                    isOptionDisabled={(option) =>
+                        option === selectedCarCondition
+                    }
+                    placeholder="Car condition....."
+                />
+                {/* Add max/min */}
+                <input
+                    type="number"
+                    name="year"
+                    id="year"
+                    placeholder="Year....."
+                    className="placeholder-gray-600 w-[25%] border border-gray-400 rounded-md text-black py-2 px-4 leading-tight focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                />
+                <input
+                    type="text"
+                    name="color"
+                    id="color"
+                    placeholder="Color....."
+                    className="placeholder-gray-600 w-[25%] border border-gray-400 rounded-md text-black py-2 px-4 leading-tight focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                />
+                <Select
+                    isMulti={false}
+                    components={animatedComponents}
+                    name="carFuelType"
+                    options={carFuelTypes}
+                    className="w-[25%]"
+                    styles={customStyles}
+                    value={selectedFuelType}
+                    onChange={(option) => handleFuelType(option)}
+                    isOptionDisabled={(option) => option === selectedFuelType}
+                    placeholder="Car fuel type....."
+                />
+            </div>
+            <div className="w-full flex gap-x-4 items-center">
+                <Select
+                    isMulti={false}
+                    components={animatedComponents}
+                    name="carEngineType"
+                    options={carEngineTypes}
+                    className="w-[30%]"
+                    styles={customStyles}
+                    value={selectedEngineType}
+                    onChange={(option) => handleEngineType(option)}
+                    isOptionDisabled={(option) => option === selectedEngineType}
+                    placeholder="Car engine type....."
+                />
+                <input
+                    type="text"
+                    name="size"
+                    id="size"
+                    placeholder="Engine size....."
+                    className="placeholder-gray-600 w-[25%] border border-gray-400 rounded-md text-black py-2 px-4 leading-tight focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                />
+                {/* Add min/max */}
+                <input
+                    type="number"
+                    name="doors"
+                    id="doors"
+                    placeholder="Doors....."
+                    className="placeholder-gray-600 w-[20%] border border-gray-400 rounded-md text-black py-2 px-4 leading-tight focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                />
+                {/* Add min */}
+                <input
+                    type="number"
+                    name="horsepower"
+                    id="horsepower"
+                    placeholder="Horsepower....."
+                    className="placeholder-gray-600 w-[25%] border border-gray-400 rounded-md text-black py-2 px-4 leading-tight focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                />
+            </div>
+            <div className="w-full flex gap-x-4 items-center">
+                <Select
+                    isMulti={false}
+                    components={animatedComponents}
+                    name="carDriveType"
+                    options={carDriveTypes}
+                    className="w-[40%]"
+                    styles={customStyles}
+                    value={selectedDriveType}
+                    onChange={(option) => handleDriveType(option)}
+                    isOptionDisabled={(option) => option === selectedDriveType}
+                    placeholder="Car drive type....."
+                />
+                <div className="w-full flex items-center gap-x-8 bg-gray-50 p-2 rounded-lg">
+                    <ReactSlider
+                        className="h-2 w-full flex items-center"
+                        thumbClassName="h-6 w-6 rounded-full bg-blue-500 hover:bg-blue-700 focus:outline-none"
+                        trackClassName="h-2 bg-gray-200"
+                        defaultValue={price}
+                        onChange={(value) => setPrice(Number(value))}
+                        min={0}
+                        max={1000000}
+                        step={100}
+                    />
+                    <div className="w-[32%] text-gray-800">
+                        Price: ${price.toLocaleString()}
+                    </div>
+                </div>
+            </div>
+            <textarea
+                className="placeholder-gray-600 focus:outline-none border-gray-400 rounded-lg border min-h-[100px] max-h-[400px] p-2 "
+                name="technicalDescription"
+                id="technicalDescription"
+                placeholder="Technical description....."
+            ></textarea>
+            <div className="flex gap-x-2">
+                <p>How would you rate your car overall?</p>
+                <div className="flex space-x-1">
+                    {[1, 2, 3, 4, 5].map((index) => (
+                        <Star
+                            key={index}
+                            filled={
+                                hoverRating >= index ||
+                                (!hoverRating && rating >= index)
+                            }
+                            onMouseEnter={() => onMouseEnter(index)}
+                            onMouseLeave={onMouseLeave}
+                            onClick={() => onSaveRating(index)}
+                        />
+                    ))}
+                </div>
+            </div>
+            <UploadDropzone
+                content={{
+                    button() {
+                        return "Upload Images";
+                    },
+                }}
+                endpoint="imageUploader"
+                onClientUploadComplete={(res) => {
+                    setImages(res);
+                    console.log(JSON.stringify(res));
+                    alert("Upload Completed");
+                }}
+                onUploadError={(error: Error) => {
+                    alert(`ERROR! ${error.message}`);
+                }}
+            />
         </section>
     );
 }
