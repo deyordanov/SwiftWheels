@@ -22,24 +22,24 @@ import OfferModal from "./OfferModal/OfferModal";
 
 //This object would be injected from the outside
 const car = {
-    type: "SUV",
-    make: "Toyota",
-    name: "Land Cruiser 200",
-    model: "200",
+    type: "SUV", //
+    make: "Toyota", //
+    name: "Land Cruiser 200", //
+    model: "200", //
     price: "148.000$",
-    stars: 5,
+    stars: 5, //
     image: "/images/carSlider/LC200.png",
-    km: "140 000km",
-    transmission: "Automatic",
-    condition: "Used",
-    year: "2020",
-    color: "Metallic",
-    "fuel type": "Diesel",
-    "engine size": "5L",
-    doors: "4",
-    cylinders: "8",
-    horsepower: "654HP",
-    "drive type": "4x4",
+    km: "140 000km", //
+    transmission: "Automatic", //
+    condition: "Used", //
+    year: "2020", //
+    color: "Metallic", //
+    "fuel type": "Diesel", //
+    "engine size": "5L", //
+    doors: "4", //
+    cylinders: "8", //
+    horsepower: "654HP", //
+    "drive type": "4x4", //
     extras: [
         "Advanced Navigation System",
         "Premium Leather Upholstery",
@@ -56,7 +56,7 @@ const car = {
         "Multi-Terrain Select with Crawl Control",
         "LED Headlights with Automatic High Beams",
         "Head-Up Display",
-    ],
+    ], //
     techincalDescription:
         'The Toyota Land Cruiser 200 series is an iconic and robust SUV known for its ability to balance luxury with rugged off-road capabilities. It debuted in 2008, and even by the 2021 model year, it remained part of the 200 Series. Despite some criticisms regarding its dated features and styling, the Land Cruiser 200 series has maintained its reputation for being a highly capable vehicle, often referred to as a "backcountry beast" that doesn`t shy away from luxury​​. In terms of specifications, the Land Cruiser 200 series is available with either a 4.6-liter gasoline engine (1UR-FE) or a 4.5-liter diesel engine (1VD-FTV). The overall dimensions are 4950 mm in length (which can increase with a winch, spare tire, or bumper protector), 1970 mm in width, and 1890 mm in height (or 1905 mm with roof rails). It has a wheelbase of 2850 mm, a ground clearance of 225 mm, and various tire options including 285/65R17 and 285/60R18. The front suspension is a double wishbone type, while the rear features a 4 link coil rigid suspension with a lateral rod. The vehicle is equipped with ventilated disc brakes on both front and rear and has a 6-speed automatic transmission. Engine output varies with the gasoline version delivering 304 HP at 5500 rpm and the diesel 232 HP at 3200 rpm (when paired with a 6-speed automatic transmission)​​.',
     images: [

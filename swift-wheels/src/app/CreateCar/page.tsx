@@ -5,10 +5,11 @@ import React, { useState } from "react";
 
 //uploadthing
 import { UploadDropzone } from "../utilities/uploadthing";
+import { UploadFileResponse } from "uploadthing/client";
 
 //react-select
 import makeAnimated from "react-select/animated";
-import Select from "react-select";
+import Select, { CSSObjectWithLabel } from "react-select";
 
 //components
 import { Star } from "./Star/Star";
@@ -18,8 +19,9 @@ import ReactSlider from "react-slider";
 
 //types
 import { MultiValue, SingleValue } from "react-select";
-import { button } from "@material-tailwind/react";
-import { UploadFileResponse } from "uploadthing/client";
+
+//react-hook-form
+import { Controller, useForm } from "react-hook-form";
 
 type IOption = {
     value: string;
@@ -313,25 +315,66 @@ const customStyles = {
     }),
 };
 
+const createCarFormKeys = {
+    CAR_EXTRAS: "car-extras",
+    CAR_TYPE: "car-type",
+    CAR_MAKE: "car-make",
+    CAR_TRANSMISSION: "car-transmission",
+    CAR_CONDITION: "car-condition",
+    CAR_FUEL_TYPE: "car-fuel-type",
+    CAR_ENGINE_TYPE: "car-engine-type",
+    CAR_DRIVE_TYPE: "car-drive-type",
+    CAR_MODEL: "car-model",
+    CAR_KM: "car-km",
+    CAR_YEAR: "car-year",
+    CAR_COLOR: "car-color",
+    CAR_ENGINE_SIZE: "car-engine-size",
+    CAR_DOORS: "car-doors",
+    CAR_HORSEPOWER: "car-horsepower",
+    CAR_TECHNICAL_DESCRIPTION: "car-technical-description",
+    CAR_RATING: "car-rating",
+    CAR_PRICE: "car-price",
+    CAR_IMAGES: "car-images",
+};
+
+const createCarFormDefaultValues = {
+    [createCarFormKeys.CAR_EXTRAS]: [], // since it's a multi-select, default to an empty array
+    [createCarFormKeys.CAR_IMAGES]: [],
+    [createCarFormKeys.CAR_TYPE]: null, // or your default option
+    [createCarFormKeys.CAR_MAKE]: null, // or your default option
+    [createCarFormKeys.CAR_TRANSMISSION]: null, // or your default option
+    [createCarFormKeys.CAR_CONDITION]: null, // or your default option
+    [createCarFormKeys.CAR_FUEL_TYPE]: null, // or your default option
+    [createCarFormKeys.CAR_ENGINE_TYPE]: null, // or your default option
+    [createCarFormKeys.CAR_DRIVE_TYPE]: null, // or your default option
+    [createCarFormKeys.CAR_MODEL]: "", // default to an empty string
+    [createCarFormKeys.CAR_KM]: "", // default to an empty string
+    [createCarFormKeys.CAR_YEAR]: "", // default to an empty string
+    [createCarFormKeys.CAR_COLOR]: "", // default to an empty string
+    [createCarFormKeys.CAR_ENGINE_SIZE]: "", // default to an empty string
+    [createCarFormKeys.CAR_DOORS]: "", // default to an empty string
+    [createCarFormKeys.CAR_HORSEPOWER]: "", // default to an empty string
+    [createCarFormKeys.CAR_TECHNICAL_DESCRIPTION]: "", // default to an empty string
+    [createCarFormKeys.CAR_RATING]: 0, // assuming the rating starts at 0
+    [createCarFormKeys.CAR_PRICE]: 25000, // default price
+    // Add more fields as necessary
+};
+
 export default function Page() {
     const animatedComponents = makeAnimated();
-    const [selectedExtras, setSelectedExtras] = useState<Array<string>>([]);
-    const [selectedType, setSelectedType] = useState<SingleValue<IOption>>();
-    const [selectedMake, setSelectedMake] = useState<SingleValue<IOption>>();
-    const [selectedTransmission, setSelectedTransmission] =
-        useState<SingleValue<IOption>>();
-    const [selectedCarCondition, setSelectedCarCondition] =
-        useState<SingleValue<IOption>>();
-    const [selectedFuelType, setSelectedFuelType] =
-        useState<SingleValue<IOption>>();
-    const [selectedEngineType, setSelectedEngineType] =
-        useState<SingleValue<IOption>>();
-    const [selectedDriveType, setSelectedDriveType] =
-        useState<SingleValue<IOption>>();
-    const [rating, setRating] = useState(0);
     const [hoverRating, setHoverRating] = useState(0);
     const [price, setPrice] = useState<number>(25000);
-    const [images, setImages] = useState<UploadFileResponse[] | undefined>([]);
+
+    const {
+        register,
+        control,
+        setValue,
+        formState: { errors },
+        handleSubmit,
+    } = useForm({
+        defaultValues: createCarFormDefaultValues,
+        mode: "onSubmit",
+    });
 
     const onMouseEnter = (index: number) => {
         setHoverRating(index);
@@ -341,265 +384,493 @@ export default function Page() {
         setHoverRating(0);
     };
 
-    const onSaveRating = (index: number) => {
-        setRating(index);
+    const onClientUploadComplete = (res) => {
+        setValue(createCarFormKeys.CAR_IMAGES, res);
+        console.log(JSON.stringify(res));
+        alert("Upload Completed");
     };
 
-    const handleCarExtras = (selectedOptions: MultiValue<IOption>) => {
-        setSelectedExtras(selectedOptions.map((option) => option.value));
+    const onSubmit = (data: object) => {
+        console.log(data);
     };
 
-    const handleCarType = (selectedOption: SingleValue<IOption>) => {
-        setSelectedType(selectedOption);
-    };
-
-    const handleCarMake = (selectedOption: SingleValue<IOption>) => {
-        setSelectedMake(selectedOption);
-    };
-
-    const handleTransmissionType = (selectedOption: SingleValue<IOption>) => {
-        setSelectedTransmission(selectedOption);
-    };
-
-    const handleCarCondition = (selectedOption: SingleValue<IOption>) => {
-        setSelectedCarCondition(selectedOption);
-    };
-
-    const handleFuelType = (selectedOption: SingleValue<IOption>) => {
-        setSelectedFuelType(selectedOption);
-    };
-
-    const handleEngineType = (selectedOption: SingleValue<IOption>) => {
-        setSelectedEngineType(selectedOption);
-    };
-
-    const handleDriveType = (selectedOption: SingleValue<IOption>) => {
-        setSelectedDriveType(selectedOption);
-    };
+    function getSelectControlStype(
+        fieldName: string,
+        base: CSSObjectWithLabel
+    ) {
+        return {
+            ...base,
+            borderColor: errors[fieldName]
+                ? "rgb(244, 67, 54)"
+                : base.borderColor,
+            boxShadow: "none",
+            "&:hover": {
+                borderColor: errors[fieldName]
+                    ? "rgb(244, 67, 54)"
+                    : base.borderColor,
+            },
+        };
+    }
 
     return (
-        <section className="container text-black p-20 flex flex-col gap-y-2 overflow-auto">
+        <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="container text-black p-20 flex flex-col gap-y-2 overflow-auto"
+        >
             <div className="w-full flex gap-x-4">
-                <Select
-                    components={animatedComponents}
-                    isMulti
-                    name="luxuryCarExtras"
-                    options={luxuryCarExtras}
-                    className="basic-multi-select min-w-[75%]"
-                    classNamePrefix="select"
-                    styles={customStyles}
-                    value={luxuryCarExtras.filter((obj) =>
-                        selectedExtras.includes(obj.value)
+                <Controller
+                    control={control}
+                    name={createCarFormKeys.CAR_EXTRAS}
+                    rules={{ required: "This field is required!" }}
+                    render={({ field }) => (
+                        <Select
+                            {...field}
+                            components={animatedComponents}
+                            isMulti
+                            options={luxuryCarExtras}
+                            className="min-w-[75%]"
+                            classNamePrefix="select"
+                            styles={{
+                                ...customStyles,
+                                control: (base) =>
+                                    getSelectControlStype(
+                                        createCarFormKeys.CAR_EXTRAS,
+                                        base
+                                    ),
+                            }}
+                            value={luxuryCarExtras.filter((option) =>
+                                (field.value as string[]).includes(option.value)
+                            )}
+                            onChange={(value) =>
+                                field.onChange(
+                                    value.map((option) => option.value)
+                                )
+                            }
+                            isOptionDisabled={(option) =>
+                                (field.value as string[]).includes(option.value)
+                            }
+                            placeholder="Select Car Extras..."
+                        />
                     )}
-                    onChange={(options) => handleCarExtras(options)}
-                    isOptionDisabled={(option) =>
-                        selectedExtras.includes(option.value)
-                    }
-                    placeholder="Car extras....."
                 />
-                <Select
-                    isMulti={false}
-                    components={animatedComponents}
-                    name="carType"
-                    options={carTypes}
-                    className="w-full"
-                    styles={customStyles}
-                    value={selectedType}
-                    onChange={(option) => handleCarType(option)}
-                    isOptionDisabled={(option) => option === selectedType}
-                    placeholder="Car type....."
+
+                <Controller
+                    control={control}
+                    name={createCarFormKeys.CAR_TYPE}
+                    rules={{ required: "This field is required!" }}
+                    render={({ field }) => (
+                        <Select
+                            {...field}
+                            isMulti={false}
+                            components={animatedComponents}
+                            options={carTypes as any}
+                            className="w-full"
+                            styles={{
+                                ...customStyles,
+                                control: (base) =>
+                                    getSelectControlStype(
+                                        createCarFormKeys.CAR_TYPE,
+                                        base
+                                    ),
+                            }}
+                            placeholder="Car type....."
+                        />
+                    )}
                 />
             </div>
             <div className="w-full flex gap-x-4 items-center">
-                <Select
-                    isMulti={false}
-                    components={animatedComponents}
-                    name="carType"
-                    options={carMakes}
-                    className="w-[25%]"
-                    styles={customStyles}
-                    value={selectedMake}
-                    onChange={(option) => handleCarMake(option)}
-                    isOptionDisabled={(option) => option === selectedMake}
-                    placeholder="Car make....."
+                <Controller
+                    control={control}
+                    name={createCarFormKeys.CAR_MAKE}
+                    rules={{ required: "This field is required!" }}
+                    render={({ field }) => (
+                        <Select
+                            {...field}
+                            isMulti={false}
+                            components={animatedComponents}
+                            options={carMakes as any}
+                            className="w-[25%]"
+                            styles={{
+                                ...customStyles,
+                                control: (base) =>
+                                    getSelectControlStype(
+                                        createCarFormKeys.CAR_MAKE,
+                                        base
+                                    ),
+                            }}
+                            placeholder="Car make....."
+                        />
+                    )}
                 />
                 <input
+                    {...register(createCarFormKeys.CAR_MODEL, {
+                        required: "This field is required!",
+                    })}
                     type="text"
-                    name="model"
-                    id="model"
+                    name={createCarFormKeys.CAR_MODEL}
+                    id={createCarFormKeys.CAR_MODEL}
                     placeholder="Model....."
-                    className="placeholder-gray-600 w-[20%] border border-gray-400 rounded-md text-black py-2 px-4 leading-tight focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                    className={`placeholder-gray-600 w-[20%] border border-gray-400 rounded-md text-black py-2 px-4 leading-tight focus:outline-none ${
+                        errors[createCarFormKeys.CAR_MODEL]
+                            ? "border-red-500"
+                            : ""
+                    }`}
                 />
                 <input
+                    {...register(createCarFormKeys.CAR_KM, {
+                        required: "This field is required!",
+                        validate: (value) =>
+                            Number(value) >= 0 ||
+                            "The kilometers cannot be a negative number!",
+                    })}
                     type="number"
-                    name="km"
-                    id="km"
+                    name={createCarFormKeys.CAR_KM}
+                    id={createCarFormKeys.CAR_KM}
                     placeholder="Kilometers....."
-                    className="placeholder-gray-600 w-[20%] border border-gray-400 rounded-md text-black py-2 px-4 leading-tight focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                    className={`placeholder-gray-600 w-[20%] border border-gray-400 rounded-md text-black py-2 px-4 leading-tight focus:outline-none ${
+                        errors[createCarFormKeys.CAR_KM] ? "border-red-500" : ""
+                    }`}
                 />
-                <Select
-                    isMulti={false}
-                    components={animatedComponents}
-                    name="carTransmission"
-                    options={transmissionTypes}
-                    className="grow"
-                    styles={customStyles}
-                    value={selectedTransmission}
-                    onChange={(option) => handleTransmissionType(option)}
-                    isOptionDisabled={(option) =>
-                        option === selectedTransmission
-                    }
-                    placeholder="Car transmission....."
+                <Controller
+                    control={control}
+                    name={createCarFormKeys.CAR_TRANSMISSION}
+                    rules={{ required: "This field is required!" }}
+                    render={({ field }) => (
+                        <Select
+                            {...field}
+                            isMulti={false}
+                            components={animatedComponents}
+                            options={transmissionTypes as any}
+                            className="grow"
+                            styles={{
+                                ...customStyles,
+                                control: (base) =>
+                                    getSelectControlStype(
+                                        createCarFormKeys.CAR_EXTRAS,
+                                        base
+                                    ),
+                            }}
+                            placeholder="Car transmission....."
+                        />
+                    )}
                 />
             </div>
             <div className="w-full flex gap-x-4 items-center">
-                <Select
-                    isMulti={false}
-                    components={animatedComponents}
-                    name="carCondition"
-                    options={carConditions}
-                    className="w-[25%]"
-                    styles={customStyles}
-                    value={selectedCarCondition}
-                    onChange={(option) => handleCarCondition(option)}
-                    isOptionDisabled={(option) =>
-                        option === selectedCarCondition
-                    }
-                    placeholder="Car condition....."
+                <Controller
+                    control={control}
+                    name={createCarFormKeys.CAR_CONDITION}
+                    rules={{ required: "This field is required!" }} // This sets the field as required
+                    render={({ field }) => (
+                        <Select
+                            {...field} // This spreads the onChange, onBlur, value, and name properties
+                            isMulti={false}
+                            components={animatedComponents}
+                            options={carConditions as any}
+                            className="w-[25%]"
+                            styles={{
+                                ...customStyles,
+                                control: (base) =>
+                                    getSelectControlStype(
+                                        createCarFormKeys.CAR_CONDITION,
+                                        base
+                                    ),
+                            }}
+                            placeholder="Car condition....."
+                        />
+                    )}
                 />
-                {/* Add max/min */}
                 <input
+                    {...register(createCarFormKeys.CAR_YEAR, {
+                        required: "This field is required!",
+                        min: {
+                            message:
+                                "We do not sell cars that have been manufactured before 1990!",
+                            value: 1960,
+                        },
+                        max: {
+                            message:
+                                "We do not sell cars that have been manufactured after 2024!",
+                            value: 2024,
+                        },
+                    })}
                     type="number"
-                    name="year"
-                    id="year"
+                    name={createCarFormKeys.CAR_YEAR}
+                    id={createCarFormKeys.CAR_YEAR}
                     placeholder="Year....."
-                    className="placeholder-gray-600 w-[25%] border border-gray-400 rounded-md text-black py-2 px-4 leading-tight focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                    className={`placeholder-gray-600 w-[25%] border border-gray-400 rounded-md text-black py-2 px-4 leading-tight focus:outline-none ${
+                        errors[createCarFormKeys.CAR_YEAR]
+                            ? "border-red-500"
+                            : ""
+                    }`}
                 />
                 <input
+                    {...register(createCarFormKeys.CAR_COLOR, {
+                        required: "This field is required!",
+                    })}
                     type="text"
-                    name="color"
-                    id="color"
+                    name={createCarFormKeys.CAR_COLOR}
+                    id={createCarFormKeys.CAR_COLOR}
                     placeholder="Color....."
-                    className="placeholder-gray-600 w-[25%] border border-gray-400 rounded-md text-black py-2 px-4 leading-tight focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                    className={`placeholder-gray-600 w-[25%] border border-gray-400 rounded-md text-black py-2 px-4 leading-tight focus:outline-none ${
+                        errors[createCarFormKeys.CAR_COLOR]
+                            ? "border-red-500"
+                            : ""
+                    }`}
                 />
-                <Select
-                    isMulti={false}
-                    components={animatedComponents}
-                    name="carFuelType"
-                    options={carFuelTypes}
-                    className="w-[25%]"
-                    styles={customStyles}
-                    value={selectedFuelType}
-                    onChange={(option) => handleFuelType(option)}
-                    isOptionDisabled={(option) => option === selectedFuelType}
-                    placeholder="Car fuel type....."
+                <Controller
+                    control={control}
+                    name={createCarFormKeys.CAR_FUEL_TYPE}
+                    rules={{ required: "This field is required!" }}
+                    render={({ field }) => (
+                        <Select
+                            {...field}
+                            isMulti={false}
+                            components={animatedComponents}
+                            options={carFuelTypes as any}
+                            className="w-[25%]"
+                            styles={{
+                                ...customStyles,
+                                control: (base) =>
+                                    getSelectControlStype(
+                                        createCarFormKeys.CAR_FUEL_TYPE,
+                                        base
+                                    ),
+                            }}
+                            placeholder="Car fuel type....."
+                        />
+                    )}
                 />
             </div>
             <div className="w-full flex gap-x-4 items-center">
-                <Select
-                    isMulti={false}
-                    components={animatedComponents}
-                    name="carEngineType"
-                    options={carEngineTypes}
-                    className="w-[30%]"
-                    styles={customStyles}
-                    value={selectedEngineType}
-                    onChange={(option) => handleEngineType(option)}
-                    isOptionDisabled={(option) => option === selectedEngineType}
-                    placeholder="Car engine type....."
+                <Controller
+                    control={control}
+                    name={createCarFormKeys.CAR_ENGINE_TYPE}
+                    rules={{ required: "This field is required!" }}
+                    render={({ field }) => (
+                        <Select
+                            {...field}
+                            isMulti={false}
+                            components={animatedComponents}
+                            options={carEngineTypes as any}
+                            className="w-[30%]"
+                            styles={{
+                                ...customStyles,
+                                control: (base) =>
+                                    getSelectControlStype(
+                                        createCarFormKeys.CAR_ENGINE_TYPE,
+                                        base
+                                    ),
+                            }}
+                            placeholder="Car engine type....."
+                        />
+                    )}
                 />
                 <input
+                    {...register(createCarFormKeys.CAR_ENGINE_SIZE, {
+                        required: "This field is required!",
+                    })}
                     type="text"
-                    name="size"
-                    id="size"
+                    name={createCarFormKeys.CAR_ENGINE_SIZE}
+                    id={createCarFormKeys.CAR_ENGINE_SIZE}
                     placeholder="Engine size....."
-                    className="placeholder-gray-600 w-[25%] border border-gray-400 rounded-md text-black py-2 px-4 leading-tight focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                    className={`placeholder-gray-600 w-[25%] border border-gray-400 rounded-md text-black py-2 px-4 leading-tight focus:outline-none ${
+                        errors[createCarFormKeys.CAR_ENGINE_SIZE]
+                            ? "border-red-500"
+                            : ""
+                    }`}
                 />
-                {/* Add min/max */}
                 <input
+                    {...register(createCarFormKeys.CAR_DOORS, {
+                        required: "This field is required!",
+                        validate: (value) =>
+                            Number(value) >= 0 ||
+                            "The doors cannot be a negative number!",
+                        max: {
+                            message: "The doors cannot exceed 4!",
+                            value: 4,
+                        },
+                    })}
                     type="number"
-                    name="doors"
-                    id="doors"
+                    name={createCarFormKeys.CAR_DOORS}
+                    id={createCarFormKeys.CAR_DOORS}
                     placeholder="Doors....."
-                    className="placeholder-gray-600 w-[20%] border border-gray-400 rounded-md text-black py-2 px-4 leading-tight focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                    className={`placeholder-gray-600 w-[20%] border border-gray-400 rounded-md text-black py-2 px-4 leading-tight focus:outline-none ${
+                        errors[createCarFormKeys.CAR_DOORS]
+                            ? "border-red-500"
+                            : ""
+                    }`}
                 />
-                {/* Add min */}
                 <input
+                    {...register(createCarFormKeys.CAR_HORSEPOWER, {
+                        required: "This field is required!",
+                        validate: (value) =>
+                            Number(value) >= 0 ||
+                            "The horsepower cannot be a negative number!",
+                    })}
                     type="number"
-                    name="horsepower"
-                    id="horsepower"
+                    name={createCarFormKeys.CAR_HORSEPOWER}
+                    id={createCarFormKeys.CAR_HORSEPOWER}
                     placeholder="Horsepower....."
-                    className="placeholder-gray-600 w-[25%] border border-gray-400 rounded-md text-black py-2 px-4 leading-tight focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                    className={`placeholder-gray-600 w-[25%] border border-gray-400 rounded-md text-black py-2 px-4 leading-tight focus:outline-none ${
+                        errors[createCarFormKeys.CAR_HORSEPOWER]
+                            ? "border-red-500"
+                            : ""
+                    }`}
                 />
             </div>
             <div className="w-full flex gap-x-4 items-center">
-                <Select
-                    isMulti={false}
-                    components={animatedComponents}
-                    name="carDriveType"
-                    options={carDriveTypes}
-                    className="w-[40%]"
-                    styles={customStyles}
-                    value={selectedDriveType}
-                    onChange={(option) => handleDriveType(option)}
-                    isOptionDisabled={(option) => option === selectedDriveType}
-                    placeholder="Car drive type....."
+                <Controller
+                    control={control}
+                    name={createCarFormKeys.CAR_DRIVE_TYPE}
+                    rules={{ required: "This field is required!" }}
+                    render={({ field }) => (
+                        <Select
+                            {...field}
+                            isMulti={false}
+                            components={animatedComponents}
+                            options={carDriveTypes as any}
+                            className="w-[40%]"
+                            styles={{
+                                ...customStyles,
+                                control: (base) =>
+                                    getSelectControlStype(
+                                        createCarFormKeys.CAR_DRIVE_TYPE,
+                                        base
+                                    ),
+                            }}
+                            placeholder="Car drive type....."
+                        />
+                    )}
                 />
+                {/* Add error display? */}
                 <div className="w-full flex items-center gap-x-8 bg-gray-50 p-2 rounded-lg">
-                    <ReactSlider
-                        className="h-2 w-full flex items-center"
-                        thumbClassName="h-6 w-6 rounded-full bg-blue-500 hover:bg-blue-700 focus:outline-none"
-                        trackClassName="h-2 bg-gray-200"
-                        defaultValue={price}
-                        onChange={(value) => setPrice(Number(value))}
-                        min={0}
-                        max={1000000}
-                        step={100}
+                    <Controller
+                        control={control}
+                        name={createCarFormKeys.CAR_PRICE}
+                        rules={{ required: "This field is required!" }}
+                        render={({ field: { onChange, value } }) => (
+                            <ReactSlider
+                                className="h-2 w-full flex items-center z-0"
+                                thumbClassName="h-6 w-6 rounded-full bg-blue-400 hover:bg-blue-500 focus:outline-none"
+                                trackClassName="h-2 bg-gray-200"
+                                value={typeof value === "number" ? value : 0}
+                                onChange={(value) => {
+                                    onChange(Number(value));
+                                    setPrice(Number(value));
+                                }}
+                                min={0}
+                                max={1000000}
+                                step={100}
+                            />
+                        )}
                     />
+
                     <div className="w-[32%] text-gray-800">
                         Price: ${price.toLocaleString()}
                     </div>
                 </div>
             </div>
             <textarea
-                className="placeholder-gray-600 focus:outline-none border-gray-400 rounded-lg border min-h-[100px] max-h-[400px] p-2 "
-                name="technicalDescription"
-                id="technicalDescription"
+                {...register(createCarFormKeys.CAR_TECHNICAL_DESCRIPTION, {
+                    required: "This field is required!",
+                    minLength: {
+                        message:
+                            "The technical description should be above 100 characters!",
+                        value: 100,
+                    },
+                    maxLength: {
+                        message:
+                            "The technical description should be below 1000 characters!",
+                        value: 1000,
+                    },
+                })}
+                className={`placeholder-gray-600 focus:outline-none border-gray-400 rounded-lg border min-h-[100px] max-h-[400px] p-2 ${
+                    errors[createCarFormKeys.CAR_TECHNICAL_DESCRIPTION]
+                        ? "border-red-500"
+                        : ""
+                }`}
+                name={createCarFormKeys.CAR_TECHNICAL_DESCRIPTION}
+                id={createCarFormKeys.CAR_TECHNICAL_DESCRIPTION}
                 placeholder="Technical description....."
             ></textarea>
             <div className="flex gap-x-2">
                 <p>How would you rate your car overall?</p>
-                <div className="flex space-x-1">
-                    {[1, 2, 3, 4, 5].map((index) => (
-                        <Star
-                            key={index}
-                            filled={
-                                hoverRating >= index ||
-                                (!hoverRating && rating >= index)
-                            }
-                            onMouseEnter={() => onMouseEnter(index)}
-                            onMouseLeave={onMouseLeave}
-                            onClick={() => onSaveRating(index)}
-                        />
-                    ))}
-                </div>
+                <Controller
+                    control={control}
+                    name={createCarFormKeys.CAR_RATING}
+                    rules={{
+                        required: "This field is required!",
+                        min: {
+                            message: "<- The rating is required!",
+                            value: 1,
+                        },
+                    }}
+                    render={({ field }) => (
+                        <div className="flex space-x-1">
+                            {[1, 2, 3, 4, 5].map((index) => (
+                                <Star
+                                    key={index}
+                                    filled={
+                                        hoverRating >= index ||
+                                        (!hoverRating &&
+                                            (field?.value as number) >= index)
+                                    }
+                                    onMouseEnter={() => onMouseEnter(index)}
+                                    onMouseLeave={onMouseLeave}
+                                    onClick={() => {
+                                        field.onChange(index);
+                                    }}
+                                />
+                            ))}
+                        </div>
+                    )}
+                />
+                {errors[createCarFormKeys.CAR_RATING] && (
+                    <p className="text-red-500 text-lg">
+                        {errors[createCarFormKeys.CAR_RATING]?.message}
+                    </p>
+                )}
             </div>
-            <UploadDropzone
-                content={{
-                    button() {
-                        return "Upload Images";
-                    },
-                }}
-                endpoint="imageUploader"
-                onClientUploadComplete={(res) => {
-                    setImages(res);
-                    console.log(JSON.stringify(res));
-                    alert("Upload Completed");
-                }}
-                onUploadError={(error: Error) => {
-                    alert(`ERROR! ${error.message}`);
-                }}
+            <Controller
+                control={control}
+                name={createCarFormKeys.CAR_IMAGES}
+                rules={{ required: "This field is required!" }}
+                render={({ field }) => (
+                    <UploadDropzone
+                        content={{
+                            button() {
+                                return "Upload Images";
+                            },
+                            label() {
+                                return "Choose or drag and drop your car images!";
+                            },
+                        }}
+                        appearance={{
+                            label: "w-full",
+                            allowedContent: "text-sm",
+                        }}
+                        className={
+                            errors[createCarFormKeys.CAR_IMAGES]
+                                ? "border-red-500"
+                                : ""
+                        }
+                        endpoint="imageUploader"
+                        onClientUploadComplete={onClientUploadComplete}
+                        onUploadError={(error: Error) => {
+                            alert(`ERROR! ${error.message}`);
+                        }}
+                    />
+                )}
             />
-        </section>
+
+            <div className="flex items-center justify-center">
+                <button
+                    type="submit"
+                    className="py-2 px-4 text-lg bg-blue-400 hover:bg-blue-500 w-[50%] rounded-lg shadow-xl text-white mt-4"
+                >
+                    Submit
+                </button>
+            </div>
+        </form>
     );
 }
