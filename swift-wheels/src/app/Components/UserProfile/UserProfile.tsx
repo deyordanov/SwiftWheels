@@ -6,7 +6,7 @@ import Link from "next/link";
 
 //react-icons
 import { BiSolidUser, BiLogOut } from "react-icons/bi";
-import { MdAttachMoney } from "react-icons/md";
+import { MdAttachMoney, MdSell } from "react-icons/md";
 
 //headless-ui
 import { Menu, Transition } from "@headlessui/react";
@@ -45,7 +45,17 @@ export default function UserProfile({
                                 </Link>
                             </Menu.Item>
                         </div>
-
+                        <div className="px-1 py-1 ">
+                            <Menu.Item>
+                                <Link
+                                    href="/"
+                                    className={`hover:bg-slate-50 group flex gap-x-2 w-full items-center rounded-md px-2 py-2 text-sm hover:text-accent-hover`}
+                                >
+                                    <MdSell className="ml-1 text-2xl" />
+                                    Your Listings
+                                </Link>
+                            </Menu.Item>
+                        </div>
                         <div className="px-1 py-1">
                             <Menu.Item>
                                 <button

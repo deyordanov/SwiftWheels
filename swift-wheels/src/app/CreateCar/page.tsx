@@ -16,12 +16,19 @@ import Select, { CSSObjectWithLabel } from "react-select";
 
 //components
 import { Star } from "./Star/Star";
+import Gallery from "../CarDetails/Gallery/Gallery";
 
 //react-slider
 import ReactSlider from "react-slider";
 
 //react-hook-form
 import { Controller, useForm } from "react-hook-form";
+
+//next-link
+import Link from "next/link";
+
+//next-image
+import Image from "next/image";
 
 //types
 import {
@@ -37,7 +44,6 @@ import {
     createCarFormKeys,
     createCarFormDefaultValues,
 } from "../utilities/constants/constans";
-import Gallery from "../CarDetails/Gallery/Gallery";
 
 export default function Page() {
     const animatedComponents = makeAnimated();
@@ -97,8 +103,28 @@ export default function Page() {
     return (
         <form
             onSubmit={handleSubmit(onSubmit)}
-            className="max-w-[1000px] container text-black p-20 flex flex-col gap-y-2 overflow-auto mx-auto"
+            className={`max-w-[1000px] container text-black p-20 flex flex-col gap-y-2 mx-auto ${
+                carImagesPreview.length === 0 ? "justify-center h-screen" : ""
+            }`}
         >
+            <div className="relative mb-4">
+                <h1 className="text-5xl font-extrabold text-center">
+                    Create Your Car Offer
+                </h1>
+                <Link
+                    href={"/"}
+                    className="absolute cursor-pointer -top-8 left-2"
+                >
+                    <Image
+                        src={"/icons/logo4.png"}
+                        width={200}
+                        height={200}
+                        alt="logo"
+                        className=""
+                        priority
+                    />
+                </Link>
+            </div>
             <div className="w-full flex gap-x-4">
                 <Controller
                     control={control}
@@ -143,6 +169,10 @@ export default function Page() {
                     render={({ field }) => (
                         <Select
                             {...field}
+                            onChange={(option) => field.onChange(option.value)}
+                            value={carTransmissionTypes.find(
+                                (c) => c.value === field.value
+                            )}
                             isMulti={false}
                             components={animatedComponents}
                             options={carTypes as any}
@@ -168,6 +198,10 @@ export default function Page() {
                     render={({ field }) => (
                         <Select
                             {...field}
+                            onChange={(option) => field.onChange(option.value)}
+                            value={carTransmissionTypes.find(
+                                (c) => c.value === field.value
+                            )}
                             isMulti={false}
                             components={animatedComponents}
                             options={carMakes as any}
@@ -220,6 +254,10 @@ export default function Page() {
                     render={({ field }) => (
                         <Select
                             {...field}
+                            onChange={(option) => field.onChange(option.value)}
+                            value={carTransmissionTypes.find(
+                                (c) => c.value === field.value
+                            )}
                             isMulti={false}
                             components={animatedComponents}
                             options={carTransmissionTypes as any}
@@ -244,7 +282,11 @@ export default function Page() {
                     rules={{ required: "This field is required!" }} // This sets the field as required
                     render={({ field }) => (
                         <Select
-                            {...field} // This spreads the onChange, onBlur, value, and name properties
+                            {...field}
+                            onChange={(option) => field.onChange(option.value)}
+                            value={carTransmissionTypes.find(
+                                (c) => c.value === field.value
+                            )}
                             isMulti={false}
                             components={animatedComponents}
                             options={carConditions as any}
@@ -306,6 +348,10 @@ export default function Page() {
                     render={({ field }) => (
                         <Select
                             {...field}
+                            onChange={(option) => field.onChange(option.value)}
+                            value={carTransmissionTypes.find(
+                                (c) => c.value === field.value
+                            )}
                             isMulti={false}
                             components={animatedComponents}
                             options={carFuelTypes as any}
@@ -331,6 +377,10 @@ export default function Page() {
                     render={({ field }) => (
                         <Select
                             {...field}
+                            onChange={(option) => field.onChange(option.value)}
+                            value={carTransmissionTypes.find(
+                                (c) => c.value === field.value
+                            )}
                             isMulti={false}
                             components={animatedComponents}
                             options={carEngineTypes as any}
@@ -408,6 +458,10 @@ export default function Page() {
                     render={({ field }) => (
                         <Select
                             {...field}
+                            onChange={(option) => field.onChange(option.value)}
+                            value={carTransmissionTypes.find(
+                                (c) => c.value === field.value
+                            )}
                             isMulti={false}
                             components={animatedComponents}
                             options={carDriveTypes as any}

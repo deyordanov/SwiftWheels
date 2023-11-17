@@ -116,7 +116,7 @@ export default function CarSlider() {
                             <div className="flex justify-between px-4 py-2">
                                 <div className="text-xl">
                                     <span className=" text-secondary uppercase">
-                                        {car["car-type"].value}
+                                        {car["car-type"]}
                                     </span>
                                     <h3 className="uppercase font-bold">
                                         {car["car-model"]}
@@ -142,7 +142,7 @@ export default function CarSlider() {
                                         />
                                     </span>
                                     <span className="text-[18px]  text-center">
-                                        {car["car-transmission"].value}
+                                        {car["car-transmission"]}
                                     </span>
                                 </div>
 
@@ -156,7 +156,7 @@ export default function CarSlider() {
                                         />
                                     </span>
                                     <span className="text-[18px]  text-center">
-                                        {car["car-fuel-type"].value}
+                                        {car["car-fuel-type"]}
                                     </span>
                                 </div>
                                 <div className="flex flex-col items-center">
@@ -182,7 +182,7 @@ export default function CarSlider() {
                                         />
                                     </span>
                                     <span className="text-[18px]  text-center">
-                                        {car["car-drive-type"].value}
+                                        {car["car-drive-type"]}
                                     </span>
                                 </div>
                             </div>

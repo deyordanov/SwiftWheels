@@ -1,4 +1,5 @@
 "use client";
+
 //hooks
 import React, { useState, useEffect, useCallback } from "react";
 
@@ -13,10 +14,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 //constants
-import {
-    carDetailsGeocodingApi,
-    cars,
-} from "@/app/utilities/constants/constans";
+import { carDetailsGeocodingApi } from "@/app/utilities/constants/constans";
 import { PriceChart } from "../Chart/Chart";
 import { PriceBar } from "../PriceBar/PriceBar";
 import Offer from "../Offer/Offer";
@@ -91,14 +89,13 @@ export default function Page({ params }: { params: { id: string } }) {
             <div className="relative container flex flex-col items-center mx-auto p-8 bg-white rounded-lg shadow-lg max-w-screen-lg text-black">
                 <Link
                     href={"/"}
-                    className="absolute cursor-pointer left-16 top-7"
+                    className="absolute cursor-pointer left-0 top-3"
                 >
                     <Image
                         src={"/icons/logo4.png"}
-                        width={200}
+                        width={240}
                         height={200}
                         alt="logo"
-                        className=""
                         priority
                     />
                 </Link>
@@ -148,9 +145,7 @@ export default function Page({ params }: { params: { id: string } }) {
                                             {capitalizeWords(key)}:
                                         </span>
                                         <span className="font-normal text-gray-700">
-                                            {typeof value === "object"
-                                                ? value?.value
-                                                : value}
+                                            {value as string}
                                         </span>
                                     </li>
                                 ))}

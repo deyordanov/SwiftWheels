@@ -111,7 +111,7 @@ export default function Header() {
            text-center xl:text-left uppercase text-sm xl:text-[15px] xl:normal-case text-black items-center`}
                 >
                     <Link
-                        to="/"
+                        to="home"
                         activeClass="active"
                         smooth={desktopMode}
                         spy={true}
