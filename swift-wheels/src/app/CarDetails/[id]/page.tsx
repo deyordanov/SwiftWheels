@@ -118,7 +118,7 @@ export default function Page({ params }: { params: { id: string } }) {
                     ))}
                 </div>
                 <div className="w-full mx-auto mb-14">
-                    <Gallery images={car["car-images"]} />
+                    <Gallery images={car["car-images"]} isPreview={false} />
                 </div>
                 <div className="flex flex-1 w-full mb-4">
                     <div className="bg-gray-100 px-6 rounded-lg shadow-lg w-[80%]">
