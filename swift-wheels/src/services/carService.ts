@@ -32,6 +32,23 @@ export const getAll = async () => {
     return cars;
 };
 
+export const getAllFilter = async (filters: any) => {
+    const headers = getAuthHeaders();
+    const queryParameters = Object.entries(filters).map(([key, value]) => {
+        // Assuming you want to construct a query string like: property="value"
+        return typeof value.value === "string"
+            ? `${value.property}="${value.value}"`
+            : `${value.property}=${value.value}`;
+    });
+    const query = encodeURIComponent(queryParameters.join(","));
+    const filteredCars = await requester.authorizationGet(
+        headers,
+        {},
+        `${baseUrl}?where=${query}`
+    );
+    console.log(filteredCars);
+};
+
 export const create = async (data: object) => {
     const headers = getAuthHeaders();
     const response = await requester.authorizationPost(
