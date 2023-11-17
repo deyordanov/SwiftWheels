@@ -440,24 +440,34 @@ export const createCarFormKeys = {
 };
 
 export const createCarFormDefaultValues = {
-    [createCarFormKeys.CAR_EXTRAS]: [], // since it's a multi-select, default to an empty array
+    [createCarFormKeys.CAR_EXTRAS]: [],
     [createCarFormKeys.CAR_IMAGES]: [],
-    [createCarFormKeys.CAR_TYPE]: null, // or your default option
-    [createCarFormKeys.CAR_MAKE]: null, // or your default option
-    [createCarFormKeys.CAR_TRANSMISSION]: null, // or your default option
-    [createCarFormKeys.CAR_CONDITION]: null, // or your default option
-    [createCarFormKeys.CAR_FUEL_TYPE]: null, // or your default option
-    [createCarFormKeys.CAR_ENGINE_TYPE]: null, // or your default option
-    [createCarFormKeys.CAR_DRIVE_TYPE]: null, // or your default option
-    [createCarFormKeys.CAR_MODEL]: "", // default to an empty string
-    [createCarFormKeys.CAR_KM]: "", // default to an empty string
-    [createCarFormKeys.CAR_YEAR]: "", // default to an empty string
-    [createCarFormKeys.CAR_COLOR]: "", // default to an empty string
-    [createCarFormKeys.CAR_ENGINE_SIZE]: "", // default to an empty string
-    [createCarFormKeys.CAR_DOORS]: "", // default to an empty string
-    [createCarFormKeys.CAR_HORSEPOWER]: "", // default to an empty string
-    [createCarFormKeys.CAR_TECHNICAL_DESCRIPTION]: "", // default to an empty string
-    [createCarFormKeys.CAR_RATING]: 0, // assuming the rating starts at 0
-    [createCarFormKeys.CAR_PRICE]: 25000, // default price
-    // Add more fields as necessary
+    [createCarFormKeys.CAR_TYPE]: null,
+    [createCarFormKeys.CAR_MAKE]: null,
+    [createCarFormKeys.CAR_TRANSMISSION]: null,
+    [createCarFormKeys.CAR_CONDITION]: null,
+    [createCarFormKeys.CAR_FUEL_TYPE]: null,
+    [createCarFormKeys.CAR_ENGINE_TYPE]: null,
+    [createCarFormKeys.CAR_DRIVE_TYPE]: null,
+    [createCarFormKeys.CAR_MODEL]: "",
+    [createCarFormKeys.CAR_KM]: "",
+    [createCarFormKeys.CAR_YEAR]: "",
+    [createCarFormKeys.CAR_COLOR]: "",
+    [createCarFormKeys.CAR_ENGINE_SIZE]: "",
+    [createCarFormKeys.CAR_DOORS]: "",
+    [createCarFormKeys.CAR_HORSEPOWER]: "",
+    [createCarFormKeys.CAR_TECHNICAL_DESCRIPTION]: "",
+    [createCarFormKeys.CAR_RATING]: 0,
+    [createCarFormKeys.CAR_PRICE]: 25000,
+};
+
+//      Filter
+export const filterFormKeys = {
+    LOWER_BOUND: "lower-bound",
+    UPPER_BOUND: "upper-bound",
+};
+
+export const filterFormDefaultValues = {
+    [filterFormKeys.LOWER_BOUND]: 0,
+    [filterFormKeys.UPPER_BOUND]: 10000,
 };
