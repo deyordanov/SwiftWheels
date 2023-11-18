@@ -16,6 +16,9 @@ import {
 //types
 import * as makeOfferTypes from "../../../utilities/types/makeOffer.types";
 
+//shared
+import { formatPrice } from "@/app/utilities/shared/shared";
+
 export default function MakeOffer({
     carPrice,
     setOffer,
@@ -34,10 +37,6 @@ export default function MakeOffer({
         setOffer(Number(data.offer));
         setTabs((state) => [...state, "finance"]);
     };
-
-    function formatPrice(price: number) {
-        return `${price.toLocaleString("en-US")}$`;
-    }
 
     return (
         <div className="p-4 max-w-md mx-auto text-md">

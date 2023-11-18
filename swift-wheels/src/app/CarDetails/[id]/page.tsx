@@ -6,6 +6,12 @@ import React, { useState, useEffect, useCallback } from "react";
 //components
 import Gallery from "../Gallery/Gallery";
 import CarLocationGoogleMap from "../GoogleMap/CarLocationGoogleMap";
+import { carDetailsGeocodingApi } from "@/app/utilities/constants/constans";
+import { PriceChart } from "../Chart/Chart";
+import { PriceBar } from "../PriceBar/PriceBar";
+import Offer from "../Offer/Offer";
+import Description from "../Description/Description";
+import OfferModal from "../OfferModal/OfferModal";
 
 //next-link
 import Link from "next/link";
@@ -13,14 +19,11 @@ import Link from "next/link";
 //next-image
 import Image from "next/image";
 
-//constants
-import { carDetailsGeocodingApi } from "@/app/utilities/constants/constans";
-import { PriceChart } from "../Chart/Chart";
-import { PriceBar } from "../PriceBar/PriceBar";
-import Offer from "../Offer/Offer";
-import Description from "../Description/Description";
-import OfferModal from "../OfferModal/OfferModal";
+//services
 import * as carService from "../../../services/carService";
+
+//shared
+import { capitalizeWords } from "@/app/utilities/shared/shared";
 
 export default function Page({ params }: { params: { id: string } }) {
     const [car, setCar] = useState<any>({});
@@ -72,17 +75,6 @@ export default function Page({ params }: { params: { id: string } }) {
             geocodeAddress(address);
         }
     }, [address]);
-
-    function capitalizeWords(str: string) {
-        return str
-            .split("-")
-            .map(
-                (word) =>
-                    word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-            )
-            .filter((word) => word !== "Car")
-            .join(" ");
-    }
 
     return (
         <>

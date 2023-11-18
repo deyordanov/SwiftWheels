@@ -12,7 +12,7 @@ import { UploadDropzone } from "../utilities/uploadthing";
 
 //react-select
 import makeAnimated from "react-select/animated";
-import Select, { CSSObjectWithLabel } from "react-select";
+import Select from "react-select";
 
 //components
 import { Star } from "./Star/Star";
@@ -44,6 +44,9 @@ import {
     createCarFormKeys,
     createCarFormDefaultValues,
 } from "../utilities/constants/constans";
+
+//shared
+import { getSelectControlType } from "../utilities/shared/shared";
 
 export default function Page() {
     const animatedComponents = makeAnimated();
@@ -81,24 +84,6 @@ export default function Page() {
     const onSubmit = async (data: object) => {
         await carService.create({ ...data, userId, userEmail });
     };
-
-    function getSelectControlStype(
-        fieldName: string,
-        base: CSSObjectWithLabel
-    ) {
-        return {
-            ...base,
-            borderColor: errors[fieldName]
-                ? "rgb(244, 67, 54)"
-                : base.borderColor,
-            boxShadow: "none",
-            "&:hover": {
-                borderColor: errors[fieldName]
-                    ? "rgb(244, 67, 54)"
-                    : base.borderColor,
-            },
-        };
-    }
 
     return (
         <form
@@ -141,7 +126,8 @@ export default function Page() {
                             styles={{
                                 ...customStyles,
                                 control: (base) =>
-                                    getSelectControlStype(
+                                    getSelectControlType(
+                                        errors,
                                         createCarFormKeys.CAR_EXTRAS,
                                         base
                                     ),
@@ -169,7 +155,11 @@ export default function Page() {
                     render={({ field }) => (
                         <Select
                             {...field}
-                            onChange={(option) => field.onChange(option.value)}
+                            onChange={(option) =>
+                                field.onChange(
+                                    option !== null ? option.value : null
+                                )
+                            }
                             value={carTransmissionTypes.find(
                                 (c) => c.value === field.value
                             )}
@@ -180,7 +170,8 @@ export default function Page() {
                             styles={{
                                 ...customStyles,
                                 control: (base) =>
-                                    getSelectControlStype(
+                                    getSelectControlType(
+                                        errors,
                                         createCarFormKeys.CAR_TYPE,
                                         base
                                     ),
@@ -198,7 +189,11 @@ export default function Page() {
                     render={({ field }) => (
                         <Select
                             {...field}
-                            onChange={(option) => field.onChange(option.value)}
+                            onChange={(option) =>
+                                field.onChange(
+                                    option !== null ? option.value : null
+                                )
+                            }
                             value={carTransmissionTypes.find(
                                 (c) => c.value === field.value
                             )}
@@ -209,7 +204,8 @@ export default function Page() {
                             styles={{
                                 ...customStyles,
                                 control: (base) =>
-                                    getSelectControlStype(
+                                    getSelectControlType(
+                                        errors,
                                         createCarFormKeys.CAR_MAKE,
                                         base
                                     ),
@@ -246,6 +242,12 @@ export default function Page() {
                     className={`placeholder-gray-600 w-[20%] border border-gray-400 rounded-md text-black py-2 px-4 leading-tight focus:outline-none ${
                         errors[createCarFormKeys.CAR_KM] ? "border-red-500" : ""
                     }`}
+                    onChange={(e) => {
+                        setValue(
+                            createCarFormKeys.CAR_HORSEPOWER,
+                            Number(e.target.value)
+                        );
+                    }}
                 />
                 <Controller
                     control={control}
@@ -254,7 +256,11 @@ export default function Page() {
                     render={({ field }) => (
                         <Select
                             {...field}
-                            onChange={(option) => field.onChange(option.value)}
+                            onChange={(option) =>
+                                field.onChange(
+                                    option !== null ? option.value : null
+                                )
+                            }
                             value={carTransmissionTypes.find(
                                 (c) => c.value === field.value
                             )}
@@ -265,7 +271,8 @@ export default function Page() {
                             styles={{
                                 ...customStyles,
                                 control: (base) =>
-                                    getSelectControlStype(
+                                    getSelectControlType(
+                                        errors,
                                         createCarFormKeys.CAR_EXTRAS,
                                         base
                                     ),
@@ -283,7 +290,11 @@ export default function Page() {
                     render={({ field }) => (
                         <Select
                             {...field}
-                            onChange={(option) => field.onChange(option.value)}
+                            onChange={(option) =>
+                                field.onChange(
+                                    option !== null ? option.value : null
+                                )
+                            }
                             value={carTransmissionTypes.find(
                                 (c) => c.value === field.value
                             )}
@@ -294,7 +305,8 @@ export default function Page() {
                             styles={{
                                 ...customStyles,
                                 control: (base) =>
-                                    getSelectControlStype(
+                                    getSelectControlType(
+                                        errors,
                                         createCarFormKeys.CAR_CONDITION,
                                         base
                                     ),
@@ -348,7 +360,11 @@ export default function Page() {
                     render={({ field }) => (
                         <Select
                             {...field}
-                            onChange={(option) => field.onChange(option.value)}
+                            onChange={(option) =>
+                                field.onChange(
+                                    option !== null ? option.value : null
+                                )
+                            }
                             value={carTransmissionTypes.find(
                                 (c) => c.value === field.value
                             )}
@@ -359,7 +375,8 @@ export default function Page() {
                             styles={{
                                 ...customStyles,
                                 control: (base) =>
-                                    getSelectControlStype(
+                                    getSelectControlType(
+                                        errors,
                                         createCarFormKeys.CAR_FUEL_TYPE,
                                         base
                                     ),
@@ -377,7 +394,11 @@ export default function Page() {
                     render={({ field }) => (
                         <Select
                             {...field}
-                            onChange={(option) => field.onChange(option.value)}
+                            onChange={(option) =>
+                                field.onChange(
+                                    option !== null ? option.value : null
+                                )
+                            }
                             value={carTransmissionTypes.find(
                                 (c) => c.value === field.value
                             )}
@@ -388,7 +409,8 @@ export default function Page() {
                             styles={{
                                 ...customStyles,
                                 control: (base) =>
-                                    getSelectControlStype(
+                                    getSelectControlType(
+                                        errors,
                                         createCarFormKeys.CAR_ENGINE_TYPE,
                                         base
                                     ),
@@ -448,6 +470,12 @@ export default function Page() {
                             ? "border-red-500"
                             : ""
                     }`}
+                    onChange={(e) => {
+                        setValue(
+                            createCarFormKeys.CAR_HORSEPOWER,
+                            Number(e.target.value)
+                        );
+                    }}
                 />
             </div>
             <div className="w-full flex gap-x-4 items-center">
@@ -458,7 +486,11 @@ export default function Page() {
                     render={({ field }) => (
                         <Select
                             {...field}
-                            onChange={(option) => field.onChange(option.value)}
+                            onChange={(option) =>
+                                field.onChange(
+                                    option !== null ? option.value : null
+                                )
+                            }
                             value={carTransmissionTypes.find(
                                 (c) => c.value === field.value
                             )}
@@ -469,7 +501,8 @@ export default function Page() {
                             styles={{
                                 ...customStyles,
                                 control: (base) =>
-                                    getSelectControlStype(
+                                    getSelectControlType(
+                                        errors,
                                         createCarFormKeys.CAR_DRIVE_TYPE,
                                         base
                                     ),
