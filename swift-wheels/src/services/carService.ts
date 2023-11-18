@@ -34,19 +34,29 @@ export const getAll = async () => {
 
 export const getAllFilter = async (filters: any) => {
     const headers = getAuthHeaders();
-    const queryParameters = Object.entries(filters).map(([key, value]) => {
-        // Assuming you want to construct a query string like: property="value"
-        return typeof value.value === "string"
-            ? `${value.property}="${value.value}"`
-            : `${value.property}=${value.value}`;
+
+    const queryParameters = filters.map((filter: any) => {
+        const filterKey = filter.key.includes("price")
+            ? "car-price"
+            : filter.key.includes("km")
+            ? "car-km"
+            : filter.key.includes("horsepower")
+            ? "car-horsepower"
+            : filter.key;
+
+        return typeof filter.value === "string" && !/\d/.test(filter.value)
+            ? `${filterKey} ${filter.separator} "${filter.value}"`
+            : `${filterKey}${filter.separator}${Number(filter.value)}`;
     });
-    const query = encodeURIComponent(queryParameters.join(","));
+
+    const query = encodeURIComponent(queryParameters.join(" AND "));
     const filteredCars = await requester.authorizationGet(
         headers,
         {},
         `${baseUrl}?where=${query}`
     );
-    console.log(filteredCars);
+
+    return filteredCars;
 };
 
 export const create = async (data: object) => {
