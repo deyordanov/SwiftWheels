@@ -1,61 +1,54 @@
 "use client";
 
 //hooks
-import { memo } from "react";
+import { memo, useEffect, useMemo } from "react";
 
 //types
 import * as priceBarTypes from "../../utilities/types/priceBar.types";
 
+//shared
+import { getRandomNumber, formatPrice } from "@/app/utilities/shared/shared";
+
 export const PriceBar = memo(
     ({ carPrice, setBarPrice }: priceBarTypes.propTypes) => {
-        // Function to generate a random number within a range
-        function getRandomNumber(min: number, max: number) {
-            return Math.random() * (max - min) + min;
-        }
+        const priceRanges = useMemo(
+            () => ({
+                topOffer: carPrice - carPrice * getRandomNumber(0.05, 0.1), // Randomizes between 5% to 10%
+                veryGoodPrice:
+                    carPrice - carPrice * getRandomNumber(0.01, 0.04), // Randomizes between 1% to 4%
+                fairPrice: carPrice + carPrice * getRandomNumber(0.01, 0.03), // Randomizes between 1% to 3%
+                higherPrice: carPrice + carPrice * getRandomNumber(0.04, 0.06), // Randomizes between 4% to 6%
+                highPrice: carPrice + carPrice * getRandomNumber(0.07, 0.1), // Randomizes between 7% to 10%
+            }),
+            [carPrice]
+        );
 
-        function formatPrice(price: number) {
-            return `${price.toLocaleString("en-US")}$`;
-        }
-
-        const priceRanges = {
-            topOffer: carPrice - carPrice * getRandomNumber(0.05, 0.1), // Randomizes between 5% to 10%
-            veryGoodPrice: carPrice - carPrice * getRandomNumber(0.01, 0.04), // Randomizes between 1% to 4%
-            fairPrice: carPrice + carPrice * getRandomNumber(0.01, 0.03), // Randomizes between 1% to 3%
-            higherPrice: carPrice + carPrice * getRandomNumber(0.04, 0.06), // Randomizes between 4% to 6%
-            highPrice: carPrice + carPrice * getRandomNumber(0.07, 0.1), // Randomizes between 7% to 10%
-        };
-
-        //Approxinmating based on the visual length of the range
-        function getProgressBarWidthClass(price: number) {
-            if (price <= priceRanges.topOffer) {
-                return "w-[8%]";
-            } else if (price <= priceRanges.veryGoodPrice) {
-                return "w-[30%]";
-            } else if (price <= priceRanges.fairPrice) {
-                return "w-[53%]";
-            } else if (price <= priceRanges.higherPrice) {
-                return "w-[74%]";
-            } else {
-                return "w-[100%]";
-            }
-        }
-
-        function getProgressBarColorClass(price: number) {
-            if (price <= priceRanges.topOffer) {
+        useEffect(() => {
+            if (carPrice <= priceRanges.topOffer) {
                 setBarPrice(0.1);
-                return "bg-green-500"; // Green for the best offers
-            } else if (price <= priceRanges.veryGoodPrice) {
+            } else if (carPrice <= priceRanges.veryGoodPrice) {
                 setBarPrice(0.2);
-                return "bg-green-400"; // Lighter green for very good offers
-            } else if (price <= priceRanges.fairPrice) {
+            } else if (carPrice <= priceRanges.fairPrice) {
                 setBarPrice(0.3);
-                return "bg-yellow-400"; // Yellow for fair pricing
-            } else if (price <= priceRanges.higherPrice) {
+            } else if (carPrice <= priceRanges.higherPrice) {
                 setBarPrice(0.4);
-                return "bg-orange-500"; // Orange for higher pricing
             } else {
                 setBarPrice(0.5);
-                return "bg-red-500"; // Red for high pricing
+            }
+        }, [carPrice, priceRanges, setBarPrice]);
+
+        //Approxinmating based on the visual length of the range
+        function getProgressBarStyles() {
+            if (carPrice <= priceRanges.topOffer) {
+                return "w-[8%] bg-green-500"; // Green for the best offers
+            } else if (carPrice <= priceRanges.veryGoodPrice) {
+                return "w-[30%] bg-green-400"; // Lighter green for very good offers
+            } else if (carPrice <= priceRanges.fairPrice) {
+                return "w-[53%] bg-yellow-400"; // Yellow for fair pricing
+            } else if (carPrice <= priceRanges.higherPrice) {
+                return "w-[74%] bg-orange-500"; // Orange for higher pricing
+            } else {
+                return "w-[100%] bg-red-500"; // Red for high pricing
             }
         }
 
@@ -73,9 +66,7 @@ export const PriceBar = memo(
                     {/* Progress Bar */}
                     <div className="w-full bg-gray-200 rounded-full h-2 mb-2">
                         <div
-                            className={`h-2 rounded-full ${getProgressBarWidthClass(
-                                carPrice
-                            )} ${getProgressBarColorClass(carPrice)}`}
+                            className={`h-2 rounded-full ${getProgressBarStyles()}`}
                         ></div>
                     </div>
 
