@@ -1,28 +1,23 @@
 "use client";
 
 //hooks
-import React, { useState } from "react";
-import { useAuthContext } from "../Contexts/authContext";
-
-//services
-import * as carService from "../../services/carService";
+import { useCreateCarContext } from "../Contexts/createCarContext";
 
 //uploadthing
 import { UploadDropzone } from "../utilities/uploadthing";
 
 //react-select
-import makeAnimated from "react-select/animated";
-import Select from "react-select";
+import Select, { SingleValue } from "react-select";
 
 //components
 import { Star } from "./Star/Star";
 import Gallery from "../CarDetails/Gallery/Gallery";
 
+//react-form-hook
+import { Controller } from "react-hook-form";
+
 //react-slider
 import ReactSlider from "react-slider";
-
-//react-hook-form
-import { Controller, useForm } from "react-hook-form";
 
 //next-link
 import Link from "next/link";
@@ -40,50 +35,32 @@ import {
     carFuelTypes,
     carEngineTypes,
     carDriveTypes,
+    shopAddresses,
     customStyles,
     createCarFormKeys,
-    createCarFormDefaultValues,
 } from "../utilities/constants/constans";
+import React from "react";
 
 //shared
 import { getSelectControlType } from "../utilities/shared/shared";
 
 export default function Page() {
-    const animatedComponents = makeAnimated();
-    const [hoverRating, setHoverRating] = useState(0);
-    const [carImagesPreview, setCarImagesPreview] = useState([]);
-    const [price, setPrice] = useState<number>(25000);
-
     const {
+        animatedComponents,
+        hoverRating,
+        carImagesPreview,
+        price,
+        setPrice,
         register,
         control,
         setValue,
-        formState: { errors },
+        errors,
         handleSubmit,
-    } = useForm({
-        defaultValues: createCarFormDefaultValues,
-        mode: "onSubmit",
-    });
-
-    const { userId, userEmail } = useAuthContext();
-
-    const onMouseEnter = (index: number) => {
-        setHoverRating(index);
-    };
-
-    const onMouseLeave = () => {
-        setHoverRating(0);
-    };
-
-    const onClientUploadComplete = (res: any) => {
-        setValue(createCarFormKeys.CAR_IMAGES, res);
-        setCarImagesPreview(res);
-        alert("Upload Completed");
-    };
-
-    const onSubmit = async (data: object) => {
-        await carService.create({ ...data, userId, userEmail });
-    };
+        onMouseEnter,
+        onMouseLeave,
+        onClientUploadComplete,
+        onSubmit,
+    } = useCreateCarContext();
 
     return (
         <form
@@ -115,13 +92,13 @@ export default function Page() {
                     control={control}
                     name={createCarFormKeys.CAR_EXTRAS}
                     rules={{ required: "This field is required!" }}
-                    render={({ field }) => (
+                    render={({ field }: { field: any }) => (
                         <Select
                             {...field}
                             components={animatedComponents}
                             isMulti
                             options={carExtras}
-                            className="min-w-[75%]"
+                            className="w-full"
                             classNamePrefix="select"
                             styles={{
                                 ...customStyles,
@@ -135,19 +112,20 @@ export default function Page() {
                             value={carExtras.filter((option) =>
                                 (field.value as string[]).includes(option.value)
                             )}
-                            onChange={(value) =>
+                            onChange={(value: any) =>
                                 field.onChange(
-                                    value.map((option) => option.value)
+                                    value.map((option: any) => option.value)
                                 )
                             }
                             isOptionDisabled={(option) =>
                                 (field.value as string[]).includes(option.value)
                             }
-                            placeholder="Select Car Extras..."
+                            placeholder="Car extras....."
                         />
                     )}
                 />
-
+            </div>
+            <div className="w-full flex gap-x-4 items-center">
                 <Controller
                     control={control}
                     name={createCarFormKeys.CAR_TYPE}
@@ -155,18 +133,18 @@ export default function Page() {
                     render={({ field }) => (
                         <Select
                             {...field}
-                            onChange={(option) =>
-                                field.onChange(
-                                    option !== null ? option.value : null
-                                )
-                            }
+                            onChange={(
+                                option: SingleValue<{ value: any } | undefined>
+                            ) => {
+                                field.onChange(option ? option.value : null);
+                            }}
                             value={carTransmissionTypes.find(
                                 (c) => c.value === field.value
                             )}
                             isMulti={false}
                             components={animatedComponents}
                             options={carTypes as any}
-                            className="w-full"
+                            className="w-full max-w-[30%]"
                             styles={{
                                 ...customStyles,
                                 control: (base) =>
@@ -180,6 +158,38 @@ export default function Page() {
                         />
                     )}
                 />
+                <Controller
+                    control={control}
+                    name={createCarFormKeys.CAR_SHOP_ADDRESS}
+                    rules={{ required: "This field is required!" }}
+                    render={({ field }) => (
+                        <Select
+                            {...field}
+                            onChange={(
+                                option: SingleValue<{ value: any } | undefined>
+                            ) => {
+                                field.onChange(option ? option.value : null);
+                            }}
+                            value={shopAddresses.find(
+                                (c) => c.value === field.value
+                            )}
+                            isMulti={false}
+                            components={animatedComponents}
+                            options={shopAddresses as any}
+                            className="w-full"
+                            styles={{
+                                ...customStyles,
+                                control: (base) =>
+                                    getSelectControlType(
+                                        errors,
+                                        createCarFormKeys.CAR_SHOP_ADDRESS,
+                                        base
+                                    ),
+                            }}
+                            placeholder="Shop....."
+                        />
+                    )}
+                />
             </div>
             <div className="w-full flex gap-x-4 items-center">
                 <Controller
@@ -189,11 +199,11 @@ export default function Page() {
                     render={({ field }) => (
                         <Select
                             {...field}
-                            onChange={(option) =>
-                                field.onChange(
-                                    option !== null ? option.value : null
-                                )
-                            }
+                            onChange={(
+                                option: SingleValue<{ value: any } | undefined>
+                            ) => {
+                                field.onChange(option ? option.value : null);
+                            }}
                             value={carTransmissionTypes.find(
                                 (c) => c.value === field.value
                             )}
@@ -244,7 +254,7 @@ export default function Page() {
                     }`}
                     onChange={(e) => {
                         setValue(
-                            createCarFormKeys.CAR_HORSEPOWER,
+                            createCarFormKeys.CAR_KM,
                             Number(e.target.value)
                         );
                     }}
@@ -256,11 +266,11 @@ export default function Page() {
                     render={({ field }) => (
                         <Select
                             {...field}
-                            onChange={(option) =>
-                                field.onChange(
-                                    option !== null ? option.value : null
-                                )
-                            }
+                            onChange={(
+                                option: SingleValue<{ value: any } | undefined>
+                            ) => {
+                                field.onChange(option ? option.value : null);
+                            }}
                             value={carTransmissionTypes.find(
                                 (c) => c.value === field.value
                             )}
@@ -290,11 +300,11 @@ export default function Page() {
                     render={({ field }) => (
                         <Select
                             {...field}
-                            onChange={(option) =>
-                                field.onChange(
-                                    option !== null ? option.value : null
-                                )
-                            }
+                            onChange={(
+                                option: SingleValue<{ value: any } | undefined>
+                            ) => {
+                                field.onChange(option ? option.value : null);
+                            }}
                             value={carTransmissionTypes.find(
                                 (c) => c.value === field.value
                             )}
@@ -360,11 +370,11 @@ export default function Page() {
                     render={({ field }) => (
                         <Select
                             {...field}
-                            onChange={(option) =>
-                                field.onChange(
-                                    option !== null ? option.value : null
-                                )
-                            }
+                            onChange={(
+                                option: SingleValue<{ value: any } | undefined>
+                            ) => {
+                                field.onChange(option ? option.value : null);
+                            }}
                             value={carTransmissionTypes.find(
                                 (c) => c.value === field.value
                             )}
@@ -394,11 +404,11 @@ export default function Page() {
                     render={({ field }) => (
                         <Select
                             {...field}
-                            onChange={(option) =>
-                                field.onChange(
-                                    option !== null ? option.value : null
-                                )
-                            }
+                            onChange={(
+                                option: SingleValue<{ value: any } | undefined>
+                            ) => {
+                                field.onChange(option ? option.value : null);
+                            }}
                             value={carTransmissionTypes.find(
                                 (c) => c.value === field.value
                             )}
@@ -441,7 +451,7 @@ export default function Page() {
                             "The doors cannot be a negative number!",
                         max: {
                             message: "The doors cannot exceed 4!",
-                            value: 4,
+                            value: 6,
                         },
                     })}
                     type="number"
@@ -486,11 +496,11 @@ export default function Page() {
                     render={({ field }) => (
                         <Select
                             {...field}
-                            onChange={(option) =>
-                                field.onChange(
-                                    option !== null ? option.value : null
-                                )
-                            }
+                            onChange={(
+                                option: SingleValue<{ value: any } | undefined>
+                            ) => {
+                                field.onChange(option ? option.value : null);
+                            }}
                             value={carTransmissionTypes.find(
                                 (c) => c.value === field.value
                             )}
@@ -512,7 +522,7 @@ export default function Page() {
                     )}
                 />
                 {/* Add error display? */}
-                <div className="w-full flex items-center gap-x-8 bg-gray-50 p-2 rounded-lg">
+                <div className="w-full flex items-center gap-x-8 bg-gray-50 p-2 rounded-lg text-md">
                     <Controller
                         control={control}
                         name={createCarFormKeys.CAR_PRICE}
@@ -534,7 +544,7 @@ export default function Page() {
                         )}
                     />
 
-                    <div className="w-[32%] text-gray-800">
+                    <div className="w-[34%] text-gray-800">
                         Price: ${price.toLocaleString()}
                     </div>
                 </div>

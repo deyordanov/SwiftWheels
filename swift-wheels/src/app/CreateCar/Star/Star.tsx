@@ -1,3 +1,4 @@
+//types
 import * as starTypes from "../../utilities/types/star.types";
 
 export const Star = ({
@@ -10,13 +11,12 @@ export const Star = ({
         <svg
             xmlns="http://www.w3.org/2000/svg"
             className={`h-6 w-6 cursor-pointer ${
-                // Smaller size
                 filled ? "text-yellow-500" : "text-gray-400"
             }`}
             fill={filled ? "currentColor" : "none"}
             viewBox="0 0 24 24"
-            stroke="black" // Black stroke for both filled and unfilled states
-            strokeWidth="1.5" // Thinner stroke
+            stroke="black"
+            strokeWidth="1.5"
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
             onClick={onClick}

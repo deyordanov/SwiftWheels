@@ -12,6 +12,8 @@ import { SearchProvider } from "./Contexts/searchContext";
 import { AuthProvider } from "./Contexts/authContext";
 import { ReactQueryProvider } from "./Contexts/reactQueryContext";
 import { PageProvider } from "./Contexts/pageContext";
+import { CreateCarProvider } from "./Contexts/createCarContext";
+import { CarDetailsProvider } from "./Contexts/carDetailsContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,22 +32,20 @@ export default function RootLayout({
             <AuthProvider>
                 <PageProvider>
                     <SearchProvider>
-                        <html lang="en">
-                            <body className={inter.className}>
-                                <NextSSRPlugin
-                                    /**
-                                     * The `extractRouterConfig` will extract **only** the route configs
-                                     * from the router to prevent additional information from being
-                                     * leaked to the client. The data passed to the client is the same
-                                     * as if you were to fetch `/api/uploadthing` directly.
-                                     */
-                                    routerConfig={extractRouterConfig(
-                                        ourFileRouter
-                                    )}
-                                />
-                                {children}
-                            </body>
-                        </html>
+                        <CreateCarProvider>
+                            <CarDetailsProvider>
+                                <html lang="en">
+                                    <body className={inter.className}>
+                                        <NextSSRPlugin
+                                            routerConfig={extractRouterConfig(
+                                                ourFileRouter
+                                            )}
+                                        />
+                                        {children}
+                                    </body>
+                                </html>
+                            </CarDetailsProvider>
+                        </CreateCarProvider>
                     </SearchProvider>
                 </PageProvider>
             </AuthProvider>
