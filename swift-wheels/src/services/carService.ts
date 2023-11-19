@@ -35,26 +35,30 @@ export const getAll = async () => {
 export const getAllFilter = async (filters: any) => {
     const headers = getAuthHeaders();
 
-    const queryParameters = filters.map((filter: any) => {
-        const filterKey = filter.key.includes("price")
-            ? "car-price"
-            : filter.key.includes("km")
-            ? "car-km"
-            : filter.key.includes("horsepower")
-            ? "car-horsepower"
-            : filter.key;
+    let url = baseUrl;
 
-        return typeof filter.value === "string" && !/\d/.test(filter.value)
-            ? `${filterKey} ${filter.separator} "${filter.value}"`
-            : `${filterKey}${filter.separator}${Number(filter.value)}`;
-    });
+    if (filters.length > 0) {
+        const queryParameters = filters.map((filter: any) => {
+            const filterKey = filter.key.includes("price")
+                ? "car-price"
+                : filter.key.includes("km")
+                ? "car-km"
+                : filter.key.includes("horsepower")
+                ? "car-horsepower"
+                : filter.key;
 
-    const query = encodeURIComponent(queryParameters.join(" AND "));
-    const filteredCars = await requester.authorizationGet(
-        headers,
-        {},
-        `${baseUrl}?where=${query}`
-    );
+            return typeof filter.value === "string" && !/\d/.test(filter.value)
+                ? `${filterKey} ${filter.separator} "${filter.value}"`
+                : `${filterKey}${filter.separator}${Number(filter.value)}`;
+        });
+
+        const query = encodeURIComponent(queryParameters.join(" AND "));
+
+        url += `?where=${query}`;
+    }
+    const filteredCars = await requester.authorizationGet(headers, {}, url);
+
+    console.log(filteredCars);
 
     return filteredCars;
 };

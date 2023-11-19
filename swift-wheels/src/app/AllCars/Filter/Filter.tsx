@@ -27,8 +27,19 @@ import { getSelectControlType } from "@/app/utilities/shared/shared";
 export default function Filter({ setFilters }) {
     const animatedComponents = makeAnimated();
 
+    const {
+        register,
+        control,
+        watch,
+        formState: { errors },
+        handleSubmit,
+        reset,
+    } = useForm({
+        defaultValues: filterFormDefaultValues,
+        mode: "onSubmit",
+    });
+
     const handleFilters = (data: any) => {
-        console.log(data);
         const mapped = Object.entries(data).reduce((acc: any, [key, value]) => {
             let separator = "";
             if (key.includes("lower-bound")) {
@@ -48,16 +59,11 @@ export default function Filter({ setFilters }) {
         setFilters(mapped);
     };
 
-    const {
-        register,
-        control,
-        watch,
-        formState: { errors },
-        handleSubmit,
-    } = useForm({
-        defaultValues: filterFormDefaultValues,
-        mode: "onSubmit",
-    });
+    const handleClearFilter = (e) => {
+        e.preventDefault();
+        reset();
+        handleFilters({});
+    };
 
     return (
         <aside className="bg-gray-200 h-full w-full p-4 rounded-lg text-sm shadow-2xl">
@@ -130,11 +136,13 @@ export default function Filter({ setFilters }) {
                                         option !== null ? option.value : null
                                     )
                                 }
-                                value={carMakes.find(
-                                    (c) =>
-                                        (c.value as string | number) ===
-                                        field.value
-                                )}
+                                value={
+                                    carMakes.find(
+                                        (c) =>
+                                            (c.value as string | number) ===
+                                            field.value
+                                    ) || null
+                                }
                                 isMulti={false}
                                 components={animatedComponents}
                                 options={carMakes as any}
@@ -483,9 +491,17 @@ export default function Filter({ setFilters }) {
                         />
                     </div>
                 </div>
-                <button className="mt-4 p-2 w-[50%] self-center bg-accent-default rounded-lg hover:bg-accent-hover text-white text-xl">
-                    Filter
-                </button>
+                <div className="flex gap-x-8 text-lg mt-4">
+                    <button className="p-1 w-[45%] bg-accent-default rounded-sm hover:bg-accent-hover text-white">
+                        Filter
+                    </button>
+                    <button
+                        onClick={(e) => handleClearFilter(e)}
+                        className="p-1 w-[45%] bg-green-400 rounded-sm hover:bg-green-500 text-white"
+                    >
+                        Clear Filter
+                    </button>
+                </div>
             </form>
         </aside>
     );

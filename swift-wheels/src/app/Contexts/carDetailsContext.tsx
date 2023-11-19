@@ -36,7 +36,9 @@ export const CarDetailsProvider = ({
     const [isOfferModalOpen, setIsOfferModalOpen] = useState(false);
 
     const getCar = useCallback(async () => {
-        setCar(await carService.getOne(searchParams.id as string));
+        if (searchParams.id) {
+            setCar(await carService.getOne(searchParams.id as string));
+        }
     }, [searchParams]);
 
     useEffect(() => {
