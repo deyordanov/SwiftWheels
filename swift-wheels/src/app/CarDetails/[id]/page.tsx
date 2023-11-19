@@ -1,12 +1,11 @@
 "use client";
 
 //hooks
-import React, { useState, useEffect, useCallback } from "react";
+import { useCarDetailsContext } from "@/app/Contexts/carDetailsContext";
 
 //components
 import Gallery from "../Gallery/Gallery";
 import CarLocationGoogleMap from "../GoogleMap/CarLocationGoogleMap";
-import { carDetailsGeocodingApi } from "@/app/utilities/constants/constans";
 import { PriceChart } from "../Chart/Chart";
 import { PriceBar } from "../PriceBar/PriceBar";
 import Offer from "../Offer/Offer";
@@ -19,62 +18,23 @@ import Link from "next/link";
 //next-image
 import Image from "next/image";
 
-//services
-import * as carService from "../../../services/carService";
-
 //shared
 import { capitalizeWords } from "@/app/utilities/shared/shared";
 
-export default function Page({ params }: { params: { id: string } }) {
-    const [car, setCar] = useState<any>({});
-    const [center, setCenter] = useState({ lat: 0, lng: 0 });
-    const [barPrice, setBarPrice] = useState(0);
-    const [chartPrice, setChartPrice] = useState(0);
-    const [isOfferModalOpen, setIsOfferModalOpen] = useState(false);
+//types
+import React from "react";
 
-    const getCar = useCallback(async () => {
-        setCar(await carService.getOne(params.id));
-    }, [params.id]);
-
-    useEffect(() => {
-        getCar();
-    }, [getCar]);
-
-    //This address will be injected from the outside
-    const address = "Heidestraße 62 10557 Berlin Germany";
-    useEffect(() => {
-        const geocodeAddress = async (addressToGeocode: string) => {
-            const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? "";
-            const url = new URL(carDetailsGeocodingApi);
-            //Creating the query string
-            const params = new URLSearchParams({
-                address: addressToGeocode,
-                key: apiKey,
-            });
-            url.search = params.toString(); // -> URL encoded query string
-
-            try {
-                const response = await fetch(url);
-                const data = await response.json();
-
-                if (data.results[0]) {
-                    const { lat, lng } = data.results[0].geometry.location;
-                    setCenter({ lat, lng });
-                } else {
-                    console.error(
-                        "No results for the address: ",
-                        addressToGeocode
-                    );
-                }
-            } catch (error) {
-                console.error("Geocoding error: ", error);
-            }
-        };
-
-        if (address) {
-            geocodeAddress(address);
-        }
-    }, [address]);
+export default function Page() {
+    const {
+        car,
+        center,
+        barPrice,
+        setBarPrice,
+        chartPrice,
+        setChartPrice,
+        isOfferModalOpen,
+        setIsOfferModalOpen,
+    } = useCarDetailsContext();
 
     return (
         <>
@@ -176,11 +136,11 @@ export default function Page({ params }: { params: { id: string } }) {
                 {car["car-technical-description"] && (
                     <Description text={car["car-technical-description"]} />
                 )}
-                <div className="w-[80%] my-8 flex justify-center">
+                <div className="w-[100%] my-8 flex justify-center">
                     <CarLocationGoogleMap center={center} />
                 </div>
 
-                <div className="relative flex justify-center items-center content-center h-screen">
+                <div className="relative flex justify-center items-center content-center">
                     {car["car-price"] && (
                         <OfferModal
                             carPrice={car["car-price"]}
