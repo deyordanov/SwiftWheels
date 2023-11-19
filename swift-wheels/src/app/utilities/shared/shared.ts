@@ -1,6 +1,9 @@
 //types
 import { CSSObjectWithLabel } from "react-select";
 
+//constants
+import { carDetailsGeocodingApi } from "../constants/constans";
+
 export function getSelectControlType(
     errors: any,
     fieldName: string,
@@ -52,4 +55,35 @@ export function convertTimestampToCustomFormat(timestamp: number) {
     const month = months[date.getUTCMonth()];
     const time = date.toUTCString().match(/(\d{2}:\d{2}):\d{2}/)[1];
     return `${day}th of ${month} - ${time}`;
+}
+
+export const geocodeAddress = async (
+    addressToGeocode: string,
+    setCenter: any
+) => {
+    const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? "";
+    const url = `${carDetailsGeocodingApi}?address=${encodeURIComponent(
+        addressToGeocode
+    )}&key=${encodeURIComponent(apiKey)}`;
+
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+
+        if (data.results?.length > 0) {
+            const { lat, lng } = data.results[0].geometry.location;
+            setCenter({ lat, lng });
+        } else {
+            console.error("No results for the address: ", addressToGeocode);
+        }
+    } catch (error) {
+        console.error("Geocoding error: ", error);
+    }
+};
+
+export function getRandomNumber(min: number, max: number) {
+    return Math.random() * (max - min) + min;
 }

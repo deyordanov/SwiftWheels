@@ -120,11 +120,11 @@ export const googleMapContainerStyle = {
 export const googleMapDefaultOptions = {
     strokeOpacity: 0.5,
     strokeWeight: 2,
-    clickable: false,
-    draggable: false,
+    clickable: true,
+    draggable: true,
     editable: false,
     visible: true,
-    clickableIcons: false,
+    clickableIcons: true,
     streetViewControl: false,
 };
 
@@ -372,6 +372,29 @@ export const carDriveTypes: createCarTypes.IOption[] = [
     "8WD",
 ].map((driveType) => ({ value: driveType, label: driveType }));
 
+export const shopAddresses = [
+    "Heidestraße 62 10557 Berlin Germany",
+    "1600 Amphitheatre Parkway, Mountain View, CA 94043, USA",
+    "1-1-2 Oshiage, Sumida City, Tokyo 131-0045, Japan",
+    "350 Fifth Avenue, New York, NY 10118, USA",
+    "221B Baker Street, Marylebone, London NW1 6XE, UK",
+    "Piazza del Colosseo, 1, 00184 Roma RM, Italy",
+    "Sydney Opera House, Bennelong Point, Sydney NSW 2000, Australia",
+    "Jl. Raya Kuta No.299, Kuta, Badung Regency, Bali 80361, Indonesia",
+    "1 Harbourfront Walk, Singapore 098585",
+    "89th Avenue NE & NE 4th Street, Bellevue, WA 98004, USA",
+    "102 Boulevard Haussmann, 75008 Paris, France",
+    "Plaça de Catalunya, 08002 Barcelona, Spain",
+    "Rua Oscar Freire, 900 - Jardins, São Paulo - SP, 01426-002, Brazil",
+    "30 St Mary Axe, London EC3A 8EP, UK",
+    "1 Infinite Loop, Cupertino, CA 95014, USA",
+    "Burj Khalifa, 1 Sheikh Mohammed bin Rashid Blvd, Dubai, United Arab Emirates",
+    "The Shard, 32 London Bridge St, London SE1 9SG, UK",
+    "100 Queen Street, Melbourne VIC 3000, Australia",
+    "333 W Wacker Dr, Chicago, IL 60606, USA",
+    "Zuidplein 476, 1077 XV Amsterdam, Netherlands",
+].map((shopAddress) => ({ value: shopAddress, label: shopAddress }));
+
 export const customStyles = {
     option: (
         styles: object,
@@ -426,6 +449,7 @@ export const createCarFormKeys = {
     CAR_FUEL_TYPE: "car-fuel-type",
     CAR_ENGINE_TYPE: "car-engine-type",
     CAR_DRIVE_TYPE: "car-drive-type",
+    CAR_SHOP_ADDRESS: "car-shop-address",
     CAR_MODEL: "car-model",
     CAR_KM: "car-km",
     CAR_YEAR: "car-year",
@@ -449,14 +473,15 @@ export const createCarFormDefaultValues = {
     [createCarFormKeys.CAR_FUEL_TYPE]: null,
     [createCarFormKeys.CAR_ENGINE_TYPE]: null,
     [createCarFormKeys.CAR_DRIVE_TYPE]: null,
+    [createCarFormKeys.CAR_SHOP_ADDRESS]: null,
     [createCarFormKeys.CAR_MODEL]: "",
     [createCarFormKeys.CAR_COLOR]: "",
     [createCarFormKeys.CAR_ENGINE_SIZE]: "",
     [createCarFormKeys.CAR_DOORS]: "",
     [createCarFormKeys.CAR_TECHNICAL_DESCRIPTION]: "",
-    [createCarFormKeys.CAR_YEAR]: 0,
-    [createCarFormKeys.CAR_HORSEPOWER]: 0,
-    [createCarFormKeys.CAR_KM]: 0,
+    [createCarFormKeys.CAR_YEAR]: "",
+    [createCarFormKeys.CAR_HORSEPOWER]: "",
+    [createCarFormKeys.CAR_KM]: "",
     [createCarFormKeys.CAR_RATING]: 0,
     [createCarFormKeys.CAR_PRICE]: 25000,
 };
