@@ -1,7 +1,7 @@
 "use client";
 
 //hooks
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { useAuthContext } from "./authContext";
 
 //next-router

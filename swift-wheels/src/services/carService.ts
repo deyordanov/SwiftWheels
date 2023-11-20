@@ -2,12 +2,12 @@
 import * as requester from "./requester";
 
 //types
-import { headerType } from "@/app/utilities/types/authService.types";
+import * as headerTypes from "@/app/utilities/types/authService.types";
 
 const baseUrl = "http://localhost:3030/data/cars";
 
-const getAuthHeaders = () => {
-    let headers: headerType = {
+const getAuthHeaders = (grantFullAccess: boolean) => {
+    let headers: headerTypes.headerType = {
         "Content-Type": "application/json",
     };
 
@@ -15,7 +15,9 @@ const getAuthHeaders = () => {
 
     if (authenticationEntity) {
         const token = JSON.parse(authenticationEntity).accessToken;
-        headers = { ...headers, "X-Authorization": token };
+        headers = !grantFullAccess
+            ? { ...headers, "X-Authorization": token }
+            : { ...headers, "X-Authorization": token, "X-Admin": token };
     }
 
     return headers;
@@ -33,7 +35,7 @@ export const getAll = async () => {
 };
 
 export const getAllFilter = async (filters: any) => {
-    const headers = getAuthHeaders();
+    const headers = getAuthHeaders(false);
 
     let url = baseUrl;
 
@@ -64,19 +66,21 @@ export const getAllFilter = async (filters: any) => {
 };
 
 export const create = async (data: object) => {
-    const headers = getAuthHeaders();
+    const headers = getAuthHeaders(false);
     const response = await requester.authorizationPost(
         headers,
-        JSON.stringify(data),
+        JSON.stringify({ ...data }),
         baseUrl
     );
     return response;
 };
 
 export const addUserToFavorites = async (carId: string, userId: string) => {
-    const headers = getAuthHeaders();
     const car = await getOne(carId);
-    await requester.authorizationPatch(
+    //In order to pass the restriction that only the creator can update the entity, full access is granted!
+    const headers = getAuthHeaders(true);
+
+    await requester.authorizationPut(
         headers,
         JSON.stringify({
             ...car,
@@ -90,9 +94,11 @@ export const removeUserFromFavorites = async (
     carId: string,
     userId: string
 ) => {
-    const headers = getAuthHeaders();
     const car = await getOne(carId);
-    await requester.authorizationPatch(
+    //In order to pass the restriction that only the creator can update the entity, full access is granted!
+    const headers = getAuthHeaders(true);
+
+    await requester.authorizationPut(
         headers,
         JSON.stringify({
             ...car,

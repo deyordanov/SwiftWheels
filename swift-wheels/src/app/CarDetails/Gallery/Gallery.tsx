@@ -8,15 +8,17 @@ import Image from "next/image";
 
 //components
 import { Carousel, IconButton } from "@material-tailwind/react";
-
-//react-icons
-import { AiOutlineStar } from "react-icons/ai";
+import LoadingSpinner from "@/app/Components/shared/LoadingSpinner";
+import FavoriteButton from "@/app/Components/shared/FavoriteButton";
 
 //types
 import * as galleryTypes from "../../utilities/types/gallery.types";
-import LoadingSpinner from "@/app/Components/shared/LoadingSpinner";
 
-export default function Gallery({ images, isPreview }: galleryTypes.propTypes) {
+export default function Gallery({
+    images,
+    isPreview,
+    car,
+}: galleryTypes.propTypes) {
     const [loading, setLoading] = useState(
         new Array(images?.length).fill(true)
     );
@@ -99,12 +101,7 @@ export default function Gallery({ images, isPreview }: galleryTypes.propTypes) {
                         onLoad={() => handleImageLoad(index)}
                     />
 
-                    {!isPreview && (
-                        <button className="hover:text-yellow-500 flex items-center absolute bottom-4 right-4 px-4 py-2 text-white rounded-full  transition ease-in-out duration-300">
-                            <AiOutlineStar className=" text-xl mr-2" />
-                            <span className="text-white">Add to Favorites</span>
-                        </button>
-                    )}
+                    {!isPreview && <FavoriteButton car={car} />}
                 </div>
             ))}
         </Carousel>

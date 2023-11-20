@@ -67,7 +67,11 @@ export default function Page() {
                     ))}
                 </div>
                 <div className="w-full mx-auto mb-14">
-                    <Gallery images={car["car-images"]} isPreview={false} />
+                    <Gallery
+                        images={car["car-images"]}
+                        car={car}
+                        isPreview={false}
+                    />
                 </div>
                 <div className="flex flex-1 w-full mb-4">
                     <div className="bg-gray-100 px-6 rounded-lg shadow-lg w-[80%]">

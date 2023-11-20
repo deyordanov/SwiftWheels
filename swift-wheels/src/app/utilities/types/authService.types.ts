@@ -1,4 +1,5 @@
 export type headerType = {
-  "Content-Type": string;
-  "X-Authorization"?: string;
+    "Content-Type": string;
+    "X-Authorization"?: string;
+    "X-Admin"?: string;
 };

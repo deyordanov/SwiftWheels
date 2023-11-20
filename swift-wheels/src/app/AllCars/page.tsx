@@ -6,9 +6,6 @@ import { useState, useEffect } from "react";
 //services
 import * as carService from "../../services/carService";
 
-//react-icons
-import { AiOutlineStar } from "react-icons/ai";
-
 //next-image
 import Image from "next/image";
 

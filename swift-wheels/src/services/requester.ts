@@ -41,6 +41,6 @@ export const authorizationPost = request.bind(null, "POST");
 
 export const authorizationGet = request.bind(null, "GET");
 
-export const authorizationPatch = request.bind(null, "PUT");
+export const authorizationPut = request.bind(null, "PUT");
 
 //....
