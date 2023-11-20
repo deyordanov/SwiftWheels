@@ -461,11 +461,13 @@ export const createCarFormKeys = {
     CAR_RATING: "car-rating",
     CAR_PRICE: "car-price",
     CAR_IMAGES: "car-images",
+    CAR_FAVORITES: "car-favorites",
 };
 
 export const createCarFormDefaultValues = {
     [createCarFormKeys.CAR_EXTRAS]: [],
     [createCarFormKeys.CAR_IMAGES]: [],
+    [createCarFormKeys.CAR_FAVORITES]: [],
     [createCarFormKeys.CAR_TYPE]: null,
     [createCarFormKeys.CAR_MAKE]: null,
     [createCarFormKeys.CAR_TRANSMISSION]: null,

@@ -6,6 +6,9 @@ import { useState, useEffect } from "react";
 //services
 import * as carService from "../../services/carService";
 
+//react-icons
+import { AiOutlineStar } from "react-icons/ai";
+
 //next-image
 import Image from "next/image";
 
@@ -20,8 +23,9 @@ import {
     formatPrice,
     convertTimestampToCustomFormat,
 } from "../utilities/shared/shared";
+import FavoriteButton from "../Components/shared/FavoriteButton";
 
-export default function UserListings() {
+export default function AllCars() {
     const [cars, setCars] = useState<Array<unknown>>([]);
     const [filters, setFilters] = useState<Array<object>>([]);
 
@@ -47,7 +51,7 @@ export default function UserListings() {
                 {cars?.map((car: any) => (
                     <div
                         key={car._id}
-                        className="flex h-[25%] shadow-xl w-full max-w-[1400px] gap-4 bg-gray-200  rounded-tr-lg rounded-br-lg"
+                        className="flex h-[25%] shadow-lg w-full max-w-[1400px] gap-4   rounded-lg"
                     >
                         <div className="relative w-[35%]">
                             <Link href={`/CarDetails/${car._id}`}>
@@ -59,7 +63,7 @@ export default function UserListings() {
                                 />
                             </Link>
                         </div>
-                        <div className="flex flex-col justify-between py-4 pl-2 pr-8 gap-2 w-full">
+                        <div className="relative flex flex-col justify-between py-4 pl-2 pr-8 gap-2 w-full">
                             <p className="text-secondary text-md">
                                 {convertTimestampToCustomFormat(
                                     car?._createdOn
@@ -87,6 +91,8 @@ export default function UserListings() {
                                 {car["car-transmission"]} |{" "}
                                 {car["car-horsepower"]} HP
                             </p>
+
+                            <FavoriteButton car={car} />
                         </div>
                     </div>
                 ))}

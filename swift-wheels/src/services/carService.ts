@@ -72,3 +72,34 @@ export const create = async (data: object) => {
     );
     return response;
 };
+
+export const addUserToFavorites = async (carId: string, userId: string) => {
+    const headers = getAuthHeaders();
+    const car = await getOne(carId);
+    await requester.authorizationPatch(
+        headers,
+        JSON.stringify({
+            ...car,
+            "car-favorites": [...car["car-favorites"], userId],
+        }),
+        `${baseUrl}/${carId}`
+    );
+};
+
+export const removeUserFromFavorites = async (
+    carId: string,
+    userId: string
+) => {
+    const headers = getAuthHeaders();
+    const car = await getOne(carId);
+    await requester.authorizationPatch(
+        headers,
+        JSON.stringify({
+            ...car,
+            "car-favorites": car["car-favorites"].filter(
+                (id: string) => id !== userId
+            ),
+        }),
+        `${baseUrl}/${carId}`
+    );
+};

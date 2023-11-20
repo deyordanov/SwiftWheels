@@ -86,6 +86,7 @@ export default function Page() {
                                             "userEmail",
                                             "_createdOn",
                                             "_id",
+                                            "car-shop-address",
                                         ].includes(key)
                                 )
                                 .map(([key, value]) => (

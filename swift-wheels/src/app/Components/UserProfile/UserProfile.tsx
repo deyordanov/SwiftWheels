@@ -7,6 +7,7 @@ import Link from "next/link";
 //react-icons
 import { BiSolidUser, BiLogOut } from "react-icons/bi";
 import { MdAttachMoney, MdSell } from "react-icons/md";
+import { IoCarSportSharp } from "react-icons/io5";
 
 //headless-ui
 import { Menu, Transition } from "@headlessui/react";
@@ -48,11 +49,11 @@ export default function UserProfile({
                         <div className="px-1 py-1 ">
                             <Menu.Item>
                                 <Link
-                                    href="/"
+                                    href="/AllCars"
                                     className={`hover:bg-slate-50 group flex gap-x-2 w-full items-center rounded-md px-2 py-2 text-sm hover:text-accent-hover`}
                                 >
-                                    <MdSell className="ml-1 text-2xl" />
-                                    Your Listings
+                                    <IoCarSportSharp className="ml-1 text-2xl" />
+                                    All Cars
                                 </Link>
                             </Menu.Item>
                         </div>
