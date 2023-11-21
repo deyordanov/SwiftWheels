@@ -19,7 +19,6 @@ export default function FavoriteButton({ car }: { car: any }) {
     }, [car, userId]);
 
     const toggleFavorite = () => {
-        console.log("toggle");
         setIsFavorite((state) => {
             if (!state) {
                 carService.addUserToFavorites(car._id, userId);

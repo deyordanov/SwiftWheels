@@ -91,6 +91,8 @@ export default function Page() {
                                             "_createdOn",
                                             "_id",
                                             "car-shop-address",
+                                            "_updatedOn",
+                                            "car-favorites",
                                         ].includes(key)
                                 )
                                 .map(([key, value]) => (

@@ -1,3 +1,8 @@
+"use client";
+
+//hooks
+import { useAuthContext } from "@/app/Contexts/authContext";
+
 //react
 import { Fragment } from "react";
 
@@ -17,6 +22,7 @@ export default function UserProfile({
 }: {
     handleLogoutDialogExitOpen: () => void;
 }) {
+    const { userEmail } = useAuthContext();
     return (
         <div className="text-right cursor-pointer">
             <Menu as="div" className="text-left">
@@ -34,7 +40,10 @@ export default function UserProfile({
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                 >
-                    <Menu.Items className="absolute mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none">
+                    <Menu.Items className=" absolute mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none">
+                        <div className="px-1 py-1 text-center m-2 font-bold hover:cursor-default">
+                            {userEmail}
+                        </div>
                         <div className="px-1 py-1 ">
                             <Menu.Item>
                                 <Link
