@@ -74,55 +74,17 @@ export default function Page() {
         }),
     };
 
-    // Parent variants for sliding in from the left
-    const parentVariants = {
-        hidden: { x: "-100vw", opacity: 0 }, // Start off-screen to the left
-        visible: {
-            x: 0,
-            opacity: 1,
-            transition: {
-                type: "tween",
-                duration: 2,
-                ease: "easeInOut",
-                when: "beforeChildren",
-                staggerChildren: 0.5,
-            },
-        },
-    };
-
-    // Child variants for sliding in from the right
-    const childVariants = {
-        hidden: { x: "200vw", opacity: 0 }, // Start off-screen to the right
-        visible: {
-            x: 0,
-            opacity: 1,
-            transition: {
-                type: "tween",
-                duration: 2,
-                ease: "easeInOut",
-            },
-        },
-    };
-
     return (
         <>
-            <motion.form
-                variants={parentVariants}
-                initial="hidden"
-                animate="visible"
+            <form
                 onSubmit={handleSubmit(onSubmit)}
-                className={`max-w-[1000px] container text-black p-20 flex flex-col gap-y-2 mx-auto hide-scrollbar ${
+                className={`max-w-[1000px] container text-black p-20 flex flex-col gap-y-2 mx-auto ${
                     carImagesPreview.length === 0
                         ? "justify-center h-screen"
                         : ""
                 }`}
             >
-                <motion.div
-                    variants={childVariants}
-                    initial="hidden"
-                    animate="visible"
-                    className="relative mb-4"
-                >
+                <div className="relative mb-4">
                     <h1 className="text-5xl font-extrabold text-center">
                         Create Your Car Offer
                     </h1>
@@ -139,7 +101,7 @@ export default function Page() {
                             priority
                         />
                     </Link>
-                </motion.div>
+                </div>
                 <div className="w-full flex gap-x-4 ">
                     <Controller
                         control={control}
@@ -674,15 +636,17 @@ export default function Page() {
                     />
                 )}
 
-                <div className="flex items-center justify-center">
-                    <button
+                <div className="w-full flex items-center justify-center">
+                    <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
                         type="submit"
-                        className="py-2 px-4 text-lg bg-blue-400 hover:bg-blue-500 w-[50%] rounded-lg shadow-xl text-white mt-4 h-[50px]"
+                        className="py-2 px-4 text-lg bg-blue-400 hover:bg-blue-500 w-[25%] rounded-lg shadow-xl text-white mt-4 h-[50px]"
                     >
                         Submit
-                    </button>
+                    </motion.button>
                 </div>
-            </motion.form>
+            </form>
         </>
     );
 }
