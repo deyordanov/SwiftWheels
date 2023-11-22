@@ -24,6 +24,8 @@ import {
 //shared
 import { getSelectControlType } from "@/app/utilities/shared/shared";
 
+import { motion } from "framer-motion";
+
 export default function Filter({ setFilters }) {
     const animatedComponents = makeAnimated();
 
@@ -65,8 +67,22 @@ export default function Filter({ setFilters }) {
         handleFilters({});
     };
 
+    const inputVariants = {
+        hidden: { width: 0, opacity: 0 }, // Start with 0 width and invisible
+        visible: {
+            width: "auto", // Adapt to content or specify a width
+            opacity: 1,
+            transition: { duration: 0.5, ease: "easeOut" },
+        },
+    };
+
     return (
-        <aside className="bg-gray-200 h-full w-full p-4 rounded-lg text-sm shadow-2xl">
+        <motion.aside
+            variants={inputVariants}
+            initial="hidden"
+            animate="visible"
+            className="bg-gray-200 h-full w-full p-4 rounded-lg text-sm shadow-2xl"
+        >
             <form
                 onSubmit={handleSubmit(handleFilters)}
                 className="w-full flex flex-col gap-y-1"
@@ -503,6 +519,6 @@ export default function Filter({ setFilters }) {
                     </button>
                 </div>
             </form>
-        </aside>
+        </motion.aside>
     );
 }

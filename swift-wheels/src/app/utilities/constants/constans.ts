@@ -437,6 +437,20 @@ export const customStyles = {
         ...provided,
         maxHeight: "40px",
         overflow: "auto",
+        "::-webkit-scrollbar": {
+            display: "none",
+        },
+        "-ms-overflow-style": "none", // IE and Edge
+        "scrollbar-width": "none", // Firefox
+    }),
+    menuList: (provided: object) => ({
+        ...provided,
+        "::-webkit-scrollbar": {
+            display: "none",
+        },
+        "-ms-overflow-style": "none", // IE and Edge
+        "scrollbar-width": "none", // Firefox
+        overflowY: "scroll", // Keep the scroll functionality
     }),
 };
 

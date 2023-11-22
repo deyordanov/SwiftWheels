@@ -52,7 +52,7 @@ export default function RootLayout({
     return (
         <>
             <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
-            <body className={inter.className}>
+            <body className={`${inter.className} hide-scrollbar`}>
                 <AllProviders>{children}</AllProviders>
             </body>
         </>
