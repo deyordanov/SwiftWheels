@@ -9,8 +9,9 @@ const config: Config = withUt(
         content: [
             "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
             "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-            "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+            "./src/app/**/*.*",
             "./src/**/*.{ts,tsx,mdx}",
+            "./node_modules/flowbite/**/*.js",
         ],
         theme: {
             container: {
@@ -42,7 +43,7 @@ const config: Config = withUt(
                 },
             },
         },
-        plugins: [],
+        plugins: [require("flowbite/plugin")],
     })
 );
 export default config;

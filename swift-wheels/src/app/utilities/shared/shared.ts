@@ -1,5 +1,6 @@
 //types
 import { CSSObjectWithLabel } from "react-select";
+import * as headerTypes from "@/app/utilities/types/authService.types";
 
 //constants
 import { carDetailsGeocodingApi } from "../constants/constans";
@@ -87,3 +88,20 @@ export const geocodeAddress = async (
 export function getRandomNumber(min: number, max: number) {
     return Math.random() * (max - min) + min;
 }
+
+export const getAuthHeaders = (grantFullAccess: boolean) => {
+    let headers: headerTypes.headerType = {
+        "Content-Type": "application/json",
+    };
+
+    const authenticationEntity = localStorage.getItem("auth");
+
+    if (authenticationEntity) {
+        const token = JSON.parse(authenticationEntity).accessToken;
+        headers = !grantFullAccess
+            ? { ...headers, "X-Authorization": token }
+            : { ...headers, "X-Authorization": token, "X-Admin": token };
+    }
+
+    return headers;
+};
