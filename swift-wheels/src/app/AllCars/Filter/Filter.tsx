@@ -61,27 +61,22 @@ export default function Filter({ setFilters }) {
         setFilters(mapped);
     };
 
-    const handleClearFilter = (e) => {
+    const handleClearFilter = (e: any) => {
         e.preventDefault();
         reset();
         handleFilters({});
     };
-
-    const inputVariants = {
-        hidden: { width: 0, opacity: 0 }, // Start with 0 width and invisible
-        visible: {
-            width: "auto", // Adapt to content or specify a width
-            opacity: 1,
-            transition: { duration: 0.5, ease: "easeOut" },
-        },
+    const containerVariants = {
+        hidden: { height: 0, opacity: 0 },
+        visible: { height: "auto", opacity: 1, transition: { duration: 2 } },
     };
 
     return (
-        <motion.aside
-            variants={inputVariants}
+        <motion.div
+            variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="bg-gray-200 h-full w-full p-4 rounded-lg text-sm shadow-2xl"
+            className="bg-gray-200 h-full w-full p-4 rounded-lg text-sm shadow-2xl overflow-hidden"
         >
             <form
                 onSubmit={handleSubmit(handleFilters)}
@@ -519,6 +514,6 @@ export default function Filter({ setFilters }) {
                     </button>
                 </div>
             </form>
-        </motion.aside>
+        </motion.div>
     );
 }

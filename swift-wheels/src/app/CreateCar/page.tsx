@@ -90,12 +90,12 @@ export default function Page() {
                     </h1>
                     <Link
                         href={"/"}
-                        className="absolute cursor-pointer -top-8 left-2"
+                        className="absolute cursor-pointer -top-5 left-8"
                     >
                         <Image
                             src={"/icons/logo4.png"}
-                            width={200}
-                            height={200}
+                            width={160}
+                            height={160}
                             alt="logo"
                             className=""
                             priority
