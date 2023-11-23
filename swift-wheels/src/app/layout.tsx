@@ -22,7 +22,6 @@ import React from "react";
 
 //styles
 import "./globals.css";
-
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -52,6 +51,7 @@ export default function RootLayout({
     return (
         <>
             <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
+
             <body className={`${inter.className} hide-scrollbar`}>
                 <AllProviders>{children}</AllProviders>
             </body>

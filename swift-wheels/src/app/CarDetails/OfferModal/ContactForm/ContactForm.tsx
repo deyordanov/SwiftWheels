@@ -3,12 +3,19 @@
 //hooks
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useCarDetailsContext } from "@/app/Contexts/carDetailsContext";
 
 //components
 import FormErrorMessage from "@/app/Components/shared/FormErrorMessage";
 
+//framer-motion
+import { motion } from "framer-motion";
+
 //react-icons
 import { BsFillArrowLeftCircleFill } from "react-icons/bs";
+
+//services
+import * as offerService from "@/services/offerService";
 
 //react-confetti
 import Confetti from "react-confetti";
@@ -26,6 +33,8 @@ export default function ContactForm({
     setTabs,
     closeModal,
 }: contactFormTypes.propTypes) {
+    const [messageReceived, setMessageReceived] = useState<boolean>();
+    const [showConfetti, setShowConfetti] = useState(false);
     const {
         register,
         formState: { errors },
@@ -34,27 +43,63 @@ export default function ContactForm({
         defaultValues: ContactFormDefaultValues,
         mode: "onSubmit",
     });
-    const [showConfetti, setShowConfetti] = useState(false);
+
+    const { car } = useCarDetailsContext();
 
     const handleReturn = () => {
         setTabs((state) => state.slice(0, -1));
     };
 
-    const onSubmit = (data: any) => {
+    const onSubmit = async (data: any) => {
         console.log(data);
         console.log("Message Recieved!");
+
+        const a = await offerService.create({
+            ...data,
+            carId: car._id,
+            sellerId: car._ownerId,
+            carModel: car["car-model"],
+            carPrice: car["car-price"],
+        });
+
+        console.log(a);
+
         setShowConfetti(true);
+        setMessageReceived(true);
         setTimeout(() => {
             setShowConfetti(false);
             closeModal();
         }, 3000);
     };
 
+    const pulseAnimation = {
+        scale: [1, 1.2, 1],
+        transition: {
+            duration: 1.2,
+            ease: "easeInOut",
+            repeat: Infinity,
+            repeatType: "loop" as const,
+        },
+    };
+
+    if (messageReceived)
+        return (
+            <motion.section
+                animate={pulseAnimation}
+                className="h-full py-[20%]"
+            >
+                {showConfetti && <Confetti className="h-screen w-screen" />}
+                <h1 className="h1">Thank you!</h1>
+                <h2 className="text-lg font-bold">
+                    Your offer has been sent to the seller!
+                </h2>
+            </motion.section>
+        );
+
     return (
         <>
             {/* TODO: Add a thank you note! */}
-            {showConfetti && <Confetti className="h-screen w-screen" />}
-            <div className="w-full relative flex justify-center">
+            <section className="w-full relative flex justify-center">
                 <form
                     onSubmit={handleSubmit(onSubmit)}
                     className="flex justify-center items-center w-[70%] text-left"
@@ -155,7 +200,7 @@ export default function ContactForm({
                 >
                     <BsFillArrowLeftCircleFill className="text-gray-300 hover:text-gray-500" />
                 </button>
-            </div>
+            </section>
         </>
     );
 }

@@ -68,7 +68,7 @@ export default function Filter({ setFilters }) {
     };
     const containerVariants = {
         hidden: { height: 0, opacity: 0 },
-        visible: { height: "auto", opacity: 1, transition: { duration: 2 } },
+        visible: { height: "auto", opacity: 1, transition: { duration: 1 } },
     };
 
     return (

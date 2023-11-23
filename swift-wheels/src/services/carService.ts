@@ -1,27 +1,10 @@
 //requester
 import * as requester from "./requester";
 
-//types
-import * as headerTypes from "@/app/utilities/types/authService.types";
+//shared
+import { getAuthHeaders } from "@/app/utilities/shared/shared";
 
 const baseUrl = "http://localhost:3030/data/cars";
-
-const getAuthHeaders = (grantFullAccess: boolean) => {
-    let headers: headerTypes.headerType = {
-        "Content-Type": "application/json",
-    };
-
-    const authenticationEntity = localStorage.getItem("auth");
-
-    if (authenticationEntity) {
-        const token = JSON.parse(authenticationEntity).accessToken;
-        headers = !grantFullAccess
-            ? { ...headers, "X-Authorization": token }
-            : { ...headers, "X-Authorization": token, "X-Admin": token };
-    }
-
-    return headers;
-};
 
 export const getOne = async (carId: string) => {
     const response = await requester.get(`${baseUrl}/${carId}`);

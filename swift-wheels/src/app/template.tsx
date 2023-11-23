@@ -1,4 +1,6 @@
 "use client";
+
+//react-motion
 import { motion } from "framer-motion";
 
 const variants = {
@@ -25,7 +27,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
             variants={variants}
             initial="hidden"
             animate="enter"
-            exit="exit" // Add this to trigger the exit animations
+            exit="exit"
         >
             {children}
         </motion.main>

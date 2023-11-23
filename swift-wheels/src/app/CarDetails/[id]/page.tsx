@@ -75,7 +75,7 @@ export default function Page() {
                 </div>
                 <div className="flex flex-1 w-full mb-4">
                     <div className="bg-gray-100 px-6 rounded-lg shadow-lg w-[80%]">
-                        <ul className="divide-y divide-gray-200 text-xl">
+                        <ul className="divide-y divide-gray-200 text-xl flex flex-col justify-between h-full">
                             {Object.entries(car)
                                 .filter(
                                     ([key]) =>
@@ -130,7 +130,6 @@ export default function Page() {
                             )}
                         </div>
                         <div className="flex-grow">
-                            {/* TODO: Display a contact form / offer form when the offer button is clicked? */}
                             {barPrice !== 0 && chartPrice !== 0 && (
                                 <Offer
                                     priceIndicator={barPrice + chartPrice}
