@@ -102,7 +102,7 @@ export default function Page() {
                         />
                     </Link>
                 </div>
-                <div className="w-full flex gap-x-4 ">
+                <div className="w-full flex gap-x-4">
                     <Controller
                         control={control}
                         name={createCarFormKeys.CAR_EXTRAS}
@@ -110,11 +110,9 @@ export default function Page() {
                         render={({ field }: { field: any }) => (
                             <Select
                                 {...field}
-                                components={animatedComponents}
                                 isMulti
                                 options={carExtras}
                                 className="w-full select-hidden-arrows"
-                                classNamePrefix="select"
                                 styles={customSelectStyles}
                                 value={carExtras.filter((option) =>
                                     (field.value as string[]).includes(

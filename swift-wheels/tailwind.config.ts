@@ -43,7 +43,7 @@ const config: Config = withUt(
                 },
             },
         },
-        plugins: [require("flowbite/plugin")],
+        plugins: [],
     })
 );
 export default config;

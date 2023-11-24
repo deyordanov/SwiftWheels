@@ -11,7 +11,7 @@ export const Star = ({
         <svg
             xmlns="http://www.w3.org/2000/svg"
             className={`h-6 w-6 cursor-pointer ${
-                filled ? "text-yellow-500" : "text-gray-400"
+                filled ? "text-yellow-300" : "text-gray-400"
             }`}
             fill={filled ? "currentColor" : "none"}
             viewBox="0 0 24 24"
