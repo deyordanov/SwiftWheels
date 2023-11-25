@@ -18,15 +18,19 @@ export const create = async (data: object) => {
 
 export const getAllFilter = async (sellerId: string, carId: string) => {
     const headers = getAuthHeaders(false);
-    //`${filterKey} ${filter.separator} "${filter.value}"`
+
     const query = encodeURIComponent(
-        `sellerId = "${sellerId}" AND carId = "${carId}"`
+        //AND carId = "${carId}"
+        `receiverId = "${sellerId}" OR senderId="${sellerId}"`
     );
-    const offers = await requester.authorizationGet(
+    let offers = await requester.authorizationGet(
         headers,
         {},
         `${baseUrl}?where=${query}`
     );
+
+    //The server does not accept both AND + OR in a single query :(
+    offers = offers.filter((offer: any) => offer.carId === carId);
 
     return offers;
 };

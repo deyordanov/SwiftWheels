@@ -27,19 +27,22 @@ export default function Offer({ offer }) {
         };
 
         getChatForCurrentUser();
-    });
+    }, [offer, userId]);
 
     const handleIsChatModalOpen = () => {
         setIsChatModalOpen((state) => !state);
     };
 
     const handleChatCreation = async () => {
+        console.log(offer);
         if (!isChatCreated) {
             const newChat = await chatService.create({
                 receiverId:
                     userId === offer._ownerId ? offer.sellerId : offer._ownerId,
                 senderId: userId,
-                messages: [{ message: offer.message, senderId: userId }],
+                messages: [
+                    { message: offer.message, senderId: offer._ownerId },
+                ],
                 sellerId: offer.sellerId,
                 carId: offer.carId,
             });
@@ -55,7 +58,7 @@ export default function Offer({ offer }) {
         }
 
         setIsChatCreated(true);
-        handleIsChatModalOpen((state) => !state);
+        handleIsChatModalOpen();
     };
 
     return (
