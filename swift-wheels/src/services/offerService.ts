@@ -18,8 +18,12 @@ export const create = async (data: object) => {
 
 export const getAllFilter = async (sellerId: string) => {
     console.log(sellerId);
+    console.log(sellerId);
     const headers = getAuthHeaders(false);
-    const query = encodeURIComponent(`sellerId="${sellerId}"`);
+    const query = encodeURIComponent(
+        `sellerId = "${sellerId}" OR _ownerId = "${sellerId}"`
+    );
+
     const offers = await requester.authorizationGet(
         headers,
         {},
