@@ -51,18 +51,13 @@ export default function ContactForm({
     };
 
     const onSubmit = async (data: any) => {
-        console.log(data);
-        console.log("Message Recieved!");
-
-        const a = await offerService.create({
+        await offerService.create({
             ...data,
             carId: car._id,
             sellerId: car._ownerId,
             carModel: car["car-model"],
             carPrice: car["car-price"],
         });
-
-        console.log(a);
 
         setShowConfetti(true);
         setMessageReceived(true);
