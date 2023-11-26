@@ -534,3 +534,8 @@ export const filterFormDefaultValues = {
     [filterFormKeys.HORSEPOWER_LOWER_BOUND]: 0,
     [filterFormKeys.HORSEPOWER_UPPER_BOUND]: 100,
 };
+
+export const containerVariants = {
+    hidden: { height: 0, opacity: 0 },
+    visible: { height: "auto", opacity: 1, transition: { duration: 1 } },
+};

@@ -12,6 +12,9 @@ import {
 //next-navigation
 import { useParams } from "next/navigation";
 
+//tanstack query
+import { useQuery } from "@tanstack/react-query";
+
 //services
 import * as carService from "../../services/carService";
 
@@ -30,16 +33,29 @@ export const CarDetailsProvider = ({
 }: carDetailsContextTypes.propTypes) => {
     const searchParams = useParams();
     const [car, setCar] = useState<any>({});
-    const [center, setCenter] = useState({ lat: 0, lng: 0 });
-    const [barPrice, setBarPrice] = useState(0);
-    const [chartPrice, setChartPrice] = useState(0);
-    const [isOfferModalOpen, setIsOfferModalOpen] = useState(false);
+    const [center, setCenter] = useState<{ lat: number; lng: number }>({
+        lat: 0,
+        lng: 0,
+    });
+    const [barPrice, setBarPrice] = useState<number>(0);
+    const [chartPrice, setChartPrice] = useState<number>(0);
+    const [isOfferModalOpen, setIsOfferModalOpen] = useState<boolean>(false);
+
+    const getCarQuery = useQuery({
+        queryKey: [searchParams.id],
+        queryFn: () => carService.getOne(searchParams.id as string),
+    });
 
     const getCar = useCallback(async () => {
-        if (searchParams.id) {
-            setCar(await carService.getOne(searchParams.id as string));
+        if (searchParams.id && !getCarQuery.isLoading) {
+            setCar(getCarQuery?.data);
+        } else if (getCarQuery.isError) {
+            console.log(
+                "Error loading vehicle in CarDetails:",
+                getCarQuery.error
+            );
         }
-    }, [searchParams]);
+    }, [getCarQuery, searchParams]);
 
     useEffect(() => {
         getCar();

@@ -106,3 +106,13 @@ export const getAuthHeaders = (grantFullAccess: boolean) => {
 
     return headers;
 };
+
+export function extractPlaceholder(inputString: string) {
+    return inputString
+        .toLowerCase()
+        .split("_")
+        .map((word, index) =>
+            index === 0 ? word.charAt(0).toUpperCase() + word.slice(1) : word
+        )
+        .join(" ");
+}
