@@ -27,7 +27,7 @@ export default function Page() {
 
     return (
         <section className="container flex items-center justify-center h-screen w-screen mx-auto mt-2 text-primary font-semibold">
-            <ul className="flex flex-col h-full">
+            <ul className="flex flex-col h-full gap-4 ">
                 {offers?.map((offer: any) => (
                     <Offer key={offer._id} offer={offer} />
                 ))}

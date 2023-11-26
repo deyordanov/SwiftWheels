@@ -15,9 +15,10 @@ import * as chatService from "@/services/chatService";
 import Chat from "../Chat/Chat";
 
 export default function Offer({ offer }) {
-    const { userId } = useAuthContext();
+    const { userId, userEmail } = useAuthContext();
     const [isChatModalOpen, setIsChatModalOpen] = useState<boolean>(false);
     const [isChatCreated, setIsChatCreated] = useState<any>(false);
+    const [offerStatus, setOfferStatus] = useState<String>("Pending");
     const [chat, setChat] = useState<any>({});
 
     useEffect(() => {
@@ -41,9 +42,11 @@ export default function Offer({ offer }) {
                     userId === offer._ownerId ? offer.sellerId : offer._ownerId,
                 senderId: userId,
                 messages: [
-                    { message: offer.message, senderId: offer._ownerId },
+                    { message: offer.buyerMessage, senderId: offer._ownerId },
                 ],
                 sellerId: offer.sellerId,
+                sellerEmail: userEmail,
+                buyerEmail: offer.buyerEmail,
                 carId: offer.carId,
             });
 
@@ -61,55 +64,80 @@ export default function Offer({ offer }) {
         handleIsChatModalOpen();
     };
 
+    const getOfferStatusStyle = () => {
+        if (offerStatus === "Pending") {
+            return "text-orange-400 bg-orange-100";
+        } else if (offerStatus === "Declined") {
+            return "text-red-400 bg-red-100";
+        } else {
+            return "text-green-400 bg-green-100";
+        }
+    };
+
+    const acceptOffer = () => {
+        setOfferStatus("Accepted");
+    };
+
+    const declineOffer = () => {
+        setOfferStatus("Declined");
+    };
+
+    const isOfferSet = () => offerStatus !== "Pending";
+
+    const isOfferDeclined = offerStatus === "Declined";
+
+    const isBuyer = userId === offer._ownerId;
+
     return (
         <li
             key={offer._id}
-            className="flex items-center px-4 py-2 rounded-lg shadow-xl"
+            className="flex items-center px-4 py-2 rounded-lg shadow-lg justify-between text-center divide-x-2 divide-gray-200 h-[7%]"
         >
-            <button
-                onClick={handleIsChatModalOpen}
-                className=" px-2 text-lg font-extrabold hover:cursor-pointer"
-            >
-                {offer.carModel}
-            </button>
+            <h1 className="pr-2 text-lg font-extrabold">{offer.carModel}</h1>
 
-            <div className="flex">
-                <p className="text-primary border-l-2 border-gray-200 px-2">
-                    {offer.name}
+            <div className="flex flex-1 items-center divide-x-2 divide-gray-200 h-full">
+                <p className="text-primary px-2 flex-1">{offer.buyerEmail}</p>
+                <p className="text-primary px-2 h-full flex items-center">
+                    {formatPrice(offer.offerPrice)}
                 </p>
-                <p className="text-primary border-l-2 border-gray-200 px-2">
-                    {formatPrice(offer.carPrice)}
-                </p>
-                <p className="text-primary border-l-2 border-gray-200 px-2">
+                <p className="text-primary px-2 h-full flex items-center">
                     {convertTimestampToCustomFormat(offer._createdOn)}
                 </p>
             </div>
-            <div className="flex border-l-2 border-r-2 border-gray-200 px-2 gap-2 ">
-                <button className="px-2 py-1 text-white  bg-green-500 hover:bg-green-600 rounded-lg">
-                    Accept
-                </button>
-                <button className="px-2 py-1 text-white  bg-red-500 hover:bg-red-600 rounded-lg">
-                    Decline
-                </button>
-                {!isChatCreated ? (
-                    <button
-                        onClick={() => handleChatCreation()}
-                        className="px-2 py-1 text-white  bg-blue-500 hover:bg-blue-600 rounded-lg"
-                    >
-                        Begin A Chat
-                    </button>
-                ) : (
-                    <button
-                        onClick={() => handleChatCreation()}
-                        className="px-2 py-1 text-white  bg-blue-500 hover:bg-blue-600 rounded-lg"
-                    >
-                        Message Buyer
-                    </button>
+            <div className="flex px-2 gap-2 h-full items-center">
+                {!isBuyer && (
+                    <>
+                        <button
+                            disabled={isOfferSet()}
+                            onClick={acceptOffer}
+                            className="px-2 py-1 text-white  bg-green-500 hover:bg-green-600 rounded-lg flex"
+                        >
+                            Accept
+                        </button>
+                        <button
+                            disabled={isOfferSet()}
+                            onClick={declineOffer}
+                            className="px-2 py-1 text-white  bg-red-500 hover:bg-red-600 rounded-lg"
+                        >
+                            Decline
+                        </button>
+                    </>
                 )}
+                <button
+                    disabled={isOfferDeclined}
+                    onClick={handleChatCreation}
+                    className="px-2 py-1 text-white  bg-blue-500 hover:bg-blue-600 rounded-lg"
+                >
+                    Message {isBuyer ? "Seller" : "Buyer"}
+                </button>
             </div>
-            <p className="text-orange-400 bg-orange-100 rounded-lg px-2 ml-2">
-                Pending
-            </p>
+            <div className="w-[10%] h-full flex items-center">
+                <p
+                    className={`${getOfferStatusStyle()} w-full rounded-lg ml-2`}
+                >
+                    {offerStatus}
+                </p>
+            </div>
             {isChatCreated && Object.values(chat).length !== 0 && (
                 <Chat
                     setIsChatModalOpen={setIsChatModalOpen}

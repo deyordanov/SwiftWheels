@@ -1,9 +1,13 @@
+//hooks
+import { useAuthContext } from "@/app/Contexts/authContext";
+
 //types
 import * as offerTypes from "../../utilities/types/offer.types";
 
 export default function Offer({
     priceIndicator,
     setIsOfferModalOpen,
+    ownerId,
 }: offerTypes.propTypes) {
     function getOffer() {
         if (priceIndicator <= 0.2) {
@@ -18,6 +22,8 @@ export default function Offer({
             return { text: "Poor Offer", color: "bg-red-500" };
         }
     }
+
+    const { userId } = useAuthContext();
 
     const handleOfferModal = () => {
         setIsOfferModalOpen((state) => !state);
@@ -34,6 +40,7 @@ export default function Offer({
                 The current price of the vehicle is a:
             </p>
             <button
+                disabled={ownerId === userId}
                 onClick={handleOfferModal}
                 className={`rounded-lg ${offer?.color} w-[60%] p-4 shadow-md text-2xl text-white font-semibold transition-transform duration-500 ease-in-out transform hover:scale-105`}
             >

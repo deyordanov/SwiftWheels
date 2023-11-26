@@ -138,6 +138,7 @@ export default function OfferModal({
                                             {tabs[tabs.length - 1] ===
                                                 "contact" && (
                                                 <ContactForm
+                                                    offerPrice={offer}
                                                     closeModal={closeModal}
                                                     setTabs={setTabs}
                                                 />

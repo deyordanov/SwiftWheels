@@ -71,9 +71,9 @@ export const RegisterFormDefaultValues = {
 
 //-> Form Keys
 export const ContactFormKeys = {
-    NAME: "name",
-    EMAIL: "email",
-    MESSAGE: "message",
+    NAME: "buyerName",
+    EMAIL: "buyerEmail",
+    MESSAGE: "buyerMessage",
 };
 
 //-> Form Default Values

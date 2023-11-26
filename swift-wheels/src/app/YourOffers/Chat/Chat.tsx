@@ -115,7 +115,10 @@ export default function Chat({ isChatModalOpen, setIsChatModalOpen, chat }) {
                                             <div className="flex flex-col items-center justify-center">
                                                 <div className="text-2xl mt-1 flex items-center">
                                                     <span className="mr-3">
-                                                        Name Here
+                                                        {chat.sellerId ===
+                                                        userId
+                                                            ? chat.buyerEmail
+                                                            : chat.sellerEmail}
                                                     </span>
                                                 </div>
                                                 <span className="text-lg">

@@ -33,6 +33,7 @@ export function capitalizeWords(str: string) {
 }
 
 export function formatPrice(price: number) {
+    console.log(typeof price);
     return `${price.toLocaleString("en-US")}$`;
 }
 

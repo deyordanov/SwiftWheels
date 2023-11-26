@@ -134,6 +134,7 @@ export default function Page() {
                                 <Offer
                                     priceIndicator={barPrice + chartPrice}
                                     setIsOfferModalOpen={setIsOfferModalOpen}
+                                    ownerId={car._ownerId}
                                 />
                             )}
                         </div>

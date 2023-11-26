@@ -32,6 +32,7 @@ import {
 export default function ContactForm({
     setTabs,
     closeModal,
+    offerPrice,
 }: contactFormTypes.propTypes) {
     const [messageReceived, setMessageReceived] = useState<boolean>();
     const [showConfetti, setShowConfetti] = useState(false);
@@ -56,7 +57,8 @@ export default function ContactForm({
             carId: car._id,
             sellerId: car._ownerId,
             carModel: car["car-model"],
-            carPrice: car["car-price"],
+            offerPrice,
+            offerStatus: "Pending",
         });
 
         setShowConfetti(true);
@@ -93,7 +95,6 @@ export default function ContactForm({
 
     return (
         <>
-            {/* TODO: Add a thank you note! */}
             <section className="w-full relative flex justify-center">
                 <form
                     onSubmit={handleSubmit(onSubmit)}
@@ -111,6 +112,11 @@ export default function ContactForm({
                                         message:
                                             "The name should be at least 6 characters long!",
                                         value: 6,
+                                    },
+                                    maxLength: {
+                                        message:
+                                            "The name should be 30 characters at most!",
+                                        value: 30,
                                     },
                                 })}
                                 type="text"
@@ -155,7 +161,9 @@ export default function ContactForm({
                             />
                         </div>
                         <div className="flex flex-col gap-y-2 w-full">
-                            <label htmlFor={"message"}>Message:</label>
+                            <label htmlFor={ContactFormKeys.MESSAGE}>
+                                Message:
+                            </label>
                             <textarea
                                 {...register(ContactFormKeys.MESSAGE, {
                                     required: "This field is required!",
@@ -170,8 +178,8 @@ export default function ContactForm({
                                         value: 500,
                                     },
                                 })}
-                                name={"message"}
-                                id={"message"}
+                                name={ContactFormKeys.MESSAGE}
+                                id={ContactFormKeys.MESSAGE}
                                 className={`min-h-[100px] max-h-[400px] p-2 my-2 text-md px-2 py-1 rounded-lg w-full border-[1.4px] focus:outline-none ${
                                     errors[ContactFormKeys.MESSAGE]
                                         ? "border-red-500"
