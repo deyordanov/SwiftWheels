@@ -1,11 +1,13 @@
 "use client";
 
-//react-select
-import makeAnimated from "react-select/animated";
-import Select from "react-select";
-
 //react-hook-form
 import { Controller, useForm } from "react-hook-form";
+
+//components
+import CustomSelect from "./Select/CustomSelect";
+
+//framer-motion
+import { motion } from "framer-motion";
 
 //constants
 import {
@@ -18,17 +20,13 @@ import {
     carFuelTypes,
     carEngineTypes,
     carDriveTypes,
-    customStyles,
+    containerVariants,
 } from "@/app/utilities/constants/constans";
 
-//shared
-import { getSelectControlType } from "@/app/utilities/shared/shared";
+//types
+import * as filterTypes from "@/app/utilities/types/filter.types";
 
-import { motion } from "framer-motion";
-
-export default function Filter({ setFilters }) {
-    const animatedComponents = makeAnimated();
-
+export default function Filter({ setFilters }: filterTypes.propTypes) {
     const {
         register,
         control,
@@ -42,14 +40,17 @@ export default function Filter({ setFilters }) {
     });
 
     const handleFilters = (data: any) => {
+        const largerOrEqual = " >= ";
+        const lessOrEqual = " <= ";
+        const equal = " = ";
         const mapped = Object.entries(data).reduce((acc: any, [key, value]) => {
             let separator = "";
             if (key.includes("lower-bound")) {
-                separator = " >= ";
+                separator = largerOrEqual;
             } else if (key.includes("upper-bound")) {
-                separator = " <= ";
+                separator = lessOrEqual;
             } else {
-                separator = "=";
+                separator = equal;
             }
 
             if (value !== null) {
@@ -65,10 +66,6 @@ export default function Filter({ setFilters }) {
         e.preventDefault();
         reset();
         handleFilters({});
-    };
-    const containerVariants = {
-        hidden: { height: 0, opacity: 0 },
-        visible: { height: "auto", opacity: 1, transition: { duration: 1 } },
     };
 
     return (
@@ -140,34 +137,11 @@ export default function Filter({ setFilters }) {
                         control={control}
                         name={filterFormKeys.CAR_MAKE}
                         render={({ field }) => (
-                            <Select
-                                {...field}
-                                onChange={(option) =>
-                                    field.onChange(
-                                        option !== null ? option.value : null
-                                    )
-                                }
-                                value={
-                                    carMakes.find(
-                                        (c) =>
-                                            (c.value as string | number) ===
-                                            field.value
-                                    ) || null
-                                }
-                                isMulti={false}
-                                components={animatedComponents}
-                                options={carMakes as any}
-                                className="w-full"
-                                styles={{
-                                    ...customStyles,
-                                    control: (base) =>
-                                        getSelectControlType(
-                                            errors,
-                                            filterFormKeys.CAR_MAKE,
-                                            base
-                                        ),
-                                }}
-                                placeholder="Car make....."
+                            <CustomSelect
+                                errors={errors}
+                                collection={carMakes}
+                                type={"CAR_MAKE" as string}
+                                field={field}
                             />
                         )}
                     />
@@ -178,32 +152,11 @@ export default function Filter({ setFilters }) {
                         control={control}
                         name={filterFormKeys.CAR_TYPE}
                         render={({ field }) => (
-                            <Select
-                                {...field}
-                                onChange={(option) =>
-                                    field.onChange(
-                                        option !== null ? option.value : null
-                                    )
-                                }
-                                value={carTypes.find(
-                                    (c) =>
-                                        (c.value as string | number) ===
-                                        field.value
-                                )}
-                                isMulti={false}
-                                components={animatedComponents}
-                                options={carTypes as any}
-                                className="w-full"
-                                styles={{
-                                    ...customStyles,
-                                    control: (base) =>
-                                        getSelectControlType(
-                                            errors,
-                                            filterFormKeys.CAR_TYPE,
-                                            base
-                                        ),
-                                }}
-                                placeholder="Car type....."
+                            <CustomSelect
+                                errors={errors}
+                                collection={carTypes}
+                                type={"CAR_TYPE"}
+                                field={field}
                             />
                         )}
                     />
@@ -214,32 +167,11 @@ export default function Filter({ setFilters }) {
                         control={control}
                         name={filterFormKeys.CAR_TRANSMISSION}
                         render={({ field }) => (
-                            <Select
-                                {...field}
-                                onChange={(option) =>
-                                    field.onChange(
-                                        option !== null ? option.value : null
-                                    )
-                                }
-                                value={carTransmissionTypes.find(
-                                    (c) =>
-                                        (c.value as string | number) ===
-                                        field.value
-                                )}
-                                isMulti={false}
-                                components={animatedComponents}
-                                options={carTransmissionTypes as any}
-                                className="w-full"
-                                styles={{
-                                    ...customStyles,
-                                    control: (base) =>
-                                        getSelectControlType(
-                                            errors,
-                                            filterFormKeys.CAR_TRANSMISSION,
-                                            base
-                                        ),
-                                }}
-                                placeholder="Car transmission....."
+                            <CustomSelect
+                                errors={errors}
+                                collection={carTransmissionTypes}
+                                type={"CAR_TRANSMISSION"}
+                                field={field}
                             />
                         )}
                     />
@@ -250,32 +182,11 @@ export default function Filter({ setFilters }) {
                         control={control}
                         name={filterFormKeys.CAR_CONDITION}
                         render={({ field }) => (
-                            <Select
-                                {...field}
-                                onChange={(option) =>
-                                    field.onChange(
-                                        option !== null ? option.value : null
-                                    )
-                                }
-                                value={carConditions.find(
-                                    (c) =>
-                                        (c.value as string | number) ===
-                                        field.value
-                                )}
-                                isMulti={false}
-                                components={animatedComponents}
-                                options={carConditions as any}
-                                className="w-full"
-                                styles={{
-                                    ...customStyles,
-                                    control: (base) =>
-                                        getSelectControlType(
-                                            errors,
-                                            filterFormKeys.CAR_CONDITION,
-                                            base
-                                        ),
-                                }}
-                                placeholder="Car condition....."
+                            <CustomSelect
+                                errors={errors}
+                                collection={carConditions}
+                                type={"CAR_CONDITION"}
+                                field={field}
                             />
                         )}
                     />
@@ -286,32 +197,11 @@ export default function Filter({ setFilters }) {
                         control={control}
                         name={filterFormKeys.CAR_FUEL_TYPE}
                         render={({ field }) => (
-                            <Select
-                                {...field}
-                                onChange={(option) =>
-                                    field.onChange(
-                                        option !== null ? option.value : null
-                                    )
-                                }
-                                value={carFuelTypes.find(
-                                    (c) =>
-                                        (c.value as string | number) ===
-                                        field.value
-                                )}
-                                isMulti={false}
-                                components={animatedComponents}
-                                options={carFuelTypes as any}
-                                className="w-full"
-                                styles={{
-                                    ...customStyles,
-                                    control: (base) =>
-                                        getSelectControlType(
-                                            errors,
-                                            filterFormKeys.CAR_FUEL_TYPE,
-                                            base
-                                        ),
-                                }}
-                                placeholder="Car fuel type....."
+                            <CustomSelect
+                                errors={errors}
+                                collection={carFuelTypes}
+                                type={"CAR_FUEL_TYPE"}
+                                field={field}
                             />
                         )}
                     />
@@ -322,36 +212,11 @@ export default function Filter({ setFilters }) {
                         control={control}
                         name={filterFormKeys.CAR_ENGINE_TYPE}
                         render={({ field }) => (
-                            <Select
-                                {...field}
-                                onChange={(option) =>
-                                    field.onChange(
-                                        option !== null
-                                            ? option !== null
-                                                ? option.value
-                                                : null
-                                            : null
-                                    )
-                                }
-                                value={carEngineTypes.find(
-                                    (c) =>
-                                        (c.value as string | number) ===
-                                        field.value
-                                )}
-                                isMulti={false}
-                                components={animatedComponents}
-                                options={carEngineTypes as any}
-                                className="w-full"
-                                styles={{
-                                    ...customStyles,
-                                    control: (base) =>
-                                        getSelectControlType(
-                                            errors,
-                                            filterFormKeys.CAR_ENGINE_TYPE,
-                                            base
-                                        ),
-                                }}
-                                placeholder="Car engine type....."
+                            <CustomSelect
+                                errors={errors}
+                                collection={carEngineTypes}
+                                type={"CAR_ENGINE_TYPE"}
+                                field={field}
                             />
                         )}
                     />
@@ -362,32 +227,11 @@ export default function Filter({ setFilters }) {
                         control={control}
                         name={filterFormKeys.CAR_DRIVE_TYPE}
                         render={({ field }) => (
-                            <Select
-                                {...field}
-                                onChange={(option) =>
-                                    field.onChange(
-                                        option !== null ? option.value : null
-                                    )
-                                }
-                                value={carDriveTypes.find(
-                                    (c) =>
-                                        (c.value as string | number) ===
-                                        field.value
-                                )}
-                                isMulti={false}
-                                components={animatedComponents}
-                                options={carDriveTypes as any}
-                                className="w-full"
-                                styles={{
-                                    ...customStyles,
-                                    control: (base) =>
-                                        getSelectControlType(
-                                            errors,
-                                            filterFormKeys.CAR_DRIVE_TYPE,
-                                            base
-                                        ),
-                                }}
-                                placeholder="Car drive type....."
+                            <CustomSelect
+                                errors={errors}
+                                collection={carDriveTypes}
+                                type={"CAR_DRIVE_TYPE"}
+                                field={field}
                             />
                         )}
                     />
