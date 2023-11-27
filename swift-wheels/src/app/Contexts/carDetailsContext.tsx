@@ -42,8 +42,9 @@ export const CarDetailsProvider = ({
     const [isOfferModalOpen, setIsOfferModalOpen] = useState<boolean>(false);
 
     const getCarQuery = useQuery({
-        queryKey: [searchParams.id],
+        queryKey: ["cars", searchParams.id],
         queryFn: () => carService.getOne(searchParams.id as string),
+        enabled: !!searchParams.id,
     });
 
     const getCar = useCallback(async () => {

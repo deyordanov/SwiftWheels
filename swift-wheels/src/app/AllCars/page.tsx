@@ -6,6 +6,9 @@ import { useState, useEffect } from "react";
 //services
 import * as carService from "../../services/carService";
 
+//react-hook-form
+import { useQuery } from "@tanstack/react-query";
+
 //next-image
 import Image from "next/image";
 
@@ -26,18 +29,26 @@ export default function AllCars() {
     const [cars, setCars] = useState<Array<unknown>>([]);
     const [filters, setFilters] = useState<Array<object>>([]);
 
-    useEffect(() => {
-        getAllCars(filters);
-    }, [filters]);
+    const getAllCarsQuery = useQuery({
+        queryKey: ["cars", filters],
+        queryFn: () => carService.getAllFilter(filters),
+        enabled: !!filters,
+    });
 
-    const getAllCars = async (filters: any) => {
-        try {
-            const allCars = await carService.getAllFilter(filters);
-            setCars(allCars);
-        } catch (error) {
-            console.log("Failed to fetch cars at UserListings", error);
-        }
-    };
+    useEffect(() => {
+        const getAllCars = async () => {
+            if (!getAllCarsQuery.isLoading) {
+                setCars(getAllCarsQuery.data);
+            } else if (getAllCarsQuery.isError) {
+                console.log(
+                    "Failed to fetch cars at UserListings",
+                    getAllCarsQuery.error
+                );
+            }
+        };
+
+        getAllCars();
+    }, [getAllCarsQuery]);
 
     return (
         <section className="flex text-primary">

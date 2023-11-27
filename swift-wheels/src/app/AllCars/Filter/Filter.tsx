@@ -33,7 +33,6 @@ export default function Filter({ setFilters }: filterTypes.propTypes) {
         watch,
         formState: { errors },
         handleSubmit,
-        getValues,
         reset,
     } = useForm({
         defaultValues: filterFormDefaultValues,
