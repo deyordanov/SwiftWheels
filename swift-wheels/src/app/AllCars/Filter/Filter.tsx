@@ -4,7 +4,7 @@
 import { Controller, useForm } from "react-hook-form";
 
 //components
-import CustomSelect from "./Select/CustomSelect";
+import CustomSelect from "./CustomSelect/CustomSelect";
 
 //framer-motion
 import { motion } from "framer-motion";
@@ -33,6 +33,7 @@ export default function Filter({ setFilters }: filterTypes.propTypes) {
         watch,
         formState: { errors },
         handleSubmit,
+        getValues,
         reset,
     } = useForm({
         defaultValues: filterFormDefaultValues,

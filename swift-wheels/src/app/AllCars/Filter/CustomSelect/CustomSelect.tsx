@@ -37,9 +37,11 @@ export default function CustomSelect({
             onChange={(option: any) =>
                 field.onChange(option !== null ? option.value : null)
             }
-            value={collection.find(
-                (c: any) => (c.value as string | number) === field.value
-            )}
+            value={
+                collection.find(
+                    (c: any) => (c.value as string | number) === field.value
+                ) || null
+            }
             isMulti={false}
             components={animatedComponents}
             options={collection as any}
