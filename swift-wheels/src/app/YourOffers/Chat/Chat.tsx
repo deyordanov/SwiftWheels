@@ -4,6 +4,7 @@
 import React, { useEffect, useRef, Fragment, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useAuthContext } from "@/app/Contexts/authContext";
+import { useMutation } from "@tanstack/react-query";
 
 //next-image
 import Image from "next/image";
@@ -14,42 +15,54 @@ import * as chatService from "@/services/chatService";
 //headlessui
 import { Dialog, Transition } from "@headlessui/react";
 
-const createMessageFormKeys = {
-    CHAT_MESSAGE: "chat-message",
-};
+//types
+import * as chatTypes from "@/app/utilities/types/chat.types";
 
-const createMessageFormDefaultValues = {
-    [createMessageFormKeys.CHAT_MESSAGE]: "",
-};
+//constants
+import {
+    createMessageFormKeys,
+    createMessageFormDefaultValues,
+} from "@/app/utilities/constants/constans";
 
-export default function Chat({ isChatModalOpen, setIsChatModalOpen, chat }) {
+export default function Chat({
+    isChatModalOpen,
+    setIsChatModalOpen,
+    chat,
+}: chatTypes.propTypes) {
     const messagesEndRef = useRef(null);
     const [currentChat, setCurrentChat] = useState(chat);
-
+    const { userId } = useAuthContext();
     const { register, handleSubmit, reset } = useForm({
         defaultValues: createMessageFormDefaultValues,
         mode: "onSubmit",
     });
 
-    const { userId } = useAuthContext();
+    const messageCreationMutation = useMutation({
+        mutationFn: (data: any) =>
+            chatService.addMessageToChat(
+                chat._id,
+                data[createMessageFormKeys.CHAT_MESSAGE],
+                userId
+            ),
+        onSuccess: (data) => {
+            setCurrentChat(data);
+            reset();
+        },
+        onError: (error) => {
+            console.log("Error creating chat in Chat.tsx:", error);
+        },
+    });
 
-    const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    const handleMessageCreation = async (data: any) => {
+        messageCreationMutation.mutate(data);
     };
 
     useEffect(() => {
         scrollToBottom();
-    }, [currentChat]); // Dependency array includes currentChat now
+    }, [currentChat]);
 
-    const handleMessageCreation = async (data: any) => {
-        const newChat = await chatService.addMessageToChat(
-            chat._id,
-            data[createMessageFormKeys.CHAT_MESSAGE],
-            userId
-        );
-
-        setCurrentChat(newChat);
-        reset();
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     };
 
     return (

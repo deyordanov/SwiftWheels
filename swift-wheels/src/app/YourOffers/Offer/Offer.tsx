@@ -8,7 +8,7 @@ import { useAuthContext } from "@/app/Contexts/authContext";
 import Chat from "../Chat/Chat";
 
 //tanstack query
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 //react-icons
 import { FaTrashAlt } from "react-icons/fa";
@@ -23,7 +23,8 @@ import {
 import * as chatService from "@/services/chatService";
 import * as offerService from "@/services/offerService";
 
-export default function Offer({ offer }) {
+export default function Offer({ offer }: { offer: any }) {
+    const queryClient = useQueryClient();
     const { userId, userEmail } = useAuthContext();
     const [isChatModalOpen, setIsChatModalOpen] = useState<boolean>(false);
     const [isChatCreated, setIsChatCreated] = useState<any>(false);
@@ -53,14 +54,20 @@ export default function Offer({ offer }) {
             setChat(data);
         },
         onError: (error) => {
-            console.log("Error creating chat in Offer.tsx", error);
+            console.log("Error creating chat in Offer.tsx:", error);
         },
     });
 
     const offerDeletionMutation = useMutation({
-        mutationFn: (offerId: string) => offerService.remove(offerId),
+        mutationFn: () => offerService.remove(offer._id),
         onError: (error) => {
-            console.log("Error delting offer in Offer.tsx", error);
+            console.log("Error deleting offer in Offer.tsx:", error);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({
+                queryKey: ["offers"],
+                exact: false,
+            });
         },
     });
 
@@ -85,8 +92,8 @@ export default function Offer({ offer }) {
         handleIsChatModalOpen();
     };
 
-    const handleOfferDeletion = async (offerId: string) => {
-        offerDeletionMutation.mutate(offerId);
+    const handleOfferDeletion = async () => {
+        offerDeletionMutation.mutate();
     };
 
     const handleIsChatModalOpen = () => {
@@ -160,13 +167,16 @@ export default function Offer({ offer }) {
                     Message {isBuyer ? "Seller" : "Buyer"}
                 </button>
             </div>
-            <div className="w-[12%] h-full flex items-center">
+            <div className="w-[14%] h-full flex items-center">
                 <p
                     className={`${getOfferStatusStyle()} w-full rounded-lg ml-2`}
                 >
                     {offerStatus}
                 </p>
-                <button className="pl-4 text-xl hover:text-gray-300">
+                <button
+                    onClick={handleOfferDeletion}
+                    className="pl-4 text-xl hover:text-gray-300"
+                >
                     <FaTrashAlt />
                 </button>
             </div>

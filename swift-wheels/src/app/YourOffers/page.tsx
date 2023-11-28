@@ -2,6 +2,7 @@
 
 //hooks
 import { useAuthContext } from "../Contexts/authContext";
+import { useQuery } from "@tanstack/react-query";
 
 //services
 import * as offerService from "@/services/offerService";
@@ -11,7 +12,6 @@ import Offer from "./Offer/Offer";
 
 //types
 import React, { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 
 // TODO: Add filtration!
 export default function Page() {

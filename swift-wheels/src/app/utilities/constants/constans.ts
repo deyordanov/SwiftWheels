@@ -454,6 +454,7 @@ export const customStyles = {
     }),
 };
 
+//-> Form Keys
 export const createCarFormKeys = {
     CAR_EXTRAS: "car-extras",
     CAR_TYPE: "car-type",
@@ -478,6 +479,7 @@ export const createCarFormKeys = {
     CAR_FAVORITES: "car-favorites",
 };
 
+//-> Form Default Values
 export const createCarFormDefaultValues = {
     [createCarFormKeys.CAR_EXTRAS]: [],
     [createCarFormKeys.CAR_IMAGES]: [],
@@ -503,6 +505,8 @@ export const createCarFormDefaultValues = {
 };
 
 //      Filter
+
+//-> Form Keys
 export const filterFormKeys = {
     CAR_TYPE: "car-type",
     CAR_MAKE: "car-make",
@@ -519,6 +523,7 @@ export const filterFormKeys = {
     HORSEPOWER_UPPER_BOUND: "horsepower-upper-bound",
 };
 
+//-> Form Default Values
 export const filterFormDefaultValues = {
     [createCarFormKeys.CAR_TYPE]: null,
     [createCarFormKeys.CAR_MAKE]: null,
@@ -538,4 +543,16 @@ export const filterFormDefaultValues = {
 export const containerVariants = {
     hidden: { height: 0, opacity: 0 },
     visible: { height: "auto", opacity: 1, transition: { duration: 1 } },
+};
+
+//      Chat
+
+//-> Form Keys
+export const createMessageFormKeys = {
+    CHAT_MESSAGE: "chat-message",
+};
+
+//-> Form Default Values
+export const createMessageFormDefaultValues = {
+    [createMessageFormKeys.CHAT_MESSAGE]: "",
 };
