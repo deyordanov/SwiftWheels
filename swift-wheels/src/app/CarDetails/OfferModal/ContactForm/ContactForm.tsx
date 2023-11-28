@@ -59,6 +59,7 @@ export default function ContactForm({
             carModel: car["car-model"],
             offerPrice,
             offerStatus: "Pending",
+            isRead: false,
         });
 
         setShowConfetti(true);

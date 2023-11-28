@@ -11,19 +11,28 @@ import Offer from "./Offer/Offer";
 
 //types
 import React, { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
+// TODO: Add filtration!
 export default function Page() {
     const [offers, setOffers] = useState([]);
-
     const { userId } = useAuthContext();
 
-    useEffect(() => {
-        const handleOffers = async () => {
-            setOffers(await offerService.getAllFilter(userId));
-        };
+    const setOffersQuery = useQuery({
+        queryKey: ["offers", userId],
+        queryFn: () => offerService.getAllFilter(userId),
+    });
 
-        handleOffers();
-    }, [userId]);
+    useEffect(() => {
+        if (setOffersQuery.data) {
+            setOffers(setOffersQuery.data);
+        } else if (setOffersQuery.isError) {
+            console.log(
+                "Error loading offers in YourOffers.tsx:",
+                setOffersQuery.error
+            );
+        }
+    }, [setOffersQuery]);
 
     return (
         <section className="container flex items-center justify-center h-screen w-screen mx-auto mt-2 text-primary font-semibold">

@@ -2,9 +2,18 @@
 
 //hooks
 import { useState, useEffect } from "react";
+import { useAuthContext } from "@/app/Contexts/authContext";
+
+//components
+import Chat from "../Chat/Chat";
+
+//tanstack query
+import { useQuery, useMutation } from "@tanstack/react-query";
+
+//react-icons
+import { FaTrashAlt } from "react-icons/fa";
 
 //shared
-import { useAuthContext } from "@/app/Contexts/authContext";
 import {
     formatPrice,
     convertTimestampToCustomFormat,
@@ -12,7 +21,7 @@ import {
 
 //services
 import * as chatService from "@/services/chatService";
-import Chat from "../Chat/Chat";
+import * as offerService from "@/services/offerService";
 
 export default function Offer({ offer }) {
     const { userId, userEmail } = useAuthContext();
@@ -21,23 +30,14 @@ export default function Offer({ offer }) {
     const [offerStatus, setOfferStatus] = useState<String>("Pending");
     const [chat, setChat] = useState<any>({});
 
-    useEffect(() => {
-        const getChatForCurrentUser = async () => {
-            const a = await chatService.getAllFilter(userId, offer.carId);
-            setIsChatCreated(a.length !== 0);
-        };
+    const getChatQuery = useQuery({
+        queryKey: ["chats", userId, offer.carId],
+        queryFn: () => chatService.getAllFilter(userId, offer.carId),
+    });
 
-        getChatForCurrentUser();
-    }, [offer, userId]);
-
-    const handleIsChatModalOpen = () => {
-        setIsChatModalOpen((state) => !state);
-    };
-
-    const handleChatCreation = async () => {
-        console.log(offer);
-        if (!isChatCreated) {
-            const newChat = await chatService.create({
+    const chatCreationMutation = useMutation({
+        mutationFn: () =>
+            chatService.create({
                 receiverId:
                     userId === offer._ownerId ? offer.sellerId : offer._ownerId,
                 senderId: userId,
@@ -48,20 +48,49 @@ export default function Offer({ offer }) {
                 sellerEmail: userEmail,
                 buyerEmail: offer.buyerEmail,
                 carId: offer.carId,
-            });
+            }),
+        onSuccess: (data) => {
+            setChat(data);
+        },
+        onError: (error) => {
+            console.log("Error creating chat in Offer.tsx", error);
+        },
+    });
 
-            setChat(newChat);
-        } else if (Object.values(chat).length === 0) {
-            const existingChat = await chatService.getAllFilter(
-                userId,
-                offer.carId
-            );
+    const offerDeletionMutation = useMutation({
+        mutationFn: (offerId: string) => offerService.remove(offerId),
+        onError: (error) => {
+            console.log("Error delting offer in Offer.tsx", error);
+        },
+    });
 
-            setChat(existingChat[0]);
+    useEffect(() => {
+        if (getChatQuery.data) {
+            setIsChatCreated(getChatQuery.data);
+        } else if (getChatQuery.isError) {
+            console.log("Error loading chat in Offer.tsx:", getChatQuery.error);
+        }
+    }, [offer, userId, getChatQuery]);
+
+    const handleChatCreation = async () => {
+        if (!isChatCreated) {
+            await chatCreationMutation.mutateAsync();
+        } else if (Object.values(chat).length === 0 && getChatQuery.data) {
+            const existingChat = getChatQuery.data[0];
+
+            setChat(existingChat);
         }
 
         setIsChatCreated(true);
         handleIsChatModalOpen();
+    };
+
+    const handleOfferDeletion = async (offerId: string) => {
+        offerDeletionMutation.mutate(offerId);
+    };
+
+    const handleIsChatModalOpen = () => {
+        setIsChatModalOpen((state) => !state);
     };
 
     const getOfferStatusStyle = () => {
@@ -131,12 +160,15 @@ export default function Offer({ offer }) {
                     Message {isBuyer ? "Seller" : "Buyer"}
                 </button>
             </div>
-            <div className="w-[10%] h-full flex items-center">
+            <div className="w-[12%] h-full flex items-center">
                 <p
                     className={`${getOfferStatusStyle()} w-full rounded-lg ml-2`}
                 >
                     {offerStatus}
                 </p>
+                <button className="pl-4 text-xl hover:text-gray-300">
+                    <FaTrashAlt />
+                </button>
             </div>
             {isChatCreated && Object.values(chat).length !== 0 && (
                 <Chat

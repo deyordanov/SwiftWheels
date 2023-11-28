@@ -30,3 +30,8 @@ export const getAllFilter = async (sellerId: string) => {
 
     return offers;
 };
+
+export const remove = async (offerId: string) => {
+    const headers = getAuthHeaders(false);
+    await requester.authorizationDelete(headers, {}, `${baseUrl}/${offerId}`);
+};
