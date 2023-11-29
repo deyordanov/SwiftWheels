@@ -43,8 +43,6 @@ export const getAllFilter = async (filters: any) => {
     }
     const filteredCars = await requester.authorizationGet(headers, {}, url);
 
-    console.log(filteredCars);
-
     return filteredCars;
 };
 

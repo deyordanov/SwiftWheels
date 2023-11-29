@@ -48,3 +48,15 @@ export const changeStatus = async (offer: any, newStatus: string) => {
 
     return newOffer;
 };
+
+export const changeIsRead = async (offer: any) => {
+    const headers = getAuthHeaders(true);
+
+    const newOffer = await requester.authorizationPut(
+        headers,
+        JSON.stringify({ ...offer, isRead: true }),
+        `${baseUrl}/${offer._id}`
+    );
+
+    return newOffer;
+};

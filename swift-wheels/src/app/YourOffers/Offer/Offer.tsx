@@ -35,6 +35,9 @@ export default function Offer({ offer }: { offer: any }) {
         queryFn: () => chatService.getAllFilter(userId, offer.carId),
     });
 
+    const isValidData =
+        getChatQuery.data && Object.values(getChatQuery.data).length !== 0;
+
     const chatCreationMutation = useMutation({
         mutationFn: () =>
             chatService.create({
@@ -51,6 +54,7 @@ export default function Offer({ offer }: { offer: any }) {
             }),
         onSuccess: (data) => {
             setChat(data);
+            changeIsReadMutation.mutate();
         },
         onError: (error) => {
             console.log("Error creating chat in Offer.tsx:", error);
@@ -87,13 +91,29 @@ export default function Offer({ offer }: { offer: any }) {
         },
     });
 
+    const changeIsReadMutation = useMutation({
+        mutationFn: () => offerService.changeIsRead(offer),
+        onError: (error) => {
+            console.log(
+                "Error chaning the isRead property on the offer in Offer.tsx:",
+                error
+            );
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({
+                queryKey: ["offers"],
+                exact: false,
+            });
+        },
+    });
+
     useEffect(() => {
-        if (getChatQuery.data) {
-            setIsChatCreated(getChatQuery.data);
+        if (isValidData) {
+            setIsChatCreated(true);
         } else if (getChatQuery.isError) {
             console.log("Error loading chat in Offer.tsx:", getChatQuery.error);
         }
-    }, [offer, userId, getChatQuery]);
+    }, [offer, userId, getChatQuery, isValidData]);
 
     const handleChatCreation = async () => {
         if (!isChatCreated) {
@@ -126,6 +146,13 @@ export default function Offer({ offer }: { offer: any }) {
         }
     };
 
+    const getOfferIsReadStyle = () => {
+        if (offer.isRead) {
+            return "font-normal";
+        }
+        return "font-bold";
+    };
+
     const acceptOffer = () => {
         changeOfferStatusMutation.mutate("Accepted");
     };
@@ -140,10 +167,12 @@ export default function Offer({ offer }: { offer: any }) {
 
     const isBuyer = userId === offer._ownerId;
 
+    const isChatValid = Object.values(chat).length !== 0;
+
     return (
         <li
             key={offer._id}
-            className="flex items-center px-4 py-2 rounded-lg shadow-lg justify-between text-center divide-x-2 divide-gray-200 h-[7%]"
+            className={`flex items-center px-4 py-2 rounded-lg shadow-lg justify-between text-center divide-x-2 divide-gray-200 h-[7%] ${getOfferIsReadStyle()}`}
         >
             <h1 className="pr-2 text-lg font-extrabold">{offer.carModel}</h1>
 
@@ -156,7 +185,7 @@ export default function Offer({ offer }: { offer: any }) {
                     {convertTimestampToCustomFormat(offer._createdOn)}
                 </p>
             </div>
-            <div className="flex px-2 gap-2 h-full items-center">
+            <div className="flex px-2 gap-2 h-full items-center font-bold">
                 {!isBuyer && (
                     <>
                         <button
@@ -183,7 +212,7 @@ export default function Offer({ offer }: { offer: any }) {
                     Message {isBuyer ? "Seller" : "Buyer"}
                 </button>
             </div>
-            <div className="w-[14%] h-full flex items-center">
+            <div className="w-[14%] h-full flex items-center font-bold">
                 <p
                     className={`${getOfferStatusStyle()} w-full rounded-lg ml-2`}
                 >
@@ -196,7 +225,7 @@ export default function Offer({ offer }: { offer: any }) {
                     <FaTrashAlt />
                 </button>
             </div>
-            {isChatCreated && Object.values(chat).length !== 0 && (
+            {isChatCreated && isChatValid && (
                 <Chat
                     setIsChatModalOpen={setIsChatModalOpen}
                     isChatModalOpen={isChatModalOpen}
