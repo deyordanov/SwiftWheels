@@ -17,12 +17,22 @@ import { IoCarSportSharp, IoStatsChart } from "react-icons/io5";
 //headless-ui
 import { Menu, Transition } from "@headlessui/react";
 
+//services
+import * as offerService from "@/services/offerService";
+import { useQuery } from "@tanstack/react-query";
+
 export default function UserProfile({
     handleLogoutDialogExitOpen,
 }: {
     handleLogoutDialogExitOpen: () => void;
 }) {
-    const { userEmail } = useAuthContext();
+    const { userId, userEmail } = useAuthContext();
+
+    const getUnreadOffersCountQuery = useQuery({
+        queryKey: ["offers", userId],
+        queryFn: () => offerService.getUnreadOfferCount(userId),
+    });
+
     return (
         <div className="text-right cursor-pointer">
             <Menu as="div" className="text-left">
@@ -59,9 +69,17 @@ export default function UserProfile({
                             <Menu.Item>
                                 <Link
                                     href="/YourOffers"
-                                    className={`hover:bg-slate-50 group flex gap-x-2 w-full items-center rounded-md px-2 py-2 text-sm hover:text-accent-hover`}
+                                    className="hover:bg-slate-50 group flex gap-x-2 w-full items-center rounded-md px-2 py-2 text-sm hover:text-accent-hover"
                                 >
-                                    <IoStatsChart className="ml-1 text-2xl" />
+                                    <div className="relative">
+                                        <IoStatsChart className="ml-1 text-2xl" />
+                                        {getUnreadOffersCountQuery.data !==
+                                            0 && (
+                                            <div className="absolute top-1 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                                                {getUnreadOffersCountQuery.data}
+                                            </div>
+                                        )}
+                                    </div>
                                     Your Offers
                                 </Link>
                             </Menu.Item>

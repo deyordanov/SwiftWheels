@@ -23,8 +23,11 @@ export default function Page() {
         queryFn: () => offerService.getAllFilter(userId),
     });
 
+    const isValidData =
+        setOffersQuery.data && Object.values(setOffersQuery.data).length !== 0;
+
     useEffect(() => {
-        if (setOffersQuery.data) {
+        if (isValidData) {
             setOffers(setOffersQuery.data);
         } else if (setOffersQuery.isError) {
             console.log(
@@ -32,10 +35,10 @@ export default function Page() {
                 setOffersQuery.error
             );
         }
-    }, [setOffersQuery]);
+    }, [setOffersQuery, isValidData]);
 
     return (
-        <section className="container flex items-center justify-center h-screen w-screen mx-auto mt-2 text-primary font-semibold">
+        <section className="container flex items-center justify-center h-screen w-screen mx-auto mt-2 text-primary font-semibold pt-4">
             <ul className="flex flex-col h-full gap-4 ">
                 {offers?.map((offer: any) => (
                     <Offer key={offer._id} offer={offer} />

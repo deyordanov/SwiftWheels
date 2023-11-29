@@ -31,6 +31,22 @@ export const getAllFilter = async (sellerId: string) => {
     return offers;
 };
 
+export const getUnreadOfferCount = async (sellerId: string) => {
+    const headers = getAuthHeaders(false);
+
+    const query = encodeURIComponent(
+        `sellerId = "${sellerId}" AND isRead = ${false}`
+    );
+
+    const offers = await requester.authorizationGet(
+        headers,
+        {},
+        `${baseUrl}?where=${query}`
+    );
+
+    return offers.length;
+};
+
 export const remove = async (offerId: string) => {
     const headers = getAuthHeaders(true);
 

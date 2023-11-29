@@ -117,11 +117,12 @@ export default function Offer({ offer }: { offer: any }) {
 
     const handleChatCreation = async () => {
         if (!isChatCreated) {
-            await chatCreationMutation.mutateAsync();
+            chatCreationMutation.mutate();
         } else if (Object.values(chat).length === 0 && getChatQuery.data) {
             const existingChat = getChatQuery.data[0];
 
             setChat(existingChat);
+            changeIsReadMutation.mutate();
         }
 
         setIsChatCreated(true);
@@ -146,13 +147,6 @@ export default function Offer({ offer }: { offer: any }) {
         }
     };
 
-    const getOfferIsReadStyle = () => {
-        if (offer.isRead) {
-            return "font-normal";
-        }
-        return "font-bold";
-    };
-
     const acceptOffer = () => {
         changeOfferStatusMutation.mutate("Accepted");
     };
@@ -169,10 +163,17 @@ export default function Offer({ offer }: { offer: any }) {
 
     const isChatValid = Object.values(chat).length !== 0;
 
+    const getOfferIsReadStyle = () => {
+        if (offer.isRead || isBuyer) {
+            return "font-normal";
+        }
+        return "font-bold";
+    };
+
     return (
         <li
             key={offer._id}
-            className={`flex items-center px-4 py-2 rounded-lg shadow-lg justify-between text-center divide-x-2 divide-gray-200 h-[7%] ${getOfferIsReadStyle()}`}
+            className={`flex items-center px-4 py-2 rounded-lg shadow-lg justify-between text-center divide-x-2 divide-gray-200 h-[7%] ${getOfferIsReadStyle()} w-full`}
         >
             <h1 className="pr-2 text-lg font-extrabold">{offer.carModel}</h1>
 
@@ -212,7 +213,7 @@ export default function Offer({ offer }: { offer: any }) {
                     Message {isBuyer ? "Seller" : "Buyer"}
                 </button>
             </div>
-            <div className="w-[14%] h-full flex items-center font-bold">
+            <div className="w-[15%] h-full flex items-center font-bold">
                 <p
                     className={`${getOfferStatusStyle()} w-full rounded-lg ml-2`}
                 >
