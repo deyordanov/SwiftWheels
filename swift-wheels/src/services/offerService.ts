@@ -33,5 +33,18 @@ export const getAllFilter = async (sellerId: string) => {
 
 export const remove = async (offerId: string) => {
     const headers = getAuthHeaders(true);
+
     await requester.authorizationDelete(headers, {}, `${baseUrl}/${offerId}`);
+};
+
+export const changeStatus = async (offer: any, newStatus: string) => {
+    const headers = getAuthHeaders(true);
+
+    const newOffer = await requester.authorizationPut(
+        headers,
+        JSON.stringify({ ...offer, offerStatus: newStatus }),
+        `${baseUrl}/${offer._id}`
+    );
+
+    return newOffer;
 };

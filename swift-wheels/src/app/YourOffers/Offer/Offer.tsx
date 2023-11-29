@@ -28,7 +28,6 @@ export default function Offer({ offer }: { offer: any }) {
     const { userId, userEmail } = useAuthContext();
     const [isChatModalOpen, setIsChatModalOpen] = useState<boolean>(false);
     const [isChatCreated, setIsChatCreated] = useState<any>(false);
-    const [offerStatus, setOfferStatus] = useState<String>("Pending");
     const [chat, setChat] = useState<any>({});
 
     const getChatQuery = useQuery({
@@ -71,6 +70,23 @@ export default function Offer({ offer }: { offer: any }) {
         },
     });
 
+    const changeOfferStatusMutation = useMutation({
+        mutationFn: (newOffer: string) =>
+            offerService.changeStatus(offer, newOffer),
+        onError: (error) => {
+            console.log(
+                "Error changing the status of an offer in Offer.tsx:",
+                error
+            );
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({
+                queryKey: ["offers"],
+                exact: false,
+            });
+        },
+    });
+
     useEffect(() => {
         if (getChatQuery.data) {
             setIsChatCreated(getChatQuery.data);
@@ -101,9 +117,9 @@ export default function Offer({ offer }: { offer: any }) {
     };
 
     const getOfferStatusStyle = () => {
-        if (offerStatus === "Pending") {
+        if (offer.offerStatus === "Pending") {
             return "text-orange-400 bg-orange-100";
-        } else if (offerStatus === "Declined") {
+        } else if (offer.offerStatus === "Declined") {
             return "text-red-400 bg-red-100";
         } else {
             return "text-green-400 bg-green-100";
@@ -111,16 +127,16 @@ export default function Offer({ offer }: { offer: any }) {
     };
 
     const acceptOffer = () => {
-        setOfferStatus("Accepted");
+        changeOfferStatusMutation.mutate("Accepted");
     };
 
     const declineOffer = () => {
-        setOfferStatus("Declined");
+        changeOfferStatusMutation.mutate("Declined");
     };
 
-    const isOfferSet = () => offerStatus !== "Pending";
+    const isOfferSet = () => offer.offerStatus !== "Pending";
 
-    const isOfferDeclined = offerStatus === "Declined";
+    const isOfferDeclined = offer.offerStatus == "Declined";
 
     const isBuyer = userId === offer._ownerId;
 
@@ -171,7 +187,7 @@ export default function Offer({ offer }: { offer: any }) {
                 <p
                     className={`${getOfferStatusStyle()} w-full rounded-lg ml-2`}
                 >
-                    {offerStatus}
+                    {offer.offerStatus}
                 </p>
                 <button
                     onClick={handleOfferDeletion}
