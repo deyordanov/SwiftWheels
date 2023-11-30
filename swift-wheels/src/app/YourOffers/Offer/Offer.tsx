@@ -173,7 +173,7 @@ export default function Offer({ offer }: { offer: any }) {
     return (
         <li
             key={offer._id}
-            className={`flex items-center px-4 py-2 rounded-lg shadow-lg justify-between text-center divide-x-2 divide-gray-200 h-[7%] ${getOfferIsReadStyle()} w-full`}
+            className={`bg-white flex items-center px-4 py-2 rounded-lg shadow-lg justify-between text-center divide-x-2 divide-gray-200 h-[7%] ${getOfferIsReadStyle()} w-full`}
         >
             <h1 className="pr-2 text-lg font-extrabold">{offer.carModel}</h1>
 
@@ -213,9 +213,13 @@ export default function Offer({ offer }: { offer: any }) {
                     Message {isBuyer ? "Seller" : "Buyer"}
                 </button>
             </div>
-            <div className="w-[15%] h-full flex items-center font-bold">
+            <div
+                className={`${
+                    isBuyer ? "w-[15%]" : "w-[13%]"
+                } h-full flex items-center font-bold"`}
+            >
                 <p
-                    className={`${getOfferStatusStyle()} w-full rounded-lg ml-2`}
+                    className={`${getOfferStatusStyle()} w-full rounded-lg ml-2 font-bold`}
                 >
                     {offer.offerStatus}
                 </p>

@@ -9,6 +9,7 @@ import * as offerService from "@/services/offerService";
 
 //components
 import Offer from "./Offer/Offer";
+import OfferFilter from "./OfferFilter/OfferFilter";
 
 //types
 import React, { useEffect, useState } from "react";
@@ -38,7 +39,10 @@ export default function Page() {
     }, [setOffersQuery, isValidData]);
 
     return (
-        <section className="container flex items-center justify-center h-screen w-screen mx-auto mt-2 text-primary font-semibold pt-4">
+        <section className="container flex items-center justify-center h-screen w-screen mx-auto mt-2 text-primary font-semibold pt-4 bg-gray-100 rounded-lg flex-col">
+            <div className="w-full flex items-start">
+                <OfferFilter />
+            </div>
             <ul className="flex flex-col h-full gap-4 ">
                 {offers?.map((offer: any) => (
                     <Offer key={offer._id} offer={offer} />

@@ -33,6 +33,10 @@ export default function UserProfile({
         queryFn: () => offerService.getUnreadOfferCount(userId),
     });
 
+    const isValidData =
+        !!getUnreadOffersCountQuery.data &&
+        getUnreadOffersCountQuery.data !== 0;
+
     return (
         <div className="text-right cursor-pointer">
             <Menu as="div" className="text-left">
@@ -65,7 +69,7 @@ export default function UserProfile({
                                 </Link>
                             </Menu.Item>
                         </div>
-                        <div className="px-1 py-1 ">
+                        <div className="px-1 py-1">
                             <Menu.Item>
                                 <Link
                                     href="/YourOffers"
@@ -73,8 +77,7 @@ export default function UserProfile({
                                 >
                                     <div className="relative">
                                         <IoStatsChart className="ml-1 text-2xl" />
-                                        {getUnreadOffersCountQuery.data !==
-                                            0 && (
+                                        {isValidData && (
                                             <div className="absolute top-1 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
                                                 {getUnreadOffersCountQuery.data}
                                             </div>
