@@ -22,7 +22,7 @@ import FavoriteButton from "../Components/shared/FavoriteButton";
 //shared
 import {
     formatPrice,
-    convertTimestampToCustomFormat,
+    convertTimestampToEuropeanFormat,
 } from "../utilities/shared/shared";
 
 export default function AllCars() {
@@ -73,8 +73,8 @@ export default function AllCars() {
                                 </Link>
                             </div>
                             <div className="relative flex flex-col justify-between py-4 pl-2 pr-8 gap-2 w-full">
-                                <p className="text-secondary text-md">
-                                    {convertTimestampToCustomFormat(
+                                <p className="text-secondary text-xl">
+                                    {convertTimestampToEuropeanFormat(
                                         car?._createdOn
                                     )}
                                 </p>

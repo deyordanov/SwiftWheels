@@ -28,12 +28,14 @@ import {
     ContactFormKeys,
     ContactFormDefaultValues,
 } from "@/app/utilities/constants/constans";
+import { useAuthContext } from "@/app/Contexts/authContext";
 
 export default function ContactForm({
     setTabs,
     closeModal,
     offerPrice,
 }: contactFormTypes.propTypes) {
+    const { userId } = useAuthContext();
     const [messageReceived, setMessageReceived] = useState<boolean>();
     const [showConfetti, setShowConfetti] = useState(false);
     const {
@@ -54,9 +56,9 @@ export default function ContactForm({
     const onSubmit = async (data: any) => {
         await offerService.create({
             ...data,
-            carId: car._id,
+            car: car,
             sellerId: car._ownerId,
-            carModel: car["car-model"],
+            buyerId: userId,
             offerPrice,
             offerStatus: "Pending",
             isRead: false,
