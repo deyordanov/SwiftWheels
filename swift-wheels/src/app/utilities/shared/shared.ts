@@ -55,7 +55,15 @@ export function convertTimestampToCustomFormat(timestamp: number) {
     const day = date.getUTCDate();
     const month = months[date.getUTCMonth()];
     const time = date.toUTCString().match(/(\d{2}:\d{2}):\d{2}/)[1];
-    return `${day}th of ${month} - ${time}`;
+    return `${day} of ${month} - ${time}`;
+}
+
+export function convertTimestampToEuropeanFormat(timestamp: number): string {
+    const date = new Date(timestamp);
+    const day = String(date.getUTCDate()).padStart(2, "0");
+    const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+    const year = date.getUTCFullYear();
+    return `${day}/${month}/${year}`;
 }
 
 export const geocodeAddress = async (
@@ -115,3 +123,9 @@ export function extractPlaceholder(inputString: string) {
         )
         .join(" ");
 }
+
+export const orderObjectCollectionAsc = (collection: any, parameter: string) =>
+    collection.sort((a: any, b: any) => a[parameter] - b[parameter]);
+
+export const orderObjectCollectionDesc = (collection: any, parameter: string) =>
+    collection.sort((a: any, b: any) => b[parameter] - a[parameter]);
