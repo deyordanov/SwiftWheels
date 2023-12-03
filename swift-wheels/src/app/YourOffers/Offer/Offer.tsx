@@ -16,12 +16,15 @@ import { FaTrashAlt } from "react-icons/fa";
 //shared
 import {
     formatPrice,
-    convertTimestampToCustomFormat,
+    convertTimestampToEuropeanFormat,
 } from "@/app/utilities/shared/shared";
 
 //services
 import * as chatService from "@/services/chatService";
 import * as offerService from "@/services/offerService";
+import Link from "next/link";
+import Image from "next/image";
+import { CiRead, CiUnread } from "react-icons/ci";
 
 export default function Offer({ offer }: { offer: any }) {
     const queryClient = useQueryClient();
@@ -32,7 +35,7 @@ export default function Offer({ offer }: { offer: any }) {
 
     const getChatQuery = useQuery({
         queryKey: ["chats", userId, offer.carId],
-        queryFn: () => chatService.getAllFilter(userId, offer.carId),
+        queryFn: () => chatService.getAllFilter(userId, offer.car._id),
     });
 
     const isValidData =
@@ -155,7 +158,9 @@ export default function Offer({ offer }: { offer: any }) {
         changeOfferStatusMutation.mutate("Declined");
     };
 
-    const isOfferSet = () => offer.offerStatus !== "Pending";
+    const isOfferPending = offer.offerStatus === "Pending";
+
+    const isOfferAccepted = offer.offerStatus === "Accepted";
 
     const isOfferDeclined = offer.offerStatus == "Declined";
 
@@ -163,72 +168,81 @@ export default function Offer({ offer }: { offer: any }) {
 
     const isChatValid = Object.values(chat).length !== 0;
 
-    const getOfferIsReadStyle = () => {
-        if (offer.isRead || isBuyer) {
-            return "font-normal";
-        }
-        return "font-bold";
-    };
-
     return (
-        <li
-            key={offer._id}
-            className={`bg-white flex items-center px-4 py-2 rounded-lg shadow-lg justify-between text-center divide-x-2 divide-gray-200 h-[7%] ${getOfferIsReadStyle()} w-full`}
-        >
-            <h1 className="pr-2 text-lg font-extrabold">{offer.carModel}</h1>
-
-            <div className="flex flex-1 items-center divide-x-2 divide-gray-200 h-full">
-                <p className="text-primary px-2 flex-1">{offer.buyerEmail}</p>
-                <p className="text-primary px-2 h-full flex items-center">
-                    {formatPrice(offer.offerPrice)}
-                </p>
-                <p className="text-primary px-2 h-full flex items-center">
-                    {convertTimestampToCustomFormat(offer._createdOn)}
-                </p>
-            </div>
-            <div className="flex px-2 gap-2 h-full items-center font-bold">
-                {!isBuyer && (
-                    <>
-                        <button
-                            disabled={isOfferSet()}
-                            onClick={acceptOffer}
-                            className="px-2 py-1 text-white  bg-green-500 hover:bg-green-600 rounded-lg flex"
-                        >
-                            Accept
-                        </button>
-                        <button
-                            disabled={isOfferSet()}
-                            onClick={declineOffer}
-                            className="px-2 py-1 text-white  bg-red-500 hover:bg-red-600 rounded-lg"
-                        >
-                            Decline
-                        </button>
-                    </>
-                )}
-                <button
-                    disabled={isOfferDeclined}
-                    onClick={handleChatCreation}
-                    className="px-2 py-1 text-white  bg-blue-500 hover:bg-blue-600 rounded-lg"
-                >
-                    Message {isBuyer ? "Seller" : "Buyer"}
-                </button>
-            </div>
+        <li className="w-full flex flex-col justify-center items-center">
             <div
-                className={`${
-                    isBuyer ? "w-[15%]" : "w-[13%]"
-                } h-full flex items-center font-bold"`}
+                key={offer.car._id}
+                className="flex shadow-lg w-full max-w-[1400px] gap-4 rounded-lg h-full"
             >
-                <p
-                    className={`${getOfferStatusStyle()} w-full rounded-lg ml-2 font-bold`}
-                >
-                    {offer.offerStatus}
-                </p>
-                <button
-                    onClick={handleOfferDeletion}
-                    className="pl-4 text-xl hover:text-gray-300"
-                >
-                    <FaTrashAlt />
-                </button>
+                <div className="relative w-[35%]">
+                    <Link href={`/CarDetails/${offer.car._id}`}>
+                        <Image
+                            src={offer.car["car-images"][1].url}
+                            alt={`${offer.car["car-model"]} image`}
+                            fill
+                            className="object-cover  rounded-tl-lg rounded-bl-lg"
+                        />
+                    </Link>
+                </div>
+                <div className="relative flex flex-col justify-between py-4 pl-2 pr-8 gap-2 w-full">
+                    <div className="flex items-center gap-2 relative">
+                        <h1 className="text-xl font-bold">
+                            {offer.car["car-model"]}
+                        </h1>
+                        -
+                        <p className="text-secondary text-xl">
+                            {convertTimestampToEuropeanFormat(offer._createdOn)}
+                        </p>
+                        -
+                        <p className="text-secondary flex-1 text-xl">
+                            {offer.buyerEmail}
+                        </p>
+                        <div className="absolute right-0 text-3xl">
+                            {offer.isRead ? <CiRead /> : <CiUnread />}
+                        </div>
+                    </div>
+                    <h2 className="text-2xl font-extrabold ">
+                        {formatPrice(offer.offerPrice)}
+                    </h2>
+                    <div className="flex gap-3 h-full items-center font-bold text-lg w-full justify-end relative">
+                        <p
+                            className={`${getOfferStatusStyle()} absolute rounded-lg ml-2 font-bold px-2 -left-2 text-xl`}
+                        >
+                            {offer.offerStatus}
+                        </p>
+                        {!isBuyer && !isOfferAccepted && !isOfferDeclined && (
+                            <>
+                                <button
+                                    disabled={!isOfferPending}
+                                    onClick={acceptOffer}
+                                    className="px-2 py-1 text-white bg-green-400 hover:bg-green-600 rounded-lg"
+                                >
+                                    Accept
+                                </button>
+                                <button
+                                    disabled={!isOfferPending}
+                                    onClick={declineOffer}
+                                    className="px-2 py-1 text-white bg-red-400 hover:bg-red-600 rounded-lg"
+                                >
+                                    Decline
+                                </button>
+                            </>
+                        )}
+                        <button
+                            disabled={isOfferDeclined}
+                            onClick={handleChatCreation}
+                            className="px-2 py-1 text-white bg-blue-400 hover:bg-blue-600 rounded-lg"
+                        >
+                            Message {isBuyer ? "Buyer" : "Seller"}
+                        </button>
+                        <button
+                            onClick={handleOfferDeletion}
+                            className="text-xl hover:opacity-70"
+                        >
+                            <FaTrashAlt />
+                        </button>
+                    </div>
+                </div>
             </div>
             {isChatCreated && isChatValid && (
                 <Chat
