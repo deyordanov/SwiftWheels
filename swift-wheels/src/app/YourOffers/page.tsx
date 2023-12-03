@@ -2,7 +2,7 @@
 
 //hooks
 import { useAuthContext } from "../Contexts/authContext";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 //services
 import * as offerService from "@/services/offerService";
@@ -13,40 +13,135 @@ import OfferFilter from "./OfferFilter/OfferFilter";
 
 //types
 import React, { useEffect, useState } from "react";
+import LoadingSpinner from "../Components/shared/LoadingSpinner";
+import NoOffers from "./NoOffers/NoOffers";
+import OfferSort from "./OfferSort/OfferSort";
 
-// TODO: Add filtration!
 export default function Page() {
+    const queryClient = useQueryClient();
     const [offers, setOffers] = useState([]);
+    const [filter, setFilter] = useState<string>(" ");
+    const [sort, setSort] = useState<string>("");
+    const [buyer, setBuyer] = useState<boolean>(false);
+    const [seller, setSeller] = useState<boolean>(true);
     const { userId } = useAuthContext();
 
-    const setOffersQuery = useQuery({
-        queryKey: ["offers", userId],
-        queryFn: () => offerService.getAllFilter(userId),
+    const setSellerOffersQuery = useQuery({
+        queryKey: ["offers", "sellerId", userId],
+        queryFn: () => offerService.getAllOffersForSeller(userId, filter, sort),
+        enabled: seller,
     });
 
-    const isValidData =
-        setOffersQuery.data && Object.values(setOffersQuery.data).length !== 0;
+    const setBuyerOffersQuery = useQuery({
+        queryKey: ["offers", "buyerId", userId],
+        queryFn: () => offerService.getAllOffersForBuyer(userId, filter, sort),
+        enabled: buyer,
+    });
+
+    const areSellerOffersValid = !!setSellerOffersQuery.data;
+
+    const areBuyerOffersValid = !!setBuyerOffersQuery.data;
+
+    const isValidPresentData = offers.length !== 0;
 
     useEffect(() => {
-        if (isValidData) {
-            setOffers(setOffersQuery.data);
-        } else if (setOffersQuery.isError) {
+        if (seller) {
+            queryClient.fetchQuery({
+                queryKey: ["offers", "sellerId", userId],
+            });
+        } else if (buyer) {
+            queryClient.fetchQuery({
+                queryKey: ["offers", "buyerId", userId],
+            });
+        }
+    }, [filter, queryClient, seller, buyer, userId, sort]);
+
+    useEffect(() => {
+        if (areSellerOffersValid) {
+            setOffers(setSellerOffersQuery.data);
+        } else if (areBuyerOffersValid) {
+            setOffers(setBuyerOffersQuery.data);
+        } else if (setSellerOffersQuery.isError) {
             console.log(
                 "Error loading offers in YourOffers.tsx:",
-                setOffersQuery.error
+                setSellerOffersQuery.error
             );
         }
-    }, [setOffersQuery, isValidData]);
+    }, [
+        setBuyerOffersQuery,
+        areBuyerOffersValid,
+        setSellerOffersQuery,
+        areSellerOffersValid,
+    ]);
+
+    useEffect(() => {
+        if (!seller) {
+            queryClient.removeQueries({
+                queryKey: ["offers", "sellerId", userId],
+                exact: true,
+            });
+        } else {
+            queryClient.removeQueries({
+                queryKey: ["offers", "buyerId", userId],
+                exact: true,
+            });
+        }
+    }, [buyer, queryClient, userId, seller]);
+
+    const handleSetBuyer = () => {
+        setBuyer(true);
+        setSeller(false);
+    };
+
+    const handleSetSeller = () => {
+        setSeller(true);
+        setBuyer(false);
+    };
+
+    if (setSellerOffersQuery.isLoading || setBuyerOffersQuery.isLoading)
+        return (
+            <section className="w-screen h-screen flex items-center justify-centerq">
+                <LoadingSpinner />
+            </section>
+        );
 
     return (
-        <section className="container flex items-center justify-center h-screen w-screen mx-auto mt-2 text-primary font-semibold pt-4 bg-gray-100 rounded-lg flex-col">
-            <div className="w-full flex items-start">
-                <OfferFilter />
-            </div>
-            <ul className="flex flex-col h-full gap-4 ">
-                {offers?.map((offer: any) => (
-                    <Offer key={offer._id} offer={offer} />
-                ))}
+        <section className="flex text-primary flex-col relative z-10 items-center justify-center h-screen">
+            <ul className="flex w-full h-full p-4 flex-col gap-y-4 relative max-w-[1400px]">
+                <div className="flex gap-2">
+                    <div className="flex items-start z-20 relative">
+                        <OfferFilter setFilter={setFilter} />
+                    </div>
+                    <div className="flex items-start z-20 relative">
+                        <OfferSort setSort={setSort} />
+                    </div>
+                    <div className="flex z-20 relative items-center text-2xl gap-4 font-semibold">
+                        <button
+                            disabled={buyer}
+                            onClick={handleSetBuyer}
+                            className="bg-gray-200 rounded-lg px-2 py-1 hover:bg-gray-300"
+                        >
+                            Buyer
+                        </button>
+                        <button
+                            disabled={seller}
+                            onClick={handleSetSeller}
+                            className="bg-gray-200 rounded-lg px-2 py-1 hover:bg-gray-300"
+                        >
+                            Seller
+                        </button>
+                    </div>
+                </div>
+                {isValidPresentData ? (
+                    offers?.map((offer: any) => (
+                        <Offer key={offer._id} offer={offer} />
+                    ))
+                ) : (
+                    <NoOffers
+                        setFilter={setFilter}
+                        isValidPresentData={isValidPresentData}
+                    />
+                )}
             </ul>
         </section>
     );
