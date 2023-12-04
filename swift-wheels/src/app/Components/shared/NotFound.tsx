@@ -1,4 +1,4 @@
-export default function NoOffers() {
+export default function NotFound({ message }: { message: string }) {
     return (
         <div className="grid h-full place-content-center px-4">
             <div className="text-center">
@@ -23,7 +23,7 @@ export default function NoOffers() {
 
                 <div className="flex flex-col gap-2">
                     <h1 className="mt-6 text-3xl font-bold tracking-tight text-primary sm:text-4xl">
-                        No offers have been found!
+                        {message}
                     </h1>
                 </div>
             </div>

@@ -2,10 +2,6 @@
 
 //hooks
 import React, { useState, useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
-
-//services
-import * as carService from "@/services/carService";
 
 //components
 import LoadingSpinner from "@/app/Components/shared/LoadingSpinner";
@@ -27,10 +23,6 @@ export function AllCarsPagination({
 }: allCarsPaginationTypes.propTypes) {
     const [active, setActive] = useState(1);
     const [carCount, setCarCount] = useState(1);
-    const carCountQuery = useQuery({
-        queryKey: ["cars", "carCount"],
-        queryFn: () => carService.getCarCount(),
-    });
 
     useEffect(() => {
         setActive(1);

@@ -20,7 +20,7 @@ import Link from "next/link";
 
 //components
 import LoadingSpinner from "../Components/shared/LoadingSpinner";
-import NoOffers from "./NoOffers/NoOffers";
+import NotFound from "../Components/shared/NotFound";
 import OfferSort from "./OfferSort/OfferSort";
 
 //types
@@ -109,7 +109,7 @@ export default function Page() {
 
     if (setSellerOffersQuery.isLoading || setBuyerOffersQuery.isLoading)
         return (
-            <section className="w-screen h-screen flex items-center justify-centerq">
+            <section className="w-screen h-screen flex items-center justify-center">
                 <LoadingSpinner />
             </section>
         );
@@ -158,10 +158,7 @@ export default function Page() {
                         <Offer key={offer._id} offer={offer} />
                     ))
                 ) : (
-                    <NoOffers
-                        setFilter={setFilter}
-                        isValidPresentData={isValidPresentData}
-                    />
+                    <NotFound message="No offers have been found!" />
                 )}
             </ul>
         </section>
