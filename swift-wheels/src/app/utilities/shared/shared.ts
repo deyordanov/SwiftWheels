@@ -54,7 +54,10 @@ export function convertTimestampToCustomFormat(timestamp: number) {
     ];
     const day = date.getUTCDate();
     const month = months[date.getUTCMonth()];
-    const time = date.toUTCString().match(/(\d{2}:\d{2}):\d{2}/)[1];
+
+    const timeMatch = date.toUTCString().match(/(\d{2}:\d{2}):\d{2}/);
+    const time = timeMatch ? timeMatch[1] : null;
+
     return `${day} of ${month} - ${time}`;
 }
 

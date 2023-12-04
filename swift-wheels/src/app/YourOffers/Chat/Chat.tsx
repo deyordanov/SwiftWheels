@@ -64,6 +64,7 @@ export default function Chat({
     }, [currentChat]);
 
     const scrollToBottom = () => {
+        // @ts-ignore
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     };
 
