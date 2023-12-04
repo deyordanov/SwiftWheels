@@ -1,7 +1,7 @@
 "use client";
 
 //hooks
-import React, { useContext, createContext, useState } from "react";
+import React, { useContext, createContext, useState, useEffect } from "react";
 import useLocalStorage from "@/hooks/useLocalStorage";
 
 //services
@@ -22,8 +22,8 @@ const AuthContext = createContext<
 export const AuthProvider = ({ children }: authContextTypes.propTypes) => {
     const [auth, setAuth] = useLocalStorage("auth", {});
     const [invalidLoginData, setInvalidLoginData] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-    //mutations
     const loginMutation = useMutation({
         mutationFn: (loginData: any) => authService.login(loginData),
         onError: (error) => {
@@ -68,6 +68,10 @@ export const AuthProvider = ({ children }: authContextTypes.propTypes) => {
         setAuth({});
     };
 
+    useEffect(() => {
+        setIsAuthenticated(!!auth.accessToken);
+    }, [auth]);
+
     const authContextData = {
         onLoginSubmit,
         onRegisterSubmit,
@@ -75,7 +79,7 @@ export const AuthProvider = ({ children }: authContextTypes.propTypes) => {
         userId: auth._id,
         userEmail: auth.email,
         token: auth.accessToken,
-        isAuthenticated: !!auth.accessToken,
+        isAuthenticated,
         invalidLoginData,
     };
 

@@ -31,30 +31,32 @@ import Link from "next/link";
 
 //variants
 import { fadeIn } from "../../../../variants";
+import { useQuery } from "@tanstack/react-query";
 
 export default function CarSlider() {
     const { isAuthenticated } = useAuthContext();
     const { handleLoginDialogExitOpen } = usePageContext();
-    const [cars, setCars] = useState<Array<unknown>>([]);
+    const [cars, setCars] = useState<unknown>([]);
     const swiperRef = useRef(null);
 
     function formatPrice(price: number) {
         return `${price.toLocaleString("en-US")}$`;
     }
 
-    useEffect(() => {
-        getAllCars();
-    }, []);
-
-    const getAllCars = async () => {
-        setCars(await carService.getAll());
-    };
+    const getAllCarsQueery = useQuery({
+        queryKey: ["cars"],
+        queryFn: () => carService.getAll(),
+    });
 
     useEffect(() => {
-        // Register Swiper web component
+        if (!getAllCarsQueery.isLoading) {
+            setCars(getAllCarsQueery.data);
+        }
+    }, [getAllCarsQueery]);
+
+    useEffect(() => {
         register();
 
-        // Object with parameters
         const params = {
             breakpoints: {
                 320: { slidesPerView: 1, spaceBetween: 15 },
@@ -64,21 +66,17 @@ export default function CarSlider() {
         };
 
         if (swiperRef.current) {
-            // Assign it to swiper element
             Object.assign(swiperRef.current, params);
 
-            //Can`t initialize in any other way due to typescript
             const swiper = swiperRef.current as any;
 
-            // initialize swiper
             swiper.initialize();
         }
     }, []);
 
     function generateStars(rating: number) {
         const fullStars = Math.floor(rating);
-        // const halfStars = rating % 1 ? 1 : 0;
-        const emptyStars = 5 - fullStars; // assuming a maximum of 5 stars
+        const emptyStars = 5 - fullStars;
 
         const stars = [];
         for (let i = 0; i < fullStars; i++) {

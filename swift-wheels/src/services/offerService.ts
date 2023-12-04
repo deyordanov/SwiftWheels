@@ -65,13 +65,17 @@ export const getUnreadOfferCount = async (sellerId: string) => {
         `sellerId = "${sellerId}" AND isRead = ${false}`
     );
 
-    const offers = await requester.authorizationGet(
-        headers,
-        {},
-        `${baseUrl}?where=${query}`
-    );
+    try {
+        const offers = await requester.authorizationGet(
+            headers,
+            {},
+            `${baseUrl}?where=${query}`
+        );
 
-    return offers.length;
+        return offers.length;
+    } catch (error) {
+        return 0;
+    }
 };
 
 export const remove = async (offerId: string) => {

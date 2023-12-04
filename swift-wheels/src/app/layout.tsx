@@ -49,12 +49,12 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        <>
+        <html lang="en">
             <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
 
             <body className={`${inter.className} hide-scrollbar`}>
                 <AllProviders>{children}</AllProviders>
             </body>
-        </>
+        </html>
     );
 }

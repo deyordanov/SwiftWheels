@@ -13,8 +13,14 @@ export const getOne = async (carId: string) => {
 
 export const getAll = async () => {
     const response = await requester.get(baseUrl);
-    const cars = Object.values(response);
-    return cars;
+
+    try {
+        const cars = Object.values(response);
+
+        return cars;
+    } catch {
+        return [];
+    }
 };
 
 export const getAllFilter = async (

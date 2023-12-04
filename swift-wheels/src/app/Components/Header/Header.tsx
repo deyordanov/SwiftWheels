@@ -37,7 +37,7 @@ export default function Header() {
         handleLoginDialogExitOpen,
         handleLogoutDialogExitOpen,
     } = usePageContext();
-    // const { searchActive, setSearchActive } = useSearchContext();
+    const { searchActive, setSearchActive } = useSearchContext();
     const { isAuthenticated } = useAuthContext();
 
     const desktopMode = useMediaQuery({
@@ -49,7 +49,7 @@ export default function Header() {
         const handleScroll = () => {
             setHeader(window.scrollY > 40);
             //Might need to change the value later on (for UX)
-            // setSearchActive(window.scrollY > 1550);
+            setSearchActive(window.scrollY > 1550);
         };
 
         //Adding an event listener to the window when the component mounts
@@ -101,7 +101,7 @@ export default function Header() {
                         {navigation ? <BiX /> : <BiMenuAltRight />}
                     </div>
                 </div>
-                <nav
+                <div
                     className={`${
                         navigation
                             ? "max-h-max py-8 px-4 xl:py-0 xl:px-0"
@@ -193,7 +193,7 @@ export default function Header() {
                         See All Cars
                     </Link>
                     <SearchMobile />
-                </nav>
+                </div>
             </div>
         </header>
     );
