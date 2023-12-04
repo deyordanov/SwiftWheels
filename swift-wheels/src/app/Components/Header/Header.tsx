@@ -37,7 +37,7 @@ export default function Header() {
         handleLoginDialogExitOpen,
         handleLogoutDialogExitOpen,
     } = usePageContext();
-    const { searchActive, setSearchActive } = useSearchContext();
+    // const { searchActive, setSearchActive } = useSearchContext();
     const { isAuthenticated } = useAuthContext();
 
     const desktopMode = useMediaQuery({
@@ -49,7 +49,7 @@ export default function Header() {
         const handleScroll = () => {
             setHeader(window.scrollY > 40);
             //Might need to change the value later on (for UX)
-            setSearchActive(window.scrollY > 1550);
+            // setSearchActive(window.scrollY > 1550);
         };
 
         //Adding an event listener to the window when the component mounts

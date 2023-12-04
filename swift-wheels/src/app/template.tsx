@@ -3,6 +3,9 @@
 //react-motion
 import { motion } from "framer-motion";
 
+//types
+import React from "react";
+
 const variants = {
     hidden: {
         opacity: 0,

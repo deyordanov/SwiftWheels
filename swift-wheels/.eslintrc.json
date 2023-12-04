@@ -16,5 +16,8 @@
                 "extensions": [".ts", ".js", ".jsx", ".tsx", ".json"]
             }
         }
+    },
+    "rules": {
+        "no-unused-vars": "off"
     }
 }

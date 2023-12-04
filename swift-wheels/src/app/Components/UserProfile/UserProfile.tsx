@@ -11,7 +11,7 @@ import Link from "next/link";
 
 //react-icons
 import { BiSolidUser, BiLogOut } from "react-icons/bi";
-import { MdAttachMoney, MdSell } from "react-icons/md";
+import { MdAttachMoney } from "react-icons/md";
 import { IoCarSportSharp, IoStatsChart } from "react-icons/io5";
 
 //headless-ui

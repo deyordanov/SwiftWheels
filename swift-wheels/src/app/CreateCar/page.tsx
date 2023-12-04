@@ -599,6 +599,7 @@ export default function Page() {
                         rules={{ required: "This field is required!" }}
                         render={({ field }) => (
                             <UploadDropzone
+                                {...field}
                                 content={{
                                     button() {
                                         return "Upload Images";

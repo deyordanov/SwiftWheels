@@ -2,7 +2,6 @@
 import About from "./Components/About/About";
 import BackToTopBtn from "./Components/BackToTopBtn/BackToTopBtn";
 import Brands from "./Components/Brands/Brands";
-import CarDetails from "./Components/CarDetails/page";
 import Cars from "./Components/Cars/Cars";
 import CarSlider from "./Components/CarSlider/CarSlider";
 import Copyright from "./Components/Copyright/Copyright";
