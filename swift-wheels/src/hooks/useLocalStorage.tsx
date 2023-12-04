@@ -1,33 +1,38 @@
 import { useState, useEffect } from "react";
 
 function getSavedValue(key: string, initialValue: any) {
-  const savedValue = localStorage.getItem(key);
-  if (savedValue != null) {
-    try {
-      return JSON.parse(savedValue);
-    } catch (e) {
-      console.error("Parsing error on", key, e);
-      localStorage.removeItem(key);
+    // Check if the code is running in a browser environment
+    if (typeof window === "undefined") {
+        return initialValue;
     }
-  }
 
-  if (initialValue instanceof Function) {
-    return initialValue();
-  }
+    const savedValue = localStorage.getItem(key);
+    if (savedValue != null) {
+        try {
+            return JSON.parse(savedValue);
+        } catch (e) {
+            console.error("Parsing error on", key, e);
+            localStorage.removeItem(key);
+        }
+    }
 
-  return initialValue;
+    if (initialValue instanceof Function) {
+        return initialValue();
+    }
+
+    return initialValue;
 }
 
 export default function useLocalStorage(key: string, initialValue: any) {
-  const [value, setValue] = useState(() => {
-    return getSavedValue(key, initialValue);
-  });
+    const [value, setValue] = useState(() => {
+        return getSavedValue(key, initialValue);
+    });
 
-  useEffect(() => {
-    if (value !== undefined) {
-      localStorage.setItem(key, JSON.stringify(value));
-    }
-  }, [key, value]);
+    useEffect(() => {
+        if (typeof window !== "undefined" && value !== undefined) {
+            localStorage.setItem(key, JSON.stringify(value));
+        }
+    }, [key, value]);
 
-  return [value, setValue];
+    return [value, setValue];
 }
