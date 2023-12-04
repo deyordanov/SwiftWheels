@@ -198,6 +198,7 @@ export const PriceChart = memo(
         return (
             <div className="flex flex-col w-full shadow-2xl ml-4 rounded-xl border-2 border-gray-100 p-4">
                 <div className="h-[280px]">
+                    {/* @ts-ignore */}
                     <Line data={data} options={options} />
                 </div>
             </div>
