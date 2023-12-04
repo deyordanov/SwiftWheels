@@ -17,7 +17,11 @@ export const getAll = async () => {
     return cars;
 };
 
-export const getAllFilter = async (filters: any) => {
+export const getAllFilter = async (
+    filters: any,
+    page: number,
+    pageSize: number
+) => {
     const headers = getAuthHeaders(false);
 
     let url = baseUrl;
@@ -39,8 +43,11 @@ export const getAllFilter = async (filters: any) => {
 
         const query = encodeURIComponent(queryParameters.join(" AND "));
 
-        url += `?where=${query}`;
+        url += `?where=${query}&offset=${page * pageSize}&pageSize=${pageSize}`;
+    } else {
+        url += `?offset=${page * pageSize}&pageSize=${pageSize}`;
     }
+
     const filteredCars = await requester.authorizationGet(headers, {}, url);
 
     return filteredCars;
@@ -89,4 +96,16 @@ export const removeUserFromFavorites = async (
         }),
         `${baseUrl}/${carId}`
     );
+};
+
+export const getCarCount = async () => {
+    const headers = getAuthHeaders(false);
+
+    const carCount = await requester.authorizationGet(
+        headers,
+        {},
+        `${baseUrl}?count`
+    );
+
+    return carCount;
 };

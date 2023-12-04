@@ -18,6 +18,10 @@ import Link from "next/link";
 //components
 import Filter from "./Filter/Filter";
 import FavoriteButton from "../Components/shared/FavoriteButton";
+import { AllCarsPagination } from "./AllCarsPagination/AllCarsPagination";
+
+//constants
+import { allCarsPageSize as pageSize } from "@/app/utilities/constants/constans";
 
 //shared
 import {
@@ -28,10 +32,11 @@ import {
 export default function AllCars() {
     const [cars, setCars] = useState<Array<unknown>>([]);
     const [filters, setFilters] = useState<Array<object>>([]);
+    const [page, setPage] = useState<number>(1);
 
     const getAllCarsQuery = useQuery({
-        queryKey: ["cars", filters],
-        queryFn: () => carService.getAllFilter(filters),
+        queryKey: ["cars", filters, page],
+        queryFn: () => carService.getAllFilter(filters, page, pageSize),
         enabled: !!filters,
     });
 
@@ -55,7 +60,7 @@ export default function AllCars() {
             <aside className="sticky top-0 left-0 h-full px-2 py-4 w-[25%]">
                 <Filter setFilters={setFilters} />
             </aside>
-            <main className="flex w-full h-full  overflow-auto p-4">
+            <main className="flex w-full h-full overflow-auto p-4 flex-col">
                 <div className="w-full h-full flex flex-col justify-center items-center gap-y-4">
                     {cars?.map((car: any) => (
                         <div
@@ -105,6 +110,9 @@ export default function AllCars() {
                             </div>
                         </div>
                     ))}
+                </div>
+                <div className="sticky bottom-0 px-2 py-4 w-full h-full">
+                    <AllCarsPagination setPage={setPage} pageSize={pageSize} />
                 </div>
             </main>
         </section>
