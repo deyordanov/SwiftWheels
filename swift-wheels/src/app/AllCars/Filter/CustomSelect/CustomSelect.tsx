@@ -1,6 +1,6 @@
 //react-select
 import makeAnimated from "react-select/animated";
-import Select from "react-select";
+import Select, { CSSObjectWithLabel } from "react-select";
 
 //constants
 import {
@@ -15,7 +15,6 @@ import {
 } from "@/app/utilities/shared/shared";
 
 //types
-import { CSSObjectWithLabel } from "react-select";
 import * as customSelectTypes from "@/app/utilities/types/customSelect.typse";
 
 export default function CustomSelect({
