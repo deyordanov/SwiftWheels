@@ -16,13 +16,13 @@ export const create = async (data: object) => {
     return response;
 };
 
-export const getAllFilter = async (sellerId: string, carId: string) => {
+export const getAllFilter = async (userId: string, carId: string) => {
     const headers = getAuthHeaders(false);
 
     const query = encodeURIComponent(
-        //AND carId = "${carId}"
-        `receiverId = "${sellerId}" OR senderId="${sellerId}"`
+        `receiverId = "${userId}" OR senderId = "${userId}"`
     );
+
     let offers = await requester.authorizationGet(
         headers,
         {},

@@ -41,19 +41,21 @@ export default function Offer({ offer }: { offer: any }) {
     const isValidData =
         getChatQuery.data && Object.values(getChatQuery.data).length !== 0;
 
+    console.log(chat);
+
     const chatCreationMutation = useMutation({
         mutationFn: () =>
             chatService.create({
                 receiverId:
-                    userId === offer._ownerId ? offer.sellerId : offer._ownerId,
+                    userId === offer.buyerId ? offer.sellerId : offer.buyerId,
                 senderId: userId,
                 messages: [
-                    { message: offer.buyerMessage, senderId: offer._ownerId },
+                    { message: offer.buyerMessage, senderId: offer.buyerId },
                 ],
                 sellerId: offer.sellerId,
                 sellerEmail: userEmail,
                 buyerEmail: offer.buyerEmail,
-                carId: offer.carId,
+                carId: offer.car._id,
             }),
         onSuccess: (data) => {
             setChat(data);

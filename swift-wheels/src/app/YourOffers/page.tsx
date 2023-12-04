@@ -16,6 +16,8 @@ import React, { useEffect, useState } from "react";
 import LoadingSpinner from "../Components/shared/LoadingSpinner";
 import NoOffers from "./NoOffers/NoOffers";
 import OfferSort from "./OfferSort/OfferSort";
+import Link from "next/link";
+import Image from "next/image";
 
 export default function Page() {
     const queryClient = useQueryClient();
@@ -108,7 +110,7 @@ export default function Page() {
     return (
         <section className="flex text-primary flex-col relative z-10 items-center justify-center h-screen">
             <ul className="flex w-full h-full p-4 flex-col gap-y-4 relative max-w-[1400px]">
-                <div className="flex gap-2">
+                <div className="flex gap-2 items-center">
                     <div className="flex items-start z-20 relative">
                         <OfferFilter setFilter={setFilter} />
                     </div>
@@ -131,6 +133,18 @@ export default function Page() {
                             Seller
                         </button>
                     </div>
+                    <Link
+                        href={"/"}
+                        className="flex z-20 absolute items-center -right-6"
+                    >
+                        <Image
+                            src={"/icons/logo4.png"}
+                            width={170}
+                            height={170}
+                            alt="logo"
+                            priority
+                        />
+                    </Link>
                 </div>
                 {isValidPresentData ? (
                     offers?.map((offer: any) => (
