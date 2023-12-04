@@ -20,6 +20,8 @@ import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import * as allCarsPaginationTypes from "@/app/utilities/types/allCarsPagination.types";
 
 export function AllCarsPagination({
+    filters,
+    carsCount,
     setPage,
     pageSize,
 }: allCarsPaginationTypes.propTypes) {
@@ -30,13 +32,15 @@ export function AllCarsPagination({
         queryFn: () => carService.getCarCount(),
     });
 
-    const isValidCarCountData = !!carCountQuery.data;
+    useEffect(() => {
+        setActive(1);
+    }, [filters]);
 
     useEffect(() => {
-        if (isValidCarCountData) {
-            setCarCount(Math.ceil(carCountQuery.data / pageSize));
+        if (carsCount) {
+            setCarCount(Math.ceil(carsCount / pageSize));
         }
-    }, [carCountQuery, isValidCarCountData, pageSize]);
+    }, [carsCount, pageSize]);
 
     const next = () => {
         if (active === carCount) return;
@@ -56,7 +60,7 @@ export function AllCarsPagination({
 
     return (
         <div className="flex items-center gap-8 justify-center mt-2 ">
-            {carCountQuery.isLoading ? (
+            {carsCount === 0 ? (
                 <LoadingSpinner />
             ) : (
                 <>
@@ -83,7 +87,7 @@ export function AllCarsPagination({
                         size="sm"
                         variant="outlined"
                         onClick={next}
-                        disabled={active === 10}
+                        disabled={active === carCount}
                         className="text-xl"
                     >
                         <FaArrowRight />

@@ -43,7 +43,7 @@ export default function AllCars() {
     useEffect(() => {
         const getAllCars = async () => {
             if (!getAllCarsQuery.isLoading) {
-                setCars(getAllCarsQuery.data);
+                setCars(getAllCarsQuery?.data?.cars);
             } else if (getAllCarsQuery.isError) {
                 console.log(
                     "Failed to fetch cars at UserListings",
@@ -112,7 +112,12 @@ export default function AllCars() {
                     ))}
                 </div>
                 <div className="sticky bottom-0 px-2 py-4 w-full h-full">
-                    <AllCarsPagination setPage={setPage} pageSize={pageSize} />
+                    <AllCarsPagination
+                        filters={filters}
+                        carsCount={getAllCarsQuery.data?.carsCount ?? 0}
+                        setPage={setPage}
+                        pageSize={pageSize}
+                    />
                 </div>
             </main>
         </section>

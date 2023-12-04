@@ -42,22 +42,35 @@ export const getAllFilter = async (
         });
 
         const query = encodeURIComponent(queryParameters.join(" AND "));
+        console.log(queryParameters);
 
-        url += `?where=${query}&offset=${page * pageSize}&pageSize=${pageSize}`;
-    } else {
-        url += `?offset=${page * pageSize}&pageSize=${pageSize}`;
+        url += `?where=${query}`;
     }
 
-    const filteredCars = await requester.authorizationGet(headers, {}, url);
+    let filteredCars = await requester.authorizationGet(headers, {}, url);
 
-    return filteredCars;
+    const carsCount = filteredCars.length;
+
+    //Yet again due to limitations of the server - in-memory filtering has to be done
+    filteredCars = filteredCars.slice(
+        (page - 1) * pageSize,
+        page * pageSize > filteredCars.length
+            ? filteredCars.length
+            : page * pageSize
+    );
+
+    return { cars: filteredCars, carsCount };
 };
 
-export const create = async (data: object) => {
+export const create = async (data: any) => {
     const headers = getAuthHeaders(false);
     const response = await requester.authorizationPost(
         headers,
-        JSON.stringify({ ...data }),
+        JSON.stringify({
+            ...data,
+            "car-horsepower": Number(data["car-horsepower"]),
+            "car-km": Number(data["car-km"]),
+        }),
         baseUrl
     );
     return response;
