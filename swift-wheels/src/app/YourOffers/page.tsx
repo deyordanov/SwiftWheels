@@ -1,6 +1,7 @@
 "use client";
 
 //hooks
+import { useEffect, useState } from "react";
 import { useAuthContext } from "../Contexts/authContext";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -11,13 +12,19 @@ import * as offerService from "@/services/offerService";
 import Offer from "./Offer/Offer";
 import OfferFilter from "./OfferFilter/OfferFilter";
 
-//types
-import React, { useEffect, useState } from "react";
+//next-image
+import Image from "next/image";
+
+//next-link
+import Link from "next/link";
+
+//components
 import LoadingSpinner from "../Components/shared/LoadingSpinner";
 import NoOffers from "./NoOffers/NoOffers";
 import OfferSort from "./OfferSort/OfferSort";
-import Link from "next/link";
-import Image from "next/image";
+
+//types
+import React from "react";
 
 export default function Page() {
     const queryClient = useQueryClient();

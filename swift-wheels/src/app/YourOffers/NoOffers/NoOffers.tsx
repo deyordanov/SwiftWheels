@@ -1,4 +1,4 @@
-export default function NoSuchOffers({ setFilter, isValidPresentData }) {
+export default function NoOffers() {
     return (
         <div className="grid h-full place-content-center px-4">
             <div className="text-center">
@@ -25,14 +25,6 @@ export default function NoSuchOffers({ setFilter, isValidPresentData }) {
                     <h1 className="mt-6 text-3xl font-bold tracking-tight text-primary sm:text-4xl">
                         No offers have been found!
                     </h1>
-                    {/* {isValidPresentData && (
-                        <button
-                            onClick={() => setFilter("")}
-                            className="mx-auto w-[50%] px-4 py-1 bg-green-400 hover:bg-green-500 shadow-xl rounded-lg text-2xl text-bold text-white transition-all hover:-translate-y-1"
-                        >
-                            See All offers
-                        </button>
-                    )} */}
                 </div>
             </div>
         </div>

@@ -556,3 +556,38 @@ export const createMessageFormKeys = {
 export const createMessageFormDefaultValues = {
     [createMessageFormKeys.CHAT_MESSAGE]: "",
 };
+
+//      All Cars
+
+export const allCarsPageSize = 5;
+
+//      All Cars Filter
+
+export const largerOrEqual = " >= ";
+export const lessOrEqual = " <= ";
+export const equal = " = ";
+
+//      Your Offers Offer Sort
+
+export const priceDescSort = `offerPrice desc`;
+export const priceAscSort = `offerPrice`;
+export const offerStatusDescSort = "offerStatus desc";
+export const offerStatusAscSort = "offerStatus";
+export const dateDescSort = `_createdOn desc`;
+export const dateAscSort = `_createdOn`;
+export const clearSort = "";
+
+//      Your Offers Offer Filter
+
+export const acceptedFilter = ` AND offerStatus = "Accepted"`;
+export const declinedFilter = ` AND offerStatus = "Declined"`;
+export const pendingFilter = ` AND offerStatus = "Pending"`;
+export const isReadFilter = ` AND isRead = true`;
+export const isNotReadFilter = ` AND isRead = false`;
+export const clearFilter = " ";
+
+//      Your Offers Offer
+
+export const Accepted = "Accepted";
+export const Declined = "Declined";
+export const Pending = "Pending";

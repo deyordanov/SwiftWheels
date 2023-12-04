@@ -1,24 +1,30 @@
 "use state";
 
-import { Fragment, useState } from "react";
-
+//headless-ui
 import { Menu, Transition } from "@headlessui/react";
-import { useQuery } from "@tanstack/react-query";
-import * as React from "react";
-import { FaFilter } from "react-icons/fa";
-import * as offerService from "@/services/offerService";
 
-export default function FadeMenu({ setFilter }) {
+//react-icons
+import { FaFilter } from "react-icons/fa";
+
+//constants
+import {
+    acceptedFilter,
+    declinedFilter,
+    pendingFilter,
+    isReadFilter,
+    isNotReadFilter,
+    clearFilter,
+} from "@/app/utilities/constants/constans";
+
+//types
+import * as offerFilterTypes from "@/app/utilities/types/yourOffersOfferFilter.types";
+import { Fragment } from "react";
+import * as React from "react";
+
+export default function OfferFilter({ setFilter }: offerFilterTypes.propTypes) {
     const handleFilter = async (filter: string) => {
         setFilter(filter);
     };
-
-    const acceptedFilter = ` AND offerStatus = "Accepted"`;
-    const declinedFilter = ` AND offerStatus = "Declined"`;
-    const pendingFilter = ` AND offerStatus = "Pending"`;
-    const isReadFilter = ` AND isRead = true`;
-    const isNotReadFilter = ` AND isRead = false`;
-    const clearFilter = " ";
 
     return (
         <div className="text-right cursor-pointer">

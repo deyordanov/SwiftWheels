@@ -1,25 +1,31 @@
-"use state";
+"use client";
 
-import { Fragment, useState } from "react";
-
+//headless-ui
 import { Menu, Transition } from "@headlessui/react";
-import { useQuery } from "@tanstack/react-query";
-import * as React from "react";
-import { FaFilter, FaSortAmountDown } from "react-icons/fa";
-import * as offerService from "@/services/offerService";
 
-export default function OfferSort({ setSort }) {
+//react-icons
+import { FaSortAmountDown } from "react-icons/fa";
+
+//constants
+import {
+    priceDescSort,
+    priceAscSort,
+    offerStatusDescSort,
+    offerStatusAscSort,
+    dateDescSort,
+    dateAscSort,
+    clearSort,
+} from "@/app/utilities/constants/constans";
+
+//types
+import * as OfferSortTypes from "@/app/utilities/types/yourOffersOfferSort.types";
+import { Fragment } from "react";
+import * as React from "react";
+
+export default function OfferSort({ setSort }: OfferSortTypes.propTypes) {
     const handleSort = async (sort: string) => {
         setSort(sort);
     };
-
-    const priceDescSort = `offerPrice desc`;
-    const priceAscSort = `offerPrice`;
-    const offerStatusDescSort = "offerStatus desc";
-    const offerStatusAscSort = "offerStatus";
-    const dateDescSort = `_createdOn desc`;
-    const dateAscSort = `_createdOn`;
-    const clearSort = "";
 
     return (
         <div className="text-right cursor-pointer">

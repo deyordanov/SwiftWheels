@@ -4,6 +4,10 @@
 import { useState, useEffect } from "react";
 import { useAuthContext } from "@/app/Contexts/authContext";
 
+//services
+import * as chatService from "@/services/chatService";
+import * as offerService from "@/services/offerService";
+
 //components
 import Chat from "../Chat/Chat";
 
@@ -12,6 +16,23 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 //react-icons
 import { FaTrashAlt } from "react-icons/fa";
+import { CiRead, CiUnread } from "react-icons/ci";
+
+//next-image
+import Image from "next/image";
+
+//next-link
+import Link from "next/link";
+
+//constants
+import {
+    Accepted,
+    Declined,
+    Pending,
+} from "@/app/utilities/constants/constans";
+
+//types
+import * as offerTypes from "@/app/utilities/types/yourOffersOffer.types";
 
 //shared
 import {
@@ -19,14 +40,7 @@ import {
     convertTimestampToEuropeanFormat,
 } from "@/app/utilities/shared/shared";
 
-//services
-import * as chatService from "@/services/chatService";
-import * as offerService from "@/services/offerService";
-import Link from "next/link";
-import Image from "next/image";
-import { CiRead, CiUnread } from "react-icons/ci";
-
-export default function Offer({ offer }: { offer: any }) {
+export default function Offer({ offer }: offerTypes.propTypes) {
     const queryClient = useQueryClient();
     const { userId, userEmail } = useAuthContext();
     const [isChatModalOpen, setIsChatModalOpen] = useState<boolean>(false);
@@ -40,8 +54,6 @@ export default function Offer({ offer }: { offer: any }) {
 
     const isValidData =
         getChatQuery.data && Object.values(getChatQuery.data).length !== 0;
-
-    console.log(chat);
 
     const chatCreationMutation = useMutation({
         mutationFn: () =>
@@ -143,7 +155,7 @@ export default function Offer({ offer }: { offer: any }) {
     };
 
     const getOfferStatusStyle = () => {
-        if (offer.offerStatus === "Pending") {
+        if (offer.offerStatus === Pending) {
             return "text-orange-400 bg-orange-100";
         } else if (offer.offerStatus === "Declined") {
             return "text-red-400 bg-red-100";
@@ -153,18 +165,18 @@ export default function Offer({ offer }: { offer: any }) {
     };
 
     const acceptOffer = () => {
-        changeOfferStatusMutation.mutate("Accepted");
+        changeOfferStatusMutation.mutate(Accepted);
     };
 
     const declineOffer = () => {
-        changeOfferStatusMutation.mutate("Declined");
+        changeOfferStatusMutation.mutate(Declined);
     };
 
-    const isOfferPending = offer.offerStatus === "Pending";
+    const isOfferPending = offer.offerStatus === Pending;
 
-    const isOfferAccepted = offer.offerStatus === "Accepted";
+    const isOfferAccepted = offer.offerStatus === Accepted;
 
-    const isOfferDeclined = offer.offerStatus == "Declined";
+    const isOfferDeclined = offer.offerStatus == Declined;
 
     const isBuyer = userId === offer._ownerId;
 

@@ -21,6 +21,9 @@ import {
     carEngineTypes,
     carDriveTypes,
     containerVariants,
+    largerOrEqual,
+    lessOrEqual,
+    equal,
 } from "@/app/utilities/constants/constans";
 
 //types
@@ -40,9 +43,6 @@ export default function Filter({ setFilters }: filterTypes.propTypes) {
     });
 
     const handleFilters = (data: any) => {
-        const largerOrEqual = " >= ";
-        const lessOrEqual = " <= ";
-        const equal = " = ";
         const mapped = Object.entries(data).reduce((acc: any, [key, value]) => {
             let separator = "";
             if (key.includes("lower-bound")) {
