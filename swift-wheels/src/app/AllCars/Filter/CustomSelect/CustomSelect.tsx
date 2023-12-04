@@ -48,6 +48,7 @@ export default function CustomSelect({
             styles={{
                 ...customStyles,
                 control: (base: CSSObjectWithLabel) =>
+                    // @ts-ignore
                     getSelectControlType(errors, filterFormKeys[type], base),
             }}
             placeholder={`${extractPlaceholder(type)}.....`}
