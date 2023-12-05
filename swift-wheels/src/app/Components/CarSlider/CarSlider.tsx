@@ -36,7 +36,7 @@ import { useQuery } from "@tanstack/react-query";
 export default function CarSlider() {
     const { isAuthenticated } = useAuthContext();
     const { handleLoginDialogExitOpen } = usePageContext();
-    const [cars, setCars] = useState<unknown>([]);
+    const [cars, setCars] = useState<any>([]);
     const swiperRef = useRef(null);
 
     function formatPrice(price: number) {
@@ -98,7 +98,7 @@ export default function CarSlider() {
             className="container mx-auto"
         >
             <swiper-container init="false" ref={swiperRef}>
-                {cars.map((car: any, index) => (
+                {cars.map((car: any, index: number) => (
                     <swiper-slide key={index}>
                         <div className="max-w-[380px] mx-auto sm:mx-0 h-[500px] flex flex-col justify-evenly shadow-xl">
                             <span className="w-full overflow-hidden">

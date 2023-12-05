@@ -69,11 +69,11 @@ export default function Filter({ setFilters }: filterTypes.propTypes) {
     };
 
     return (
-        <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            className="bg-gray-200 h-full w-full p-4 rounded-lg text-sm shadow-2xl overflow-hidden"
+        <div
+            // variants={containerVariants}
+            // initial="hidden"
+            // animate="visible"
+            className="bg-gray-200 h-full w-full p-4 rounded-lg text-sm overflow-hidden"
         >
             <form
                 onSubmit={handleSubmit(handleFilters)}
@@ -358,6 +358,6 @@ export default function Filter({ setFilters }: filterTypes.propTypes) {
                     </button>
                 </div>
             </form>
-        </motion.div>
+        </div>
     );
 }

@@ -55,6 +55,8 @@ export const getAllFilter = async (
 
     let filteredCars = await requester.authorizationGet(headers, {}, url);
 
+    console.log(filteredCars);
+
     const carsCount = filteredCars.length;
 
     //Yet again due to limitations of the server - in-memory filtering has to be done
