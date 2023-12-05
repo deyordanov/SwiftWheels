@@ -28,15 +28,19 @@ export const getAllOffersForSeller = async (
     const headers = getAuthHeaders(false);
     const sellerQuery = encodeURIComponent(`sellerId = "${userId}"${filter}`);
 
-    let offers = await requester.authorizationGet(
-        headers,
-        {},
-        `${baseUrl}?where=${sellerQuery}`
-    );
+    try {
+        let offers = await requester.authorizationGet(
+            headers,
+            {},
+            `${baseUrl}?where=${sellerQuery}`
+        );
 
-    offers = sortIfNeeded(offers, sort);
+        offers = sortIfNeeded(offers, sort);
 
-    return offers;
+        return offers;
+    } catch {
+        return [];
+    }
 };
 
 export const getAllOffersForBuyer = async (
@@ -47,15 +51,19 @@ export const getAllOffersForBuyer = async (
     const headers = getAuthHeaders(false);
     const buyerQuery = encodeURIComponent(`buyerId = "${userId}"${filter}`);
 
-    let offers = await requester.authorizationGet(
-        headers,
-        {},
-        `${baseUrl}?where=${buyerQuery}`
-    );
+    try {
+        let offers = await requester.authorizationGet(
+            headers,
+            {},
+            `${baseUrl}?where=${buyerQuery}`
+        );
 
-    offers = sortIfNeeded(offers, sort);
+        offers = sortIfNeeded(offers, sort);
 
-    return offers;
+        return offers;
+    } catch {
+        return [];
+    }
 };
 
 export const getUnreadOfferCount = async (sellerId: string) => {

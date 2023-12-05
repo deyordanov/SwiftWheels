@@ -67,7 +67,7 @@ export default function Header() {
                 header
                     ? "bg-white shadow-md py-2"
                     : "bg-transparent shadow-none py-4"
-            } fixed w-full max-w-[1920px] mx-auto z-20 transition-all duration-300`}
+            } w-full max-w-[1920px] mx-auto z-20 transition-all duration-300 fixed`}
         >
             {isLoginOpen && (
                 <Login handleLoginDialogExitOpen={handleLoginDialogExitOpen} />

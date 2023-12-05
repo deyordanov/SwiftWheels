@@ -37,7 +37,7 @@ export default function Page() {
     } = useCarDetailsContext();
 
     return (
-        <>
+        <section>
             <div className="relative container flex flex-col items-center mx-auto p-8 bg-white rounded-lg shadow-lg max-w-screen-lg text-black">
                 <Link
                     href={"/"}
@@ -140,9 +140,11 @@ export default function Page() {
                         </div>
                     </div>
                 </div>
+
                 {car["car-technical-description"] && (
                     <Description text={car["car-technical-description"]} />
                 )}
+
                 <div className="w-[100%] my-8 flex justify-center">
                     <CarLocationGoogleMap center={center} />
                 </div>
@@ -157,6 +159,6 @@ export default function Page() {
                     )}
                 </div>
             </div>
-        </>
+        </section>
     );
 }

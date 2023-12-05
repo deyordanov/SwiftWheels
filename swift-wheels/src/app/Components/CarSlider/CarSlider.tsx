@@ -188,7 +188,7 @@ export default function CarSlider() {
                             {isAuthenticated ? (
                                 <Link
                                     className="btn btn-accent btn-lg"
-                                    href={`/CarDetails/${car._id}`}
+                                    href={`/CarDetails/${car?._id}`}
                                 >
                                     See Details
                                 </Link>

@@ -31,7 +31,6 @@ export default function Template({ children }: { children: React.ReactNode }) {
             initial="hidden"
             animate="enter"
             exit="exit"
-            className=""
         >
             {children}
         </motion.main>

@@ -40,7 +40,7 @@ export default function UserProfile({
     return (
         <Menu as="div" className="text-left">
             <div>
-                <Menu.Button className="inline-flex justify-center px-4 py-2 text-sm font-medium ">
+                <Menu.Button className="inline-flex justify-center px-4 py-2 text-sm font-medium">
                     <BiSolidUser className="text-2xl" />
                 </Menu.Button>
             </div>
@@ -53,7 +53,7 @@ export default function UserProfile({
                 leaveFrom="transform opacity-100 scale-100"
                 leaveTo="transform opacity-0 scale-95"
             >
-                <Menu.Items className=" absolute mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none">
+                <Menu.Items className="absolute w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none">
                     <div className="px-1 py-1 text-center m-2 font-bold hover:cursor-default">
                         {userEmail}
                     </div>

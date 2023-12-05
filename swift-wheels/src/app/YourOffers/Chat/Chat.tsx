@@ -88,7 +88,7 @@ export default function Chat({
                 </Transition.Child>
 
                 <div className="fixed inset-0">
-                    <div className="flex min-h-full items-center justify-center">
+                    <div className="flex items-center justify-center h-full">
                         <Transition.Child
                             as={Fragment}
                             enter="ease-out duration-300"
@@ -98,12 +98,12 @@ export default function Chat({
                             leaveFrom="opacity-100 scale-100"
                             leaveTo="opacity-0 scale-95"
                         >
-                            <Dialog.Panel className="transform rounded-lg bg-white shadow-xl transition-all text-black w-[40%]">
+                            <Dialog.Panel className="max-h-[80%] transform rounded-lg bg-white shadow-xl transition-all text-black w-[40%]">
                                 <form
                                     onSubmit={handleSubmit(
                                         handleMessageCreation
                                     )}
-                                    className="flex-1 p-2 sm:p-6 justify-between flex flex-col w-full text-primary h-screen"
+                                    className="flex-1 p-2 sm:p-6 justify-between flex flex-col w-full text-primary"
                                 >
                                     <div className="flex sm:items-center justify-between py-3 border-b-2 border-gray-200 mb-2">
                                         <div className="relative flex items-center space-x-4">
@@ -147,7 +147,7 @@ export default function Chat({
                                     </div>
                                     <div
                                         id="messages"
-                                        className="flex flex-col space-y-4 p-3 w-full h-full overflow-auto scrolling-touch custom-scrollbar"
+                                        className="flex flex-col space-y-4 p-3 w-full custom-scrollbar h-[450px] sm:h-[350px] md:h-[400px] lg:h-[450px] xl:h-[450px] overflow-y-auto"
                                     >
                                         {currentChat.messages.map(
                                             (
