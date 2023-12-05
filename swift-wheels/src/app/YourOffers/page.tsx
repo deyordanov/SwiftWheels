@@ -26,6 +26,9 @@ import OfferSort from "./OfferSort/OfferSort";
 //types
 import React from "react";
 
+//styles
+import "./YourOffers.css";
+
 export default function Page() {
     const queryClient = useQueryClient();
     const [offers, setOffers] = useState([]);
@@ -109,41 +112,38 @@ export default function Page() {
 
     if (setSellerOffersQuery.isLoading || setBuyerOffersQuery.isLoading)
         return (
-            <section className="w-screen h-screen flex items-center justify-center">
+            <section className="spinnerContainer">
                 <LoadingSpinner />
             </section>
         );
 
     return (
-        <section className="flex text-primary flex-col relative z-10 items-center justify-center h-screen">
-            <ul className="flex w-full h-full p-4 flex-col gap-y-4 relative max-w-[1400px]">
-                <div className="flex gap-2 items-center">
-                    <div className="flex items-start z-20 relative">
+        <section className="offersOuterContainer text-primary">
+            <div className="offersInnerContainer">
+                <div className="header">
+                    <div className="filter">
                         <OfferFilter setFilter={setFilter} />
                     </div>
-                    <div className="flex items-start z-20 relative">
+                    <div className="sort">
                         <OfferSort setSort={setSort} />
                     </div>
-                    <div className="flex z-20 relative items-center text-2xl gap-4 font-semibold">
+                    <div className="buttonsContainer">
                         <button
                             disabled={buyer}
                             onClick={handleSetBuyer}
-                            className="bg-gray-200 rounded-lg px-2 py-1 hover:bg-gray-300"
+                            className="buttons"
                         >
                             Buyer
                         </button>
                         <button
                             disabled={seller}
                             onClick={handleSetSeller}
-                            className="bg-gray-200 rounded-lg px-2 py-1 hover:bg-gray-300"
+                            className="buttons"
                         >
                             Seller
                         </button>
                     </div>
-                    <Link
-                        href={"/"}
-                        className="flex z-20 absolute items-center -right-6"
-                    >
+                    <Link href={"/"} className="link">
                         <Image
                             src={"/icons/logo4.png"}
                             width={170}
@@ -160,7 +160,7 @@ export default function Page() {
                 ) : (
                     <NotFound message="No offers have been found!" />
                 )}
-            </ul>
+            </div>
         </section>
     );
 }

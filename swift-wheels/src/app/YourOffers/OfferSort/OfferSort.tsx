@@ -22,17 +22,20 @@ import * as OfferSortTypes from "@/app/utilities/types/yourOffersOfferSort.types
 import { Fragment } from "react";
 import * as React from "react";
 
+//styles
+import "./OfferSort.css";
+
 export default function OfferSort({ setSort }: OfferSortTypes.propTypes) {
     const handleSort = async (sort: string) => {
         setSort(sort);
     };
 
     return (
-        <div className="text-right cursor-pointer">
-            <Menu as="div" className="text-left">
+        <div className="container">
+            <Menu as="div" className="menu">
                 <div>
-                    <Menu.Button className="inline-flex justify-center px-4 py-2 text-sm font-medium ">
-                        <FaSortAmountDown className="text-3xl" />
+                    <Menu.Button className="menuButton">
+                        <FaSortAmountDown className="iconLarge" />
                     </Menu.Button>
                 </div>
                 <Transition
@@ -44,76 +47,76 @@ export default function OfferSort({ setSort }: OfferSortTypes.propTypes) {
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                 >
-                    <Menu.Items className="text-center absolute mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none">
-                        <div className="px-1 py-1">
+                    <Menu.Items className="menuItems">
+                        <div className="menuItem">
                             <Menu.Item>
                                 <button
                                     onClick={() => handleSort(priceAscSort)}
-                                    className="hover:bg-gray-100 w-full py-1 font-semibold"
+                                    className="menuButton"
                                 >
                                     Price Ascending
                                 </button>
                             </Menu.Item>
                         </div>
-                        <div className="px-1 py-1">
+                        <div className="menuItem">
                             <Menu.Item>
                                 <button
                                     onClick={() => handleSort(priceDescSort)}
-                                    className="hover:bg-gray-100 w-full py-1 font-semibold"
+                                    className="menuButton"
                                 >
                                     Price Descending
                                 </button>
                             </Menu.Item>
                         </div>
-                        <div className="px-1 py-1 ">
+                        <div className="menuItem">
                             <Menu.Item>
                                 <button
                                     onClick={() =>
                                         handleSort(offerStatusAscSort)
                                     }
-                                    className="hover:bg-gray-100 w-full py-1 font-semibold"
+                                    className="menuButton"
                                 >
                                     Offer Status Ascending
                                 </button>
                             </Menu.Item>
                         </div>
-                        <div className="px-1 py-1 ">
+                        <div className="menuItem">
                             <Menu.Item>
                                 <button
                                     onClick={() =>
                                         handleSort(offerStatusDescSort)
                                     }
-                                    className="hover:bg-gray-100 w-full py-1 font-semibold"
+                                    className="menuButton"
                                 >
                                     Offer Status Descending
                                 </button>
                             </Menu.Item>
                         </div>
-                        <div className="px-1 py-1">
+                        <div className="menuItem">
                             <Menu.Item>
                                 <button
                                     onClick={() => handleSort(dateAscSort)}
-                                    className="hover:bg-gray-100 w-full py-1 font-semibold"
+                                    className="menuButton"
                                 >
                                     Date Ascending
                                 </button>
                             </Menu.Item>
                         </div>
-                        <div className="px-1 py-1">
+                        <div className="menuItem">
                             <Menu.Item>
                                 <button
                                     onClick={() => handleSort(dateDescSort)}
-                                    className="hover:bg-gray-100 w-full py-1 font-semibold"
+                                    className="menuButton"
                                 >
                                     Date Descending
                                 </button>
                             </Menu.Item>
                         </div>
-                        <div className="px-1 py-1">
+                        <div className="menuItem">
                             <Menu.Item>
                                 <button
                                     onClick={() => handleSort(clearSort)}
-                                    className="hover:bg-gray-100 w-full py-1 font-semibold text-green-400"
+                                    className="menuButton clearFilterButton"
                                 >
                                     Clear Filter
                                 </button>

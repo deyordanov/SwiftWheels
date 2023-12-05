@@ -178,7 +178,7 @@ export default function Offer({ offer }: offerTypes.propTypes) {
 
     const isOfferDeclined = offer.offerStatus == Declined;
 
-    const isBuyer = userId === offer._ownerId;
+    const isBuyer = userId === offer.buyerId;
 
     const isChatValid = Object.values(chat).length !== 0;
 
@@ -247,7 +247,7 @@ export default function Offer({ offer }: offerTypes.propTypes) {
                             onClick={handleChatCreation}
                             className="px-2 py-1 text-white bg-blue-400 hover:bg-blue-600 rounded-lg"
                         >
-                            Message {isBuyer ? "Buyer" : "Seller"}
+                            Message {isBuyer ? "Seller" : "Buyer"}
                         </button>
                         <button
                             onClick={handleOfferDeletion}

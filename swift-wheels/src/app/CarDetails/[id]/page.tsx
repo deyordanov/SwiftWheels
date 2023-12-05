@@ -23,6 +23,7 @@ import { capitalizeWords } from "@/app/utilities/shared/shared";
 
 //types
 import React from "react";
+import { useAuthContext } from "@/app/Contexts/authContext";
 
 export default function Page() {
     const {
@@ -35,6 +36,8 @@ export default function Page() {
         isOfferModalOpen,
         setIsOfferModalOpen,
     } = useCarDetailsContext();
+
+    const { userId } = useAuthContext();
 
     return (
         <section>
@@ -129,15 +132,14 @@ export default function Page() {
                                 />
                             )}
                         </div>
-                        <div className="flex-grow">
-                            {barPrice !== 0 && chartPrice !== 0 && (
-                                <Offer
-                                    priceIndicator={barPrice + chartPrice}
-                                    setIsOfferModalOpen={setIsOfferModalOpen}
-                                    ownerId={car._ownerId}
-                                />
-                            )}
-                        </div>
+
+                        {barPrice !== 0 && chartPrice !== 0 && (
+                            <Offer
+                                priceIndicator={barPrice + chartPrice}
+                                setIsOfferModalOpen={setIsOfferModalOpen}
+                                ownerId={car._ownerId}
+                            />
+                        )}
                     </div>
                 </div>
 

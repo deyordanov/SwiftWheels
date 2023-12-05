@@ -346,7 +346,7 @@ export default function Filter({ setFilters }: filterTypes.propTypes) {
                         />
                     </div>
                 </div>
-                <div className="flex gap-x-8 text-lg mt-4">
+                <div className="flex gap-x-8 text-lg mt-4 justify-between">
                     <button className="p-1 w-[45%] bg-accent-default rounded-sm hover:bg-accent-hover text-white">
                         Filter
                     </button>

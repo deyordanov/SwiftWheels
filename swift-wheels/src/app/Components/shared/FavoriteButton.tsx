@@ -10,9 +10,35 @@ import * as carService from "../../../services/carService";
 //react-icons
 import { AiOutlineStar, AiFillStar } from "react-icons/ai";
 
+//tanstack query
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
 export default function FavoriteButton({ car }: { car: any }) {
+    const queryClient = useQueryClient();
     const [isFavorite, setIsFavorite] = useState(false);
     const { userId } = useAuthContext();
+
+    const addUserToFavoritesMutation = useMutation({
+        mutationKey: ["cars", car._id as "carId", userId],
+        mutationFn: () => carService.addUserToFavorites(car._id, userId),
+        onSuccess: () => {
+            queryClient.invalidateQueries({
+                queryKey: ["cars"],
+                exact: false,
+            });
+        },
+    });
+
+    const removeUserFromFavoritesMutation = useMutation({
+        mutationKey: ["cars", car._id as "carId", userId],
+        mutationFn: () => carService.removeUserFromFavorites(car._id, userId),
+        onSuccess: () => {
+            queryClient.invalidateQueries({
+                queryKey: ["cars"],
+                exact: false,
+            });
+        },
+    });
 
     useEffect(() => {
         setIsFavorite(car["car-favorites"].includes(userId));
@@ -21,9 +47,9 @@ export default function FavoriteButton({ car }: { car: any }) {
     const toggleFavorite = () => {
         setIsFavorite((state) => {
             if (!state) {
-                carService.addUserToFavorites(car._id, userId);
+                addUserToFavoritesMutation.mutate();
             } else {
-                carService.removeUserFromFavorites(car._id, userId);
+                removeUserFromFavoritesMutation.mutate();
             }
             return !state;
         });

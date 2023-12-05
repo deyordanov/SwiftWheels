@@ -38,7 +38,7 @@ export default function Header() {
         handleLogoutDialogExitOpen,
     } = usePageContext();
     const { searchActive, setSearchActive } = useSearchContext();
-    const { isAuthenticated } = useAuthContext();
+    const { isLoggedIn } = useAuthContext();
 
     const desktopMode = useMediaQuery({
         query: "(min-width: 1300px)",
@@ -164,7 +164,7 @@ export default function Header() {
                     >
                         Contact
                     </Link>
-                    {!isAuthenticated && (
+                    {!isLoggedIn && (
                         <Link
                             to="login"
                             activeClass="login"
@@ -176,7 +176,7 @@ export default function Header() {
                             Login
                         </Link>
                     )}
-                    {isAuthenticated && (
+                    {isLoggedIn && (
                         <UserProfile
                             handleLogoutDialogExitOpen={
                                 handleLogoutDialogExitOpen

@@ -24,6 +24,8 @@ import {
     createMessageFormDefaultValues,
 } from "@/app/utilities/constants/constans";
 
+import { Avatar } from "@material-tailwind/react";
+
 export default function Chat({
     isChatModalOpen,
     setIsChatModalOpen,
@@ -119,12 +121,10 @@ export default function Chat({
                                                     </svg>
                                                 </span>
                                                 <div className="relative w-10 sm:w-16 h-10 sm:h-16 rounded-full">
-                                                    <Image
+                                                    <Avatar
                                                         src="/images/user/avatar1.png"
-                                                        alt="My profile"
-                                                        className="rounded-full order-1"
-                                                        width={60}
-                                                        height={60}
+                                                        alt="avatar"
+                                                        size="lg"
                                                     />
                                                 </div>
                                             </div>
@@ -168,12 +168,11 @@ export default function Chat({
                                                                     }
                                                                 </p>
                                                             </div>
-                                                            <Image
+                                                            <Avatar
                                                                 src="/images/user/avatar1.png"
-                                                                alt="My profile"
-                                                                className="w-6 h-6 rounded-full order-1"
-                                                                width={6}
-                                                                height={6}
+                                                                alt="avatar"
+                                                                size="xs"
+                                                                className="order-1"
                                                             />
                                                         </div>
                                                     </div>
@@ -190,12 +189,10 @@ export default function Chat({
                                                                     }
                                                                 </p>
                                                             </div>
-                                                            <Image
+                                                            <Avatar
                                                                 src="/images/user/avatar1.png"
-                                                                alt="My profile"
-                                                                className="w-6 h-6 rounded-full order-1"
-                                                                width={6}
-                                                                height={6}
+                                                                alt="avatar"
+                                                                size="xs"
                                                             />
                                                         </div>
                                                     </div>

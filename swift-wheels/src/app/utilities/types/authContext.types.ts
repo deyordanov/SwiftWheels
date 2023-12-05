@@ -16,6 +16,7 @@ export type authContextDataTypes = {
     token: string;
     isAuthenticated: boolean;
     invalidLoginData: boolean;
+    isLoggedIn: boolean;
 };
 
 export type propTypes = {

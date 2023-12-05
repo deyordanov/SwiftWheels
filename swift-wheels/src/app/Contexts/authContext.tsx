@@ -23,12 +23,16 @@ export const AuthProvider = ({ children }: authContextTypes.propTypes) => {
     const [auth, setAuth] = useLocalStorage("auth", {});
     const [invalidLoginData, setInvalidLoginData] = useState(false);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     const loginMutation = useMutation({
         mutationFn: (loginData: any) => authService.login(loginData),
         onError: (error) => {
             console.log("Error logging in!", error);
             setInvalidLoginData(true);
+        },
+        onSuccess: () => {
+            setIsLoggedIn(true);
         },
     });
 
@@ -64,6 +68,7 @@ export const AuthProvider = ({ children }: authContextTypes.propTypes) => {
     const onLogout = async () => {
         //Cant use a mutation -> the logout func does not return a promise
         authService.logout();
+        setIsLoggedIn(false);
 
         setAuth({});
     };
@@ -81,6 +86,7 @@ export const AuthProvider = ({ children }: authContextTypes.propTypes) => {
         token: auth.accessToken,
         isAuthenticated,
         invalidLoginData,
+        isLoggedIn,
     };
 
     return (

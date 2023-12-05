@@ -27,11 +27,11 @@ export default function OfferFilter({ setFilter }: offerFilterTypes.propTypes) {
     };
 
     return (
-        <div className="text-right cursor-pointer">
-            <Menu as="div" className="text-left">
+        <div className="container">
+            <Menu as="div" className="menuTextLeft">
                 <div>
-                    <Menu.Button className="inline-flex justify-center px-4 py-2 text-sm font-medium ">
-                        <FaFilter className="text-3xl" />
+                    <Menu.Button className="menuButton">
+                        <FaFilter className="iconLarge" />
                     </Menu.Button>
                 </div>
                 <Transition
@@ -43,64 +43,64 @@ export default function OfferFilter({ setFilter }: offerFilterTypes.propTypes) {
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                 >
-                    <Menu.Items className="text-center absolute mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none">
-                        <div className="px-1 py-1">
+                    <Menu.Items className="menuItems">
+                        <div className="menuItem">
                             <Menu.Item>
                                 <button
                                     onClick={() => handleFilter(acceptedFilter)}
-                                    className="hover:bg-gray-100 w-full py-1 font-semibold"
+                                    className="menuButton"
                                 >
                                     Accepted
                                 </button>
                             </Menu.Item>
                         </div>
-                        <div className="px-1 py-1 ">
+                        <div className="menuItem">
                             <Menu.Item>
                                 <button
                                     onClick={() => handleFilter(declinedFilter)}
-                                    className="hover:bg-gray-100 w-full py-1 font-semibold"
+                                    className="menuButton"
                                 >
                                     Declined
                                 </button>
                             </Menu.Item>
                         </div>
-                        <div className="px-1 py-1">
+                        <div className="menuItem">
                             <Menu.Item>
                                 <button
                                     onClick={() => handleFilter(pendingFilter)}
-                                    className="hover:bg-gray-100 w-full py-1 font-semibold"
+                                    className="menuButton"
                                 >
                                     Pending
                                 </button>
                             </Menu.Item>
                         </div>
-                        <div className="px-1 py-1">
+                        <div className="menuItem">
                             <Menu.Item>
                                 <button
                                     onClick={() => handleFilter(isReadFilter)}
-                                    className="hover:bg-gray-100 w-full py-1 font-semibold"
+                                    className="menuButton"
                                 >
                                     Read
                                 </button>
                             </Menu.Item>
                         </div>
-                        <div className="px-1 py-1">
+                        <div className="menuItem">
                             <Menu.Item>
                                 <button
                                     onClick={() =>
                                         handleFilter(isNotReadFilter)
                                     }
-                                    className="hover:bg-gray-100 w-full py-1 font-semibold"
+                                    className="menuButton"
                                 >
                                     Unread
                                 </button>
                             </Menu.Item>
                         </div>
-                        <div className="px-1 py-1">
+                        <div className="menuItem">
                             <Menu.Item>
                                 <button
                                     onClick={() => handleFilter(clearFilter)}
-                                    className="hover:bg-gray-100 w-full py-1 font-semibold text-green-400"
+                                    className="menuButton clearFilterButton"
                                 >
                                     Clear Filter
                                 </button>
