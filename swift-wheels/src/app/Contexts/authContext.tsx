@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }: authContextTypes.propTypes) => {
     const [auth, setAuth] = useLocalStorage("auth", {});
     const [invalidLoginData, setInvalidLoginData] = useState(false);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(!!auth);
 
     const loginMutation = useMutation({
         mutationFn: (loginData: any) => authService.login(loginData),

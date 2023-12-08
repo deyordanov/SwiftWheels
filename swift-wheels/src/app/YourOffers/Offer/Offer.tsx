@@ -48,7 +48,7 @@ export default function Offer({ offer }: offerTypes.propTypes) {
     const [chat, setChat] = useState<any>({});
 
     const getChatQuery = useQuery({
-        queryKey: ["chats", userId, offer.carId],
+        queryKey: ["chats", userId, offer.car._id],
         queryFn: () => chatService.getAllFilter(userId, offer.car._id),
     });
 
@@ -136,7 +136,15 @@ export default function Offer({ offer }: offerTypes.propTypes) {
         if (!isChatCreated) {
             chatCreationMutation.mutate();
         } else if (Object.values(chat).length === 0 && getChatQuery.data) {
-            const existingChat = getChatQuery.data[0];
+            const existingChat = getChatQuery.data.filter(
+                (data: any) =>
+                    data.carId === offer.car._id &&
+                    (offer.buyerId === data.receiverId ||
+                        offer.sellerId === data.receiverId)
+            )[0];
+            console.log(existingChat);
+            console.log(offer);
+            console.log(getChatQuery.data);
 
             setChat(existingChat);
             changeIsReadMutation.mutate();

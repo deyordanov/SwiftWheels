@@ -17,7 +17,7 @@ import { useForm } from "react-hook-form";
 import makeAnimated from "react-select/animated";
 
 //tanstack query
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 //constants
 import {
@@ -35,6 +35,7 @@ const CreateCarContext = createContext<
 export const CreateCarProvider = ({
     children,
 }: createCarContextTypes.propTypes) => {
+    const queryClient = useQueryClient();
     const animatedComponents = makeAnimated();
     const router = useRouter();
     const [hoverRating, setHoverRating] = useState(0);
@@ -58,6 +59,12 @@ export const CreateCarProvider = ({
         mutationFn: (data: any) => carService.create(data),
         onError: (error) => {
             console.log("Error creating the car offer!", error);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({
+                queryKey: ["cars"],
+                exact: false,
+            });
         },
     });
 

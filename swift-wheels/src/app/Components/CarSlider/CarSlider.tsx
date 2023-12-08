@@ -34,7 +34,7 @@ import { fadeIn } from "../../../../variants";
 import { useQuery } from "@tanstack/react-query";
 
 export default function CarSlider() {
-    const { isAuthenticated } = useAuthContext();
+    const { isLoggedIn } = useAuthContext();
     const { handleLoginDialogExitOpen } = usePageContext();
     const [cars, setCars] = useState<any>([]);
     const swiperRef = useRef(null);
@@ -185,7 +185,7 @@ export default function CarSlider() {
                                 </div>
                             </div>
                             {/* If the user has logged in - display the details, oterwise direct them to the login dialog */}
-                            {isAuthenticated ? (
+                            {isLoggedIn ? (
                                 <Link
                                     className="btn btn-accent btn-lg"
                                     href={`/CarDetails/${car?._id}`}

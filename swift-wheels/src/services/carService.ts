@@ -48,8 +48,6 @@ export const getAllFilter = async (
         });
 
         const query = encodeURIComponent(queryParameters.join(" AND "));
-        console.log(queryParameters);
-
         url += `?where=${query}`;
     }
 

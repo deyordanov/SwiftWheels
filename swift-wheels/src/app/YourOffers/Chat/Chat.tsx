@@ -47,8 +47,6 @@ export default function Chat({
                 userId
             ),
         onSuccess: (data) => {
-            console.log("data");
-            console.log(data);
             setCurrentChat(data);
             reset();
         },
