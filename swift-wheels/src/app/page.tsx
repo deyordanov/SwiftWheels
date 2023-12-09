@@ -25,10 +25,7 @@ export default function Home() {
             <Cars />
             <About />
             <Why />
-            <Testimonial />
             <Cta />
-            <Footer />
-            <BackToTopBtn />
         </main>
     );
 }
