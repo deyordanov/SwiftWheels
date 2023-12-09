@@ -96,4 +96,6 @@ To start exploring Swift Wheels, open your web browser and visit [http://localho
 
 ## Disclaimer
 
-Please note that the website is currently optimized for desktop viewing and is best experienced at 100% browser zoom. For optimal performance and display, we recommend using Google Chrome. We are working on enhancing responsiveness for various devices and screen sizes.
+- **Desktop Optimization**: The website is primarily optimized for desktop viewing and is best experienced at 100% browser zoom. For optimal performance and display quality, using Google Chrome is recommended. Efforts are underway to enhance responsiveness for various devices and screen sizes.
+
+- **Server Usage**: This project utilizes the SoftUni practice server, which is not hosted externally. As a result, when accessing the website through the Vercel host, functionalities beyond the main page will not be operational.
