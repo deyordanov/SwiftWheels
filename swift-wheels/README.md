@@ -8,7 +8,7 @@ Our website is dedicated to bringing together car enthusiasts and buyers interes
 
 ## Tech Stack
 
-"Swift Wheels" is built using a modern tech stack, ensuring efficient performance and a seamless user experience. Here's an overview of the key technologies and libraries used:
+Swift Wheels is built using a modern tech stack, ensuring efficient performance and a seamless user experience. Here's an overview of the key technologies and libraries used:
 
 ### Core Technologies
 - **Next.js**: A React framework for production ([Next.js 14.0.1](https://nextjs.org/))
@@ -40,7 +40,7 @@ Our website is dedicated to bringing together car enthusiasts and buyers interes
 - **React Dropzone**: Simple HTML5 drag-drop zone with React ([React Dropzone](https://react-dropzone.js.org/))
 - **React Icons**: Include popular icons in your React projects ([React Icons](https://react-icons.github.io/react-icons/))
 
-This tech stack is chosen for its scalability, performance, and ease of use, providing a robust foundation for "Swift Wheels."
+This tech stack is chosen for its scalability, performance, and ease of use, providing a robust foundation for Swift Wheels.
 
 ## Features
 
