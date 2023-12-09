@@ -75,6 +75,14 @@ To run the application, you need to start both the server and the client. Follow
    ```bash
    cd swift-wheels
 
-3. Start the client:
+3. Install the required dependencies:
+```bash
+  npm install
+```
+
+4. Start the development server:
    ```bash
    npm run dev
+
+5. Usage:
+  Open your web browser and visit http://localhost:3000.
