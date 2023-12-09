@@ -76,9 +76,8 @@ To run the application, you need to start both the server and the client. Follow
    cd swift-wheels
 
 3. Install the required dependencies:
-```bash
-  npm install
-```
+   ```bash
+   npm install
 
 4. Start the development server:
    ```bash
