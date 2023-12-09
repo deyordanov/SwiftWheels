@@ -84,5 +84,16 @@ To run the application, you need to start both the server and the client. Follow
    cd swift-wheels
    npm run dev
 
-5. Usage:
-  Open your web browser and visit http://localhost:3000.
+## Usage
+
+1. **Creating a Car Offer**: Register and create your car offer by filling in all the necessary details in the "Sell Your Car" section.
+2. **Browsing and Filtering Cars**: Navigate to the "All Cars" tab to view all available vehicles. You can filter the vehicles by different criteria. If you find a car you like, don't hesitate to make an offer to the seller!
+3. **Tracking Your Offers**: After making an offer for a car, you can check the status of your offer in the "Your Offers" tab, located under the "Buyer" section.
+4. **Receiving Offers as a Seller**: If you have listed a car for sale, you will receive notifications for any new offers. These can be viewed in "Your Offers" under the "Seller" section.
+5. **Communication**: For any offer, you can easily communicate with the buyer or seller by pressing the "Message" button associated with the offer.
+
+To start exploring Swift Wheels, open your web browser and visit [http://localhost:3000](http://localhost:3000).
+
+## Disclaimer
+
+Please note that the website is currently optimized for desktop viewing and is best experienced at 100% browser zoom. For optimal performance and display, we recommend using Google Chrome. We are working on enhancing responsiveness for various devices and screen sizes.
