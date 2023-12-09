@@ -66,21 +66,22 @@ To install the project, follow these steps:
 
 To run the application, you need to start both the server and the client. Follow these steps:
 
-1. Start the server:
+1. Navigate to the project directory:
+   ```bash
+   cd swift-wheels
+
+2. Install the required dependencies:
+   ```bash
+   npm install
+
+3. Start the server:
    ```bash
    cd server
    node server.js
 
-2. In a new terminal, navigate to the project directory:
+4. In a new terminal - start the development server:
    ```bash
    cd swift-wheels
-
-3. Install the required dependencies:
-   ```bash
-   npm install
-
-4. Start the development server:
-   ```bash
    npm run dev
 
 5. Usage:
