@@ -19,7 +19,7 @@ const Description = ({ text }: descriptionPropTypes.propTypes) => {
     };
 
     return (
-        <div className="container mx-auto w-full p-4">
+        <div className="container w-full p-4">
             <p className="text-gray-700 text-base break-words">
                 {displayText}
                 {isReadMore && text.length > displayText.length && "..."}

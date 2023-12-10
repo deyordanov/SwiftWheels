@@ -80,7 +80,7 @@ export default function AllCars() {
                                         key={car._id}
                                         className="flex h-[25%] shadow-lg w-full max-w-[1400px] gap-4 rounded-lg"
                                     >
-                                        <div className="relative w-[35%]">
+                                        <div className="relative min-w-[30%]">
                                             <Link
                                                 href={`/CarDetails/${car._id}`}
                                             >
@@ -106,19 +106,21 @@ export default function AllCars() {
                                             <h2 className="text-2xl font-semibold text-accent-default">
                                                 {formatPrice(car["car-price"])}
                                             </h2>
-                                            <p className="text-xl truncate">
-                                                {car[
-                                                    "car-technical-description"
-                                                ].slice(
-                                                    0,
-                                                    Math.ceil(
-                                                        car[
-                                                            "car-technical-description"
-                                                        ].length * 0.15
-                                                    )
-                                                )}
-                                                ...
-                                            </p>
+                                            <div className="max-w-[50%]">
+                                                <p className="text-xl truncate">
+                                                    {car[
+                                                        "car-technical-description"
+                                                    ].slice(
+                                                        0,
+                                                        Math.ceil(
+                                                            car[
+                                                                "car-technical-description"
+                                                            ].length * 0.15
+                                                        )
+                                                    )}
+                                                    ...
+                                                </p>
+                                            </div>
                                             <p className="text-xl text-primary truncate">
                                                 {car["car-year"]} |{" "}
                                                 {car["car-km"]} km |{" "}
@@ -127,7 +129,7 @@ export default function AllCars() {
                                                 {car["car-horsepower"]} HP
                                             </p>
 
-                                            <FavoriteButton car={car} />
+                                            {/* <FavoriteButton car={car} /> */}
                                         </div>
                                     </div>
                                 ))}
