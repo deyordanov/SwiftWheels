@@ -8,47 +8,40 @@ import {
     customStyles,
 } from "@/app/utilities/constants/constans";
 
+//types
+import * as allCarsCustomSelectTypes from "./allCarsCustomSelect.types";
+
 //shared
 import {
     getSelectControlType,
     extractPlaceholder,
 } from "@/app/utilities/shared/shared";
 
-//types
-import * as customSelectTypes from "@/app/utilities/types/customSelect.typse";
-
 export default function CustomSelect({
     field,
     collection,
     type,
     errors,
-}: {
-    field: any;
-    collection: Array<customSelectTypes.IOption>;
-    type: string;
-    errors: any;
-}) {
+}: allCarsCustomSelectTypes.PropTypes) {
     const animatedComponents = makeAnimated();
 
     return (
         <Select
             {...field}
-            onChange={(option: any) =>
-                field.onChange(option !== null ? option.value : null)
+            onChange={(option: allCarsCustomSelectTypes.SelectOption) =>
+                field.onChange(option ? option.value : null)
             }
             value={
-                collection.find(
-                    (c: any) => (c.value as string | number) === field.value
-                ) || null
+                collection.find((option) => option.value === field.value) ||
+                null
             }
             isMulti={false}
             components={animatedComponents}
-            options={collection as any}
+            options={collection}
             className="w-full"
             styles={{
                 ...customStyles,
                 control: (base: CSSObjectWithLabel) =>
-                    // @ts-ignore
                     getSelectControlType(errors, filterFormKeys[type], base),
             }}
             placeholder={`${extractPlaceholder(type)}.....`}

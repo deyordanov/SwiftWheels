@@ -2,7 +2,7 @@
 import { Dispatch } from "react";
 
 export type propTypes = {
-    filters: any;
+    filters: string[];
     carsCount: number;
     setPage: Dispatch<number>;
     pageSize: number;

@@ -2,6 +2,8 @@
 import * as searchContextTypes from "../types/searchContext.types";
 import { Range } from "react-date-range";
 import * as createCarTypes from "../types/createCar.types";
+import { CSSObjectWithLabel, StylesConfig, GroupBase } from "react-select";
+import * as allCarsCustomSelectTypes from "../../AllCars/Filter/CustomSelect/allCarsCustomSelect.types";
 
 //      Search Context
 export const searchContextDefaultValues: searchContextTypes.defaultTypes = {
@@ -395,9 +397,13 @@ export const shopAddresses = [
     "Zuidplein 476, 1077 XV Amsterdam, Netherlands",
 ].map((shopAddress) => ({ value: shopAddress, label: shopAddress }));
 
-export const customStyles = {
+export const customStyles: StylesConfig<
+    allCarsCustomSelectTypes.IOption,
+    false,
+    GroupBase<allCarsCustomSelectTypes.IOption>
+> = {
     option: (
-        styles: object,
+        styles: CSSObjectWithLabel,
         {
             isFocused,
             isSelected,
@@ -416,16 +422,16 @@ export const customStyles = {
         cursor: isDisabled ? "not-allowed" : "default",
         borderRadius: "0.5rem",
     }),
-    multiValue: (styles: object) => ({
+    multiValue: (styles: CSSObjectWithLabel) => ({
         ...styles,
         backgroundColor: "#BBF7D0",
         borderRadius: "0.5rem",
     }),
-    multiValueLabel: (styles: object) => ({
+    multiValueLabel: (styles: CSSObjectWithLabel) => ({
         ...styles,
         color: "#000000",
     }),
-    multiValueRemove: (styles: object) => ({
+    multiValueRemove: (styles: CSSObjectWithLabel) => ({
         ...styles,
         color: "#000000",
         ":hover": {
@@ -433,7 +439,7 @@ export const customStyles = {
             cursor: "pointer",
         },
     }),
-    valueContainer: (provided: object) => ({
+    valueContainer: (provided: CSSObjectWithLabel) => ({
         ...provided,
         maxHeight: "40px",
         overflow: "auto",
@@ -443,7 +449,7 @@ export const customStyles = {
         msOverflowStyle: "none", // IE and Edge
         scrollbarWidth: "none", // Firefox
     }),
-    menuList: (provided: object) => ({
+    menuList: (provided: CSSObjectWithLabel) => ({
         ...provided,
         "::-webkit-scrollbar": {
             display: "none",

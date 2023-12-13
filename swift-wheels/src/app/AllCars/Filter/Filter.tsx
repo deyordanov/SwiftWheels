@@ -27,9 +27,9 @@ import {
 } from "@/app/utilities/constants/constans";
 
 //types
-import * as filterTypes from "@/app/utilities/types/filter.types";
+import * as allCarsFilterTypes from "./allCarsFilter.types";
 
-export default function Filter({ setFilters }: filterTypes.propTypes) {
+export default function Filter({ setFilters }: allCarsFilterTypes.propTypes) {
     const {
         register,
         control,
@@ -42,39 +42,37 @@ export default function Filter({ setFilters }: filterTypes.propTypes) {
         mode: "onSubmit",
     });
 
-    const handleFilters = (data: any) => {
-        const mapped = Object.entries(data).reduce((acc: any, [key, value]) => {
-            let separator = "";
-            if (key.includes("lower-bound")) {
-                separator = largerOrEqual;
-            } else if (key.includes("upper-bound")) {
-                separator = lessOrEqual;
-            } else {
-                separator = equal;
-            }
+    const handleFilters = (data: allCarsFilterTypes.handleFiltersData) => {
+        const mapped = Object.entries(data).reduce(
+            (acc: allCarsFilterTypes.AccumulatorElement[], [key, value]) => {
+                let separator = "";
+                if (key.includes("lower-bound")) {
+                    separator = largerOrEqual;
+                } else if (key.includes("upper-bound")) {
+                    separator = lessOrEqual;
+                } else {
+                    separator = equal;
+                }
 
-            if (value !== null) {
-                acc.push({ key, value, separator });
-            }
-            return acc;
-        }, []);
+                if (value !== null) {
+                    acc.push({ key, value, separator });
+                }
+                return acc;
+            },
+            []
+        );
 
         setFilters(mapped);
     };
 
-    const handleClearFilter = (e: any) => {
+    const handleClearFilter = (e: allCarsFilterTypes.handleClearFilter) => {
         e.preventDefault();
         reset();
         handleFilters({});
     };
 
     return (
-        <div
-            // variants={containerVariants}
-            // initial="hidden"
-            // animate="visible"
-            className="bg-gray-200 h-full w-full p-4 rounded-lg text-sm overflow-hidden"
-        >
+        <div className="bg-gray-200 h-full w-full p-4 rounded-lg text-sm overflow-hidden">
             <form
                 onSubmit={handleSubmit(handleFilters)}
                 className="w-full flex flex-col gap-y-1"

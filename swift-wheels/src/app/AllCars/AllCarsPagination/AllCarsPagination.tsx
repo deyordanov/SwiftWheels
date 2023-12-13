@@ -13,7 +13,7 @@ import { IconButton, Typography } from "@material-tailwind/react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 //types
-import * as allCarsPaginationTypes from "@/app/utilities/types/allCarsPagination.types";
+import * as allCarsPaginationTypes from "./allCarsPagination.types";
 
 export function AllCarsPagination({
     filters,

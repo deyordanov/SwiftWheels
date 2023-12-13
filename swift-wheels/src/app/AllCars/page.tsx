@@ -22,7 +22,10 @@ import { AllCarsPagination } from "./AllCarsPagination/AllCarsPagination";
 import NotFound from "../Components/shared/NotFound";
 
 //constants
-import { allCarsPageSize as pageSize } from "@/app/utilities/constants/constans";
+import {
+    allCarsPageSize,
+    createCarFormKeys,
+} from "@/app/utilities/constants/constans";
 
 //shared
 import {
@@ -30,17 +33,20 @@ import {
     convertTimestampToEuropeanFormat,
 } from "../utilities/shared/shared";
 
+//types
+import * as AllCarsTypes from "./allCars.types";
+
 //styles
 import "./AllCars.css";
 
 export default function AllCars() {
-    const [cars, setCars] = useState<Array<unknown>>([]);
+    const [cars, setCars] = useState<Array<AllCarsTypes.Car>>([]);
     const [filters, setFilters] = useState<Array<object>>([]);
     const [page, setPage] = useState<number>(1);
 
     const getAllCarsQuery = useQuery({
         queryKey: ["cars", filters, page],
-        queryFn: () => carService.getAllFilter(filters, page, pageSize),
+        queryFn: () => carService.getAllFilter(filters, page, allCarsPageSize),
         enabled: !!filters,
     });
 
@@ -75,7 +81,7 @@ export default function AllCars() {
                     <div className="w-[75%] relative overflow-auto hide-scrollbar">
                         <main className="absolute top-0 left-0 flex w-full px-4 flex-col overflow-hidden">
                             <div className="w-full h-full flex flex-col justify-center items-center gap-y-4">
-                                {cars?.map((car: any) => (
+                                {cars?.map((car: AllCarsTypes.Car) => (
                                     <div
                                         key={car._id}
                                         className="flex h-[25%] shadow-lg w-full max-w-[1400px] gap-4 rounded-lg"
@@ -140,7 +146,7 @@ export default function AllCars() {
                                             getAllCarsQuery.data?.carsCount ?? 0
                                         }
                                         setPage={setPage}
-                                        pageSize={pageSize}
+                                        pageSize={allCarsPageSize}
                                     />
                                 </div>
                             </div>
