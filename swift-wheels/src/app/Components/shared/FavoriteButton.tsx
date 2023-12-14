@@ -11,9 +11,16 @@ import * as carService from "../../../services/carService";
 import { AiOutlineStar, AiFillStar } from "react-icons/ai";
 
 //tanstack query
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-export default function FavoriteButton({ car }: { car: any }) {
+// types
+import * as componentsFavoriteButtonTypes from "./componentsFavoriteButton.types";
+
+export default function FavoriteButton({
+    car,
+}: {
+    car: componentsFavoriteButtonTypes.Car;
+}) {
     const queryClient = useQueryClient();
     const [isFavorite, setIsFavorite] = useState(false);
     const { userId } = useAuthContext();

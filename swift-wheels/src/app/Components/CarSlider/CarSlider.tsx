@@ -33,10 +33,13 @@ import Link from "next/link";
 import { fadeIn } from "../../../../variants";
 import { useQuery } from "@tanstack/react-query";
 
+//types
+import * as componentCarSliderTypes from "./componentsCarSlider.types";
+
 export default function CarSlider() {
     const { isLoggedIn } = useAuthContext();
     const { handleLoginDialogExitOpen } = usePageContext();
-    const [cars, setCars] = useState<any>([]);
+    const [cars, setCars] = useState<componentCarSliderTypes.Car[]>([]);
     const swiperRef = useRef(null);
 
     function formatPrice(price: number) {
@@ -50,7 +53,7 @@ export default function CarSlider() {
 
     useEffect(() => {
         if (!getAllCarsQueery.isLoading) {
-            setCars(getAllCarsQueery.data);
+            setCars(getAllCarsQueery.data as componentCarSliderTypes.Car[]);
         }
     }, [getAllCarsQueery]);
 
@@ -98,7 +101,7 @@ export default function CarSlider() {
             className="container mx-auto"
         >
             <swiper-container init="false" ref={swiperRef}>
-                {cars.map((car: any, index: number) => (
+                {cars.map((car: componentCarSliderTypes.Car, index: number) => (
                     <swiper-slide key={index}>
                         <div className="max-w-[380px] mx-auto sm:mx-0 h-[500px] flex flex-col justify-evenly shadow-xl">
                             <span className="w-full overflow-hidden">
