@@ -76,7 +76,7 @@ export const ContactFormKeys = {
     NAME: "buyerName",
     EMAIL: "buyerEmail",
     MESSAGE: "buyerMessage",
-};
+} as const;
 
 //-> Form Default Values
 export const ContactFormDefaultValues = {
@@ -90,7 +90,7 @@ export const ContactFormDefaultValues = {
 //-> Form Keys
 export const MakeOfferFormKeys = {
     OFFER: "offer",
-};
+} as const;
 
 //-> Form Default Values
 export const MakeOfferFormDefaultValues = {
@@ -105,7 +105,7 @@ export const FinanceCalculatorKeys = {
     "LOAN-TERM": "loan-term",
     OFFER: "offer",
     "INTEREST-RATE": "interest-rate",
-};
+} as const;
 
 //->Form Default Values
 export const FinanceCalculatorDefaultValues = {

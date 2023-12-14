@@ -14,7 +14,7 @@ import {
 } from "@/app/utilities/constants/constans";
 
 //types
-import * as makeOfferTypes from "../../../utilities/types/makeOffer.types";
+import * as carDetailsMakeOfferTypes from "./carDetailsMakeOffer.types";
 
 //shared
 import { formatPrice } from "@/app/utilities/shared/shared";
@@ -23,7 +23,7 @@ export default function MakeOffer({
     carPrice,
     setOffer,
     setTabs,
-}: makeOfferTypes.propTypes) {
+}: carDetailsMakeOfferTypes.PropTypes) {
     const {
         register,
         formState: { errors },
@@ -33,7 +33,7 @@ export default function MakeOffer({
         mode: "onSubmit",
     });
 
-    const onSubmit = (data: any) => {
+    const onSubmit = (data: carDetailsMakeOfferTypes.OnSubmit) => {
         setOffer(Number(data.offer));
         setTabs((state) => [...state, "finance"]);
     };

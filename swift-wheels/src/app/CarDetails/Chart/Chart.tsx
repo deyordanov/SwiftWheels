@@ -31,10 +31,10 @@ ChartJS.register(
 );
 
 //types
-import * as chartTypes from "../../utilities/types/chart.types";
+import * as chartTypes from "./carDetailsChart.types";
 
 export const PriceChart = memo(
-    ({ initialPrice, year, setChartPrice }: chartTypes.propTypes) => {
+    ({ initialPrice, year, setChartPrice }: chartTypes.PropTypes) => {
         //Tried to think of a formula, but couldn`t get satisfactory results, so for now I will generate a random number between 0.01 and 0.5
         useEffect(() => {
             setChartPrice(Math.random() * (0.5 - 0.01) + 0.01);

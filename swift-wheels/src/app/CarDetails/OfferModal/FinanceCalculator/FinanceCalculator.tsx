@@ -20,13 +20,13 @@ import {
 } from "@/app/utilities/constants/constans";
 
 //types
-import * as financeCalculatorTypes from "../../../utilities/types/financeCalculator.types";
+import * as financeCalculatorTypes from "./carDetailsFinanceCalculator.types";
 
 export default function FinanceCalculator({
     carPrice,
     setTabs,
     offer,
-}: financeCalculatorTypes.propTypes) {
+}: financeCalculatorTypes.PropTypes) {
     const {
         register,
         formState: { errors },
@@ -43,7 +43,7 @@ export default function FinanceCalculator({
         setAnnualInterestRate(Math.random() * (9.6 - 2.4) + 2.4);
     }, []);
 
-    const calculateMonthlyPayment = (data: any) => {
+    const calculateMonthlyPayment = (data: financeCalculatorTypes.OnSubmit) => {
         const principal = offer - Number(data["down-payment"]);
         const monthlyInterestRate = annualInterestRate / 100 / 12;
         const numberOfPayments = Number(data["loan-term"]) * 12;
@@ -66,7 +66,7 @@ export default function FinanceCalculator({
         setTabs((state) => [...state, "price"]);
     };
 
-    const onSubmit = (data: any) => {
+    const onSubmit = (data: financeCalculatorTypes.OnSubmit) => {
         const calculatedPayment = calculateMonthlyPayment(data);
         setMonthlyPayment(calculatedPayment);
     };

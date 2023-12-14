@@ -12,13 +12,13 @@ import LoadingSpinner from "@/app/Components/shared/LoadingSpinner";
 import FavoriteButton from "@/app/Components/shared/FavoriteButton";
 
 //types
-import * as galleryTypes from "../../utilities/types/gallery.types";
+import * as galleryTypes from "./carDetailsGalley.types";
 
 export default function Gallery({
     images,
     isPreview,
     car,
-}: galleryTypes.propTypes) {
+}: galleryTypes.PropTypes) {
     const [loading, setLoading] = useState(
         new Array(images?.length).fill(true)
     );
@@ -85,7 +85,7 @@ export default function Gallery({
                 </IconButton>
             )}
         >
-            {images?.map((image: any, index: number) => (
+            {images?.map((image: galleryTypes.CarImage, index: number) => (
                 <div
                     key={image.fileUrl}
                     className="relative h-full w-full flex items-center justify-center"

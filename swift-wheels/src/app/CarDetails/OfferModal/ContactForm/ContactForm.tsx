@@ -20,9 +20,6 @@ import * as offerService from "@/services/offerService";
 //react-confetti
 import Confetti from "react-confetti";
 
-//types
-import * as contactFormTypes from "../../../utilities/types/contactForm.types";
-
 //constants
 import {
     ContactFormKeys,
@@ -30,11 +27,14 @@ import {
 } from "@/app/utilities/constants/constans";
 import { useAuthContext } from "@/app/Contexts/authContext";
 
+//types
+import * as carDetailsContactFormTypes from "./carDetailsContactForm.types";
+
 export default function ContactForm({
     setTabs,
     closeModal,
     offerPrice,
-}: contactFormTypes.propTypes) {
+}: carDetailsContactFormTypes.PropTypes) {
     const { userId } = useAuthContext();
     const [messageReceived, setMessageReceived] = useState<boolean>();
     const [showConfetti, setShowConfetti] = useState(false);
@@ -42,7 +42,7 @@ export default function ContactForm({
         register,
         formState: { errors },
         handleSubmit,
-    } = useForm({
+    } = useForm<carDetailsContactFormTypes.OnSubmit>({
         defaultValues: ContactFormDefaultValues,
         mode: "onSubmit",
     });
@@ -53,7 +53,7 @@ export default function ContactForm({
         setTabs((state) => state.slice(0, -1));
     };
 
-    const onSubmit = async (data: any) => {
+    const onSubmit = async (data: carDetailsContactFormTypes.OnSubmit) => {
         await offerService.create({
             ...data,
             car: car,
