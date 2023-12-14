@@ -17,7 +17,7 @@ import CountUp from "react-countup";
 import { useInView } from "react-intersection-observer"; //tells us when an element enters/leaves viewport
 
 //contexts
-import { useAuthContext } from "@/app/Contexts/authContext";
+import { useAuthContext } from "@/app/Contexts/authContext/authContext";
 import { usePageContext } from "@/app/Contexts/pageContext";
 
 //motion

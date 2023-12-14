@@ -1,7 +1,7 @@
 "use client";
 
 //hooks
-import { useCreateCarContext } from "../Contexts/createCarContext";
+import { useCreateCarContext } from "../Contexts/createCarContext/createCarContext";
 
 //uploadthing
 import { UploadDropzone } from "../utilities/uploadthing";
@@ -113,7 +113,6 @@ export default function Page() {
                                 isMulti
                                 options={carExtras}
                                 className="w-full select-hidden-arrows"
-                                // @ts-ignore
                                 styles={customSelectStyles}
                                 value={carExtras.filter((option) =>
                                     (field.value as string[]).includes(
@@ -159,7 +158,6 @@ export default function Page() {
                                 components={animatedComponents}
                                 options={carTypes as any}
                                 className="w-full max-w-[30%]"
-                                // @ts-ignore
                                 styles={customSelectStyles}
                                 placeholder={"Car type....."}
                             />
@@ -188,7 +186,6 @@ export default function Page() {
                                 components={animatedComponents}
                                 options={shopAddresses as any}
                                 className="w-full"
-                                // @ts-ignore
                                 styles={customSelectStyles}
                                 placeholder={"Shop....."}
                             />
@@ -219,7 +216,6 @@ export default function Page() {
                                 components={animatedComponents}
                                 options={carMakes as any}
                                 className="w-[25%]"
-                                // @ts-ignore
                                 styles={customSelectStyles}
                                 placeholder={"Car make....."}
                             />
@@ -285,7 +281,6 @@ export default function Page() {
                                 components={animatedComponents}
                                 options={carTransmissionTypes as any}
                                 className="grow"
-                                // @ts-ignore
                                 styles={customSelectStyles}
                                 placeholder={"Car transmission....."}
                             />
@@ -316,7 +311,6 @@ export default function Page() {
                                 components={animatedComponents}
                                 options={carConditions as any}
                                 className="w-[25%]"
-                                // @ts-ignore
                                 styles={customSelectStyles}
                                 placeholder={"Car condition....."}
                             />
@@ -383,7 +377,6 @@ export default function Page() {
                                 components={animatedComponents}
                                 options={carFuelTypes as any}
                                 className="w-[25%]"
-                                // @ts-ignore
                                 styles={customSelectStyles}
                                 placeholder={"Car fuel type....."}
                             />
@@ -414,7 +407,6 @@ export default function Page() {
                                 components={animatedComponents}
                                 options={carEngineTypes as any}
                                 className="w-[30%]"
-                                // @ts-ignore
                                 styles={customSelectStyles}
                                 placeholder={"Car engine type....."}
                             />
@@ -503,7 +495,6 @@ export default function Page() {
                                 components={animatedComponents}
                                 options={carDriveTypes as any}
                                 className="w-[40%]"
-                                // @ts-ignore
                                 styles={customSelectStyles}
                                 placeholder={"Car drive type....."}
                             />

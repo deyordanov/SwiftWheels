@@ -1,5 +1,5 @@
 //hooks
-import { useAuthContext } from "@/app/Contexts/authContext";
+import { useAuthContext } from "@/app/Contexts/authContext/authContext";
 
 //material-tailwind
 import {

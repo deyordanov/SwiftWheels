@@ -1,7 +1,35 @@
-export type PropTypes = {
-    images: Array<CarImage>;
-    isPreview: boolean;
+//types
+import React from "react";
+
+type Center = {
+    lat: number;
+    lng: number;
+};
+
+export type CarDetailsContextData = {
     car: Car;
+    center: Center;
+    barPrice: number;
+    setBarPrice: React.Dispatch<React.SetStateAction<number>>;
+    chartPrice: number;
+    setChartPrice: React.Dispatch<React.SetStateAction<number>>;
+    isOfferModalOpen: boolean;
+    setIsOfferModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export type PropTypes = {
+    children: React.ReactNode;
+};
+
+type CarImage = {
+    fileName: string;
+    name: string;
+    fileSize: number;
+    size: number;
+    fileKey: string;
+    key: string;
+    fileUrl: string;
+    url: string;
 };
 
 export type Car = {
@@ -30,15 +58,4 @@ export type Car = {
     userEmail: string;
     _createdOn: number;
     _id: string;
-};
-
-export type CarImage = {
-    fileName: string;
-    name: string;
-    fileSize: number;
-    size: number;
-    fileKey: string;
-    key: string;
-    fileUrl: string;
-    url: string;
 };

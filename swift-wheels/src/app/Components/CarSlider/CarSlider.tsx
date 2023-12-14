@@ -12,7 +12,7 @@ register();
 
 //contexts
 import { usePageContext } from "@/app/Contexts/pageContext";
-import { useAuthContext } from "@/app/Contexts/authContext";
+import { useAuthContext } from "@/app/Contexts/authContext/authContext";
 
 //swiper styles
 import "swiper/css";

@@ -3,7 +3,7 @@
 //hooks
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useCarDetailsContext } from "@/app/Contexts/carDetailsContext";
+import { useCarDetailsContext } from "@/app/Contexts/carDetailsContext/carDetailsContext";
 
 //components
 import FormErrorMessage from "@/app/Components/shared/FormErrorMessage";
@@ -25,7 +25,7 @@ import {
     ContactFormKeys,
     ContactFormDefaultValues,
 } from "@/app/utilities/constants/constans";
-import { useAuthContext } from "@/app/Contexts/authContext";
+import { useAuthContext } from "@/app/Contexts/authContext/authContext";
 
 //types
 import * as carDetailsContactFormTypes from "./carDetailsContactForm.types";

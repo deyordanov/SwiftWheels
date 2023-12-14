@@ -1,7 +1,7 @@
 "use client";
 
 //hooks
-import { useCarDetailsContext } from "@/app/Contexts/carDetailsContext";
+import { useCarDetailsContext } from "@/app/Contexts/carDetailsContext/carDetailsContext";
 
 //components
 import Gallery from "../Gallery/Gallery";
@@ -23,7 +23,7 @@ import { capitalizeWords } from "@/app/utilities/shared/shared";
 
 //types
 import React from "react";
-import { useAuthContext } from "@/app/Contexts/authContext";
+import { useAuthContext } from "@/app/Contexts/authContext/authContext";
 
 export default function Page() {
     const {

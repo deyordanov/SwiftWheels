@@ -2,13 +2,13 @@
 
 //hooks
 import React, { createContext, useContext, useState } from "react";
-import { useAuthContext } from "./authContext";
+import { useAuthContext } from "../authContext/authContext";
 
 //next-router
 import { useRouter } from "next/navigation";
 
 //services
-import * as carService from "../../services/carService";
+import * as carService from "../../../services/carService";
 
 //react-hook-form
 import { useForm } from "react-hook-form";
@@ -23,23 +23,25 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
     createCarFormKeys,
     createCarFormDefaultValues,
-} from "../utilities/constants/constans";
+} from "../../utilities/constants/constans";
 
 //types
-import * as createCarContextTypes from "../utilities/types/createCarContext.types";
+import * as createCarContextTypes from "./createCarContext.types";
 
 const CreateCarContext = createContext<
-    createCarContextTypes.createCarContextDataTypes | undefined
+    createCarContextTypes.CreateCarContextDataTypes | undefined
 >(undefined);
 
 export const CreateCarProvider = ({
     children,
-}: createCarContextTypes.propTypes) => {
+}: createCarContextTypes.PropTypes) => {
     const queryClient = useQueryClient();
     const animatedComponents = makeAnimated();
     const router = useRouter();
-    const [hoverRating, setHoverRating] = useState(0);
-    const [carImagesPreview, setCarImagesPreview] = useState([]);
+    const [hoverRating, setHoverRating] = useState<number>(0);
+    const [carImagesPreview, setCarImagesPreview] = useState<
+        createCarContextTypes.ImageFileInfo[]
+    >([]);
     const [price, setPrice] = useState<number>(25000);
     const { userId, userEmail } = useAuthContext();
 
@@ -50,13 +52,14 @@ export const CreateCarProvider = ({
         formState: { errors },
         handleSubmit,
         reset,
-    } = useForm({
+    } = useForm<createCarContextTypes.CreateCarFormValues>({
         defaultValues: createCarFormDefaultValues,
         mode: "onSubmit",
     });
 
     const createCarMutation = useMutation({
-        mutationFn: (data: any) => carService.create(data),
+        mutationFn: (data: createCarContextTypes.CreateCarValues) =>
+            carService.create(data),
         onError: (error) => {
             console.log("Error creating the car offer!", error);
         },
@@ -76,13 +79,16 @@ export const CreateCarProvider = ({
         setHoverRating(0);
     };
 
-    const onClientUploadComplete = (res: any) => {
+    const onClientUploadComplete = (
+        res: createCarContextTypes.ImageFileInfo[]
+    ) => {
+        console.log(JSON.stringify(res));
         setValue(createCarFormKeys.CAR_IMAGES, res);
         setCarImagesPreview(res);
         alert("Upload Completed");
     };
 
-    const onSubmit = async (data: object) => {
+    const onSubmit = async (data: createCarContextTypes.CreateCarValues) => {
         createCarMutation.mutate({ ...data, userId, userEmail });
         reset();
         setCarImagesPreview([]);

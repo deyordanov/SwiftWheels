@@ -16,23 +16,27 @@ import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 
 //services
-import * as carService from "../../services/carService";
+import * as carService from "../../../services/carService";
 
 //types
-import * as carDetailsContextTypes from "../utilities/types/carDetailsContext.types";
+import * as carDetailsContextTypes from "./carDetailsContext.types";
 
 //shared
-import { geocodeAddress } from "../utilities/shared/shared";
+import { geocodeAddress } from "../../utilities/shared/shared";
 
 const CarDetailsContext = createContext<
-    carDetailsContextTypes.carDetailsContextData | undefined
+    carDetailsContextTypes.CarDetailsContextData | undefined
 >(undefined);
 
 export const CarDetailsProvider = ({
     children,
-}: carDetailsContextTypes.propTypes) => {
+}: carDetailsContextTypes.PropTypes) => {
     const searchParams = useParams();
-    const [car, setCar] = useState<any>({});
+    const [car, setCar] = useState<
+        carDetailsContextTypes.Car | { "car-shop-address": string }
+    >({
+        "car-shop-address": "",
+    });
     const [center, setCenter] = useState<{ lat: number; lng: number }>({
         lat: 0,
         lng: 0,

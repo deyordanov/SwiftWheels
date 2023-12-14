@@ -3,7 +3,7 @@
 //hooks
 import React, { useEffect, useRef, Fragment, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useAuthContext } from "@/app/Contexts/authContext";
+import { useAuthContext } from "@/app/Contexts/authContext/authContext";
 import { useMutation } from "@tanstack/react-query";
 
 //next-image

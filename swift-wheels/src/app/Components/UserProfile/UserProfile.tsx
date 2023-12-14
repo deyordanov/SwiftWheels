@@ -1,7 +1,7 @@
 "use client";
 
 //hooks
-import { useAuthContext } from "@/app/Contexts/authContext";
+import { useAuthContext } from "@/app/Contexts/authContext/authContext";
 
 //react
 import { Fragment } from "react";

@@ -11,11 +11,11 @@ import { extractRouterConfig } from "uploadthing/server";
 //providers
 import { ourFileRouter } from "@/app/api/uploadthing/core";
 import { SearchProvider } from "./Contexts/searchContext";
-import { AuthProvider } from "./Contexts/authContext";
+import { AuthProvider } from "./Contexts/authContext/authContext";
 import { ReactQueryProvider } from "./Contexts/reactQueryContext";
 import { PageProvider } from "./Contexts/pageContext";
-import { CreateCarProvider } from "./Contexts/createCarContext";
-import { CarDetailsProvider } from "./Contexts/carDetailsContext";
+import { CreateCarProvider } from "./Contexts/createCarContext/createCarContext";
+import { CarDetailsProvider } from "./Contexts/carDetailsContext/carDetailsContext";
 
 //types
 import React from "react";

@@ -2,7 +2,7 @@
 
 //hooks
 import { useEffect, useState } from "react";
-import { useAuthContext } from "@/app/Contexts/authContext";
+import { useAuthContext } from "@/app/Contexts/authContext/authContext";
 
 //services
 import * as carService from "../../../services/carService";

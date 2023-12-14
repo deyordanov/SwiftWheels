@@ -43,7 +43,7 @@ export const hours = [
 export const LoginFormKeys = {
     EMAIL: "email",
     PASSWORD: "password",
-};
+} as const;
 
 //-> Form Default Values
 export const LoginFormDefaultValues = {
@@ -483,7 +483,7 @@ export const createCarFormKeys = {
     CAR_PRICE: "car-price",
     CAR_IMAGES: "car-images",
     CAR_FAVORITES: "car-favorites",
-};
+} as const;
 
 //-> Form Default Values
 export const createCarFormDefaultValues = {

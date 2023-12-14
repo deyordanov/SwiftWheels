@@ -2,7 +2,7 @@
 
 //hooks
 import { useEffect, useState } from "react";
-import { useAuthContext } from "../Contexts/authContext";
+import { useAuthContext } from "../Contexts/authContext/authContext";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 //services

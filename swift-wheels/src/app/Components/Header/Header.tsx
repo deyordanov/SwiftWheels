@@ -2,7 +2,7 @@
 
 //hooks
 import { useEffect } from "react";
-import { useAuthContext } from "@/app/Contexts/authContext";
+import { useAuthContext } from "@/app/Contexts/authContext/authContext";
 
 //next-image
 import Image from "next/image";

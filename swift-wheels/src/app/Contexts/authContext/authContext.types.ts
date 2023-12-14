@@ -1,13 +1,13 @@
 //types
 import React from "react";
 
-export type authContextDataTypes = {
+export type AuthContextDataTypes = {
     onLoginSubmit: (
-        data: any,
+        data: LoginData,
         handleLoginDialogExitOpen: () => void
     ) => Promise<void>;
     onRegisterSubmit: (
-        data: any,
+        data: RegisterData,
         handleRegisterDialogExitOpen: () => void
     ) => Promise<void>;
     onLogout: () => Promise<void>;
@@ -19,6 +19,18 @@ export type authContextDataTypes = {
     isLoggedIn: boolean;
 };
 
-export type propTypes = {
+export type PropTypes = {
     children: React.ReactNode;
+};
+
+export type LoginData = {
+    email: string;
+    password: string;
+};
+
+export type RegisterData = {
+    email: string;
+    password: string;
+    "confirm-password": string;
+    conditions: boolean;
 };

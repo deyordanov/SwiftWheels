@@ -2,7 +2,7 @@
 
 //hooks
 import { useState, useEffect } from "react";
-import { useAuthContext } from "@/app/Contexts/authContext";
+import { useAuthContext } from "@/app/Contexts/authContext/authContext";
 
 //services
 import * as chatService from "@/services/chatService";

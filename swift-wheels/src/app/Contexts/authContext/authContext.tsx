@@ -5,28 +5,29 @@ import React, { useContext, createContext, useState, useEffect } from "react";
 import useLocalStorage from "@/hooks/useLocalStorage";
 
 //services
-import * as authService from "../../services/authService";
+import * as authService from "../../../services/authService";
 
 //tanstack query
 import { useMutation } from "@tanstack/react-query";
 
 //types
-import * as authContextTypes from "../utilities/types/authContext.types";
+import * as authContextTypes from "./authContext.types";
 
 const AuthContext = createContext<
-    authContextTypes.authContextDataTypes | undefined
+    authContextTypes.AuthContextDataTypes | undefined
 >(undefined);
 
 //TODO: Refactor, Put the Mutations / Queries in a serpeate file
 
-export const AuthProvider = ({ children }: authContextTypes.propTypes) => {
+export const AuthProvider = ({ children }: authContextTypes.PropTypes) => {
     const [auth, setAuth] = useLocalStorage("auth", {});
     const [invalidLoginData, setInvalidLoginData] = useState(false);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(!!auth);
 
     const loginMutation = useMutation({
-        mutationFn: (loginData: any) => authService.login(loginData),
+        mutationFn: (loginData: authContextTypes.LoginData) =>
+            authService.login(loginData),
         onError: (error) => {
             console.log("Error logging in!", error);
             setInvalidLoginData(true);
@@ -37,14 +38,15 @@ export const AuthProvider = ({ children }: authContextTypes.propTypes) => {
     });
 
     const registerMutation = useMutation({
-        mutationFn: (registerData: any) => authService.register(registerData),
+        mutationFn: (registerData: authContextTypes.RegisterData) =>
+            authService.register(registerData),
         onError: (error) => {
             console.log("Error registering!", error);
         },
     });
 
     const onLoginSubmit = async (
-        data: any,
+        data: authContextTypes.LoginData,
         handleLoginDialogExitOpen: () => void
     ) => {
         loginMutation.mutate(data, {
@@ -56,7 +58,10 @@ export const AuthProvider = ({ children }: authContextTypes.propTypes) => {
         });
     };
 
-    const onRegisterSubmit = async (data: any, handleLogin: () => void) => {
+    const onRegisterSubmit = async (
+        data: authContextTypes.RegisterData,
+        handleLogin: () => void
+    ) => {
         registerMutation.mutate(data, {
             onSuccess: (response) => {
                 setAuth(response);
